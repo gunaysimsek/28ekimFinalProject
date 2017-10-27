@@ -18,7 +18,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
-
+        userName = (TextView) findViewById(R.id.myUserName);
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
