@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class CustomerMainActivity extends AppCompatActivity   {
-
+    String helloooo;
     TextView userName ;
     String deneme2444 ;
     String ssasd;
