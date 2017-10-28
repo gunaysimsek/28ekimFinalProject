@@ -72,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Intent intent = new Intent(this, CustomerMainActivity.class);
+
+        startActivity(intent);
 
         emailText   = (EditText) findViewById(R.id.emailText);
         passwordText = (EditText) findViewById(R.id.passwordText);

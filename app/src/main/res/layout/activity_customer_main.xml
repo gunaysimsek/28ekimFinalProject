@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.gsimsek13.a28ekimfinalproject.CustomerMainActivity">
 
 
     <LinearLayout
-        android:layout_width="471dp"
-        android:layout_height="603dp"
-        android:orientation="horizontal"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
+        tools:context="com.example.gsimsek13.a28ekimfinalproject.CustomerMainActivity">
 
         <TextView
             android:id="@+id/myUserName"
@@ -22,6 +19,12 @@
             tools:layout_editor_absoluteX="138dp"
             tools:layout_editor_absoluteY="159dp" />
 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="goQR"
+            android:text="QR" />
+
 
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>

@@ -1,23 +1,27 @@
 package com.example.gsimsek13.a28ekimfinalproject;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+
 public class CustomerMainActivity extends AppCompatActivity   {
-    String helloooo;
+
     TextView userName ;
-    String deneme2444 ;
-    String ssasd;
-    String aaakikiki123;
-    String aaaxx;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
+
+       // Toast.makeText(getApplicationContext(), getIntent().getStringExtra("deneme"), Toast.LENGTH_SHORT).show();
         userName = (TextView) findViewById(R.id.myUserName);
 
 
@@ -35,6 +39,14 @@ public class CustomerMainActivity extends AppCompatActivity   {
 
             userName.setText(name + ", " + email + ", " + photoUrl + ", " + uid + "." );
         }
+
+    }
+
+    public void goQR(View view){
+
+        Intent intent = new Intent(this, QRActivity.class);
+
+        startActivity(intent);
 
     }
 }
