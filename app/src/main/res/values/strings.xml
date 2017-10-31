@@ -1,3 +1,74 @@
 <resources>
-    <string name="app_name">28ekimFinalProject</string>
+    <string name="app_name">mobileTermProjectDemo</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="action_create_order">Create Order</string>
+    <string name="action_share">Share</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="titles">
+        <item>Starters</item>
+        <item>Main Course</item>
+        <item>Desserts</item>
+        <item>Drinks</item>
+    </string-array>
+
+    <string-array name="starters">
+        <item>Tomoto Soup</item>
+        <item>Mozeralla Sticks</item>
+    </string-array>
+
+    <string-array name="mainCourses">
+
+        <item>Karni Yarik</item>
+        <item>Imam Bayildi</item>
+        <item>Hunkar Begendi</item>
+
+    </string-array>
+
+    <string-array name="desserts">
+
+        <item>Aglayan Kek</item>
+        <item>Vezir parmagi</item>
+        <item>Dilber dudagı</item>
+
+    </string-array>
+
+    <string-array name="drinks">
+
+        <item>Yilan Sarabi</item>
+        <item>Pizzali Bira</item>
+        <item>Cola ama zero</item>
+
+    </string-array>
+
+    <string-array name="quantity">
+
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+
+    </string-array>
+
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

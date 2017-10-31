@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gsimsek13.a28ekimfinalproject">
+
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,9 +21,8 @@
         </activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".CustomerMainActivity" />
-        <activity android:name=".QRActivity"></activity>
-
-
+        <activity android:name=".QRActivity" />
+        <activity android:name=".ResetPasswordActivity"></activity>
     </application>
 
 </manifest>

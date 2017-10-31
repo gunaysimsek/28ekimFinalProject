@@ -50,14 +50,40 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }else {
 
-                            Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
-                            startActivity(intent);
+                            checkIfEmailVerified();
+
+
                         }
 
                         // ...
                     }
                 });
 
+    }
+
+    private void checkIfEmailVerified()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user.isEmailVerified())
+        {
+            // user is verified, so you can finish this activity or send user to activity which you want.
+            Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
+            startActivity(intent);
+            Toast.makeText(LoginActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            // email is not verified, so just prompt the message to the user and restart this activity.
+            // NOTE: don't forget to log out the user.
+            Toast.makeText(LoginActivity.this, "Please verify your account to continue.", Toast.LENGTH_SHORT).show();
+            user.sendEmailVerification();
+            FirebaseAuth.getInstance().signOut();
+            recreate();
+
+            //restart this activity
+
+        }
     }
 
     public void signUpClicked(View view){
@@ -67,19 +93,28 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void forgetBtnClicked(View view){
+
+        Intent intent = new Intent(this, ResetPasswordActivity.class);
+        startActivity(intent);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Intent intent = new Intent(this, CustomerMainActivity.class);
+       // Intent intent = new Intent(this, CustomerMainActivity.class);
 
-        startActivity(intent);
+       // startActivity(intent);
 
         emailText   = (EditText) findViewById(R.id.emailText);
         passwordText = (EditText) findViewById(R.id.passwordText);
 
         mAuth = FirebaseAuth.getInstance();
+
+        mAuth.signOut();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -88,9 +123,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Toast.makeText(LoginActivity.this,"burdasin"+user.getEmail(),Toast.LENGTH_LONG).show();
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Toast.makeText(LoginActivity.this,"onAuthStateChanged:signed_out",Toast.LENGTH_LONG).show();
                 }
                 // ...
             }
