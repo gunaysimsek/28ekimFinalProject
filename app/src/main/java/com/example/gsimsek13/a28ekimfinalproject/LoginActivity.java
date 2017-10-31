@@ -63,22 +63,23 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkIfEmailVerified()
     {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+     //   FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user.isEmailVerified())
+        if (mAuth.getCurrentUser().isEmailVerified())
         {
             // user is verified, so you can finish this activity or send user to activity which you want.
+            Toast.makeText(LoginActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
             startActivity(intent);
-            Toast.makeText(LoginActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+
         }
         else
         {
             // email is not verified, so just prompt the message to the user and restart this activity.
             // NOTE: don't forget to log out the user.
             Toast.makeText(LoginActivity.this, "Please verify your account to continue.", Toast.LENGTH_SHORT).show();
-            user.sendEmailVerification();
-            FirebaseAuth.getInstance().signOut();
+            mAuth.getCurrentUser().sendEmailVerification();
+            mAuth.signOut();
             recreate();
 
             //restart this activity
@@ -114,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mAuth.signOut();
+       // mAuth.signOut();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

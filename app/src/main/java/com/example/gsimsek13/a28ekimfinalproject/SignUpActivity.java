@@ -71,9 +71,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void sendVerificationEmail()
     {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+     //   FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        user.sendEmailVerification()
+        mAuth.getCurrentUser().sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -82,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                             // after email is sent just logout the user and finish this activity
-                            FirebaseAuth.getInstance().signOut();
+                            mAuth.signOut();
                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                             finish();
                         }
