@@ -58,7 +58,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
         drawerList = (ListView) findViewById(R.id.drawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        myStringArray = new String[]{"Profile", "Reservation", "Schedule"};
+        myStringArray = new String[]{"Profile", "QR","Reservation", "Schedule"};
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_activated_1, myStringArray));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -137,21 +137,9 @@ public class CustomerMainActivity extends AppCompatActivity   {
 
             default:
                 fragment = new StartersFragment();
-        }*/if(position != 0) {
+        }*/
 
-           FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-            contentFrameLayout.removeAllViews();
-
-           /* Fragment fragment = new StartersFragment();
-            StartersFragment.catNum = position;
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment, "visible_fragment");
-            ft.addToBackStack(null);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();*/
-
-
-        }else if(position== 0){
+            if(position== 0){
 
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
             contentFrameLayout.removeAllViews();
@@ -165,6 +153,16 @@ public class CustomerMainActivity extends AppCompatActivity   {
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
 
+        } else if(position== 1){
+
+            Intent intent = new Intent(getApplicationContext(), QRActivity.class);
+
+            startActivity(intent);
+
+
+        }else{
+            FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
+            contentFrameLayout.removeAllViews();
         }
 
         //Set the action bar title

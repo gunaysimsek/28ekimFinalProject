@@ -25,9 +25,23 @@ public class SignUpActivity extends AppCompatActivity {
     private String password;
     private String passwordValid;
 
+    private String name;
+    private String surname;
+    private Double phoneNo;
+
+
     private EditText emailText;
     private EditText passwordText;
     private EditText passwordValidText;
+
+    private EditText nameText;
+    private EditText surnameText;
+    private EditText phoneText;
+
+
+
+
+    private Customer customer;
 
     private String schoolEmailDomain;
 
@@ -58,12 +72,13 @@ public class SignUpActivity extends AppCompatActivity {
             }
         };
 
-        emailText   = (EditText) findViewById(R.id.signUpEmailText);
-        passwordText = (EditText) findViewById(R.id.signUpPasswordText);
+        emailText   = findViewById(R.id.signUpEmailText);
+        passwordText = findViewById(R.id.signUpPasswordText);
         passwordValidText = findViewById(R.id.signUpPasswordValidText);
 
-
-
+        nameText =  findViewById(R.id.signUpNameText);
+        surnameText = findViewById(R.id.signUpSurnameText);
+        phoneText = findViewById(R.id.signUpPhoneText);
 
 
 
@@ -83,8 +98,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                             // after email is sent just logout the user and finish this activity
                             mAuth.signOut();
-                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                            finish();
+                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                         //   intent.putExtra("Customer", customer);
+                            startActivity(intent);
+                            //finish();
                         }
                         else
                         {
@@ -96,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
                             overridePendingTransition(0, 0);
                             startActivity(getIntent());*/
                            //recreate();
-                           Toast.makeText(SignUpActivity.this,"burdasin",Toast.LENGTH_LONG).show();
+                           Toast.makeText(SignUpActivity.this,"Verification maili gönderilemedi.",Toast.LENGTH_LONG).show();
 
                         }
                     }
@@ -104,14 +121,23 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void signUpSend(View view){
+       // if(!(phoneText.getText().toString().isEmpty())){
+            phoneNo = Double.parseDouble( phoneText.getText().toString());
+
+        //}else{
+        //    phoneNo =  0.0;
+        //}
+        //if(!(emailText..equals("") || password.equals("") || name.equals("") || surname.equals(""))) {
+            email = emailText.getText().toString();
+            password = passwordText.getText().toString();
+            passwordValid = passwordValidText.getText().toString();
+
+            name = nameText.getText().toString();
+            surname = surnameText.getText().toString();
 
 
-        email = emailText.getText().toString();
-        password = passwordText.getText().toString();
-        passwordValid =  passwordValidText.getText().toString();
-
-
-
+            customer = new Customer(1, 1, name, surname, email, phoneNo, 0.0);
+        //}
 
         String[] parts = email.split("@");
 
@@ -129,7 +155,11 @@ public class SignUpActivity extends AppCompatActivity {
 
             Toast.makeText(SignUpActivity.this, "Passwords don't match!",Toast.LENGTH_LONG).show();
 
-        } else{
+        }else if(email.equals("") || password.equals("") || name.equals("") || surname.equals("") )
+        {
+            Toast.makeText(SignUpActivity.this, "Please fill all necessary text fields!",Toast.LENGTH_LONG).show();
+
+        }else{
 
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

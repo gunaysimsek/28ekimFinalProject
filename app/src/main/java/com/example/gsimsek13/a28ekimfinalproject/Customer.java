@@ -1,10 +1,12 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
+import java.io.Serializable;
+
 /**
  * Created by Gunay on 31/10/2017.
  */
 
-public class Customer extends User {
+public class Customer extends User implements Serializable {
 
     double balance;
 
@@ -14,8 +16,8 @@ public class Customer extends User {
 
     }
 
-    public Customer(int id, int role, String name, String surname, String email, String password, int phoneNumber, double balance){
-        super(id,role,name,surname,email,password,phoneNumber);
+    public Customer(int id, int role, String name, String surname, String email, double phoneNumber, double balance){
+        super(id,role,name,surname,email,phoneNumber);
         this.balance = balance;
 
     }

@@ -25,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText passwordText;
 
+    private Customer customer;
+
 
 
 
@@ -48,12 +50,11 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(LoginActivity.this, "Auth Failed",
                                     Toast.LENGTH_SHORT).show();
-                        }else {
+                        }
+                      /*  else {
 
                             checkIfEmailVerified();
-
-
-                        }
+                        }*/
 
                         // ...
                     }
@@ -78,9 +79,9 @@ public class LoginActivity extends AppCompatActivity {
             // email is not verified, so just prompt the message to the user and restart this activity.
             // NOTE: don't forget to log out the user.
             Toast.makeText(LoginActivity.this, "Please verify your account to continue.", Toast.LENGTH_SHORT).show();
-            mAuth.getCurrentUser().sendEmailVerification();
+           // mAuth.getCurrentUser().sendEmailVerification();
             mAuth.signOut();
-            recreate();
+            //recreate();
 
             //restart this activity
 
@@ -106,32 +107,34 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-       // Intent intent = new Intent(this, CustomerMainActivity.class);
+       /* Intent intent = new Intent(this, CustomerMainActivity.class);
 
-       // startActivity(intent);
+        startActivity(intent);*/
+
+
 
         emailText   = (EditText) findViewById(R.id.emailText);
         passwordText = (EditText) findViewById(R.id.passwordText);
 
         mAuth = FirebaseAuth.getInstance();
 
-       // mAuth.signOut();
+        mAuth.signOut();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Toast.makeText(LoginActivity.this,"burdasin"+user.getEmail(),Toast.LENGTH_LONG).show();
-
+                    checkIfEmailVerified();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     Toast.makeText(LoginActivity.this,"onAuthStateChanged:signed_out",Toast.LENGTH_LONG).show();
                 }
-                // ...
+
             }
         };
 
