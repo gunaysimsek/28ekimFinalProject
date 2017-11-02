@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 
 public class User implements Serializable{
-
+    // bunlari private a cevrilcek
     public int id;
     public int role;
     public String name;
