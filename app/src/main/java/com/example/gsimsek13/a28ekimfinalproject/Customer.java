@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Customer extends User implements Serializable {
 
     double balance;
+    String Gunay = "deneme";
 
     public Customer(){
         super();
