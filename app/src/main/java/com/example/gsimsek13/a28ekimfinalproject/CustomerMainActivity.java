@@ -116,6 +116,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
     private void selectItem(int position) {
         // update the main content by replacing fragments
         currentPosition = position;
+        android.support.v4.app.FragmentManager fragmentManager2 = getSupportFragmentManager();
         // Fragment fragment;
        /* switch (position) {
             case 0:
@@ -146,7 +147,6 @@ public class CustomerMainActivity extends AppCompatActivity   {
 
             ProfileFragment profileFrag = new ProfileFragment();
            // profileFrag.user = myUser;
-            android.support.v4.app.FragmentManager fragmentManager2 = getSupportFragmentManager();
             fragmentManager2.beginTransaction()
                     .replace(R.id.content_frame,profileFrag,"visible_fragment")
                     .addToBackStack(null)
@@ -160,7 +160,21 @@ public class CustomerMainActivity extends AppCompatActivity   {
             startActivity(intent);
 
 
-        }else{
+        }
+         else if(position == 2) {
+
+            FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
+            contentFrameLayout.removeAllViews();
+
+
+            ReservationFragment reservationFrag = new ReservationFragment();
+            fragmentManager2.beginTransaction()
+                    .replace(R.id.content_frame,reservationFrag,"visible_fragment")
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+            }
+        else{
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
             contentFrameLayout.removeAllViews();
         }

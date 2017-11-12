@@ -32,6 +32,7 @@ public class ProfileFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_profile,container,false );
 
+
         nametv = (TextView) v.findViewById(R.id.profileNameTxt);
         surnametv = (TextView) v.findViewById(R.id.profileSurnameTxt);
         mailtv = (TextView) v.findViewById(R.id.profileEmailTxt);

@@ -35,6 +35,18 @@
         <item>Hunkar Begendi</item>
 
     </string-array>
+    
+    
+    <string-array name="from_to_places">
+        <item>Select One</item>
+        <item>Ana Kampus</item>
+        <item>Bati</item>
+        <item>Besiktas</item>
+        <item>Kadikoy</item>
+        <item>Bakirkoy</item>
+        <item>Haciosman</item>
+
+    </string-array>
 
     <string-array name="desserts">
 
