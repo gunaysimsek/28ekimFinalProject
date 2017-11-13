@@ -75,6 +75,13 @@
             android:onClick="forgetBtnClicked"
             android:text="Forgot password?" />
 
+        <Button
+            android:id="@+id/verifyBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="verifyBtnClicked"
+            android:text="Did not recieve verification email?" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

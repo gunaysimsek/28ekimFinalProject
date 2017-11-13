@@ -1,8 +1,7 @@
 package com.example.gsimsek13.a28ekimfinalproject;
-import android.app.Fragment;
+
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,54 +13,48 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.ShareActionProvider;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
+public class DriverMainActivity extends AppCompatActivity {
 
-public class CustomerMainActivity extends AppCompatActivity   {
-
-    private ShareActionProvider shareActionProvider;
-    private DrawerLayout drawerLayout;
+    private DrawerLayout driver_drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private int currentPosition = 1;
     private String[] titles;
     private ListView drawerList;
 
     ArrayList<String> bufferStringArrayList;
-    String[] myStringArray;
+    String[] driverStringArray;
     Bundle mySavedInstanceState;
 
-    TextView userName ;
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    private class DriverDrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_main);
+        setContentView(R.layout.activity_driver_main);
 
         mySavedInstanceState = savedInstanceState;
         bufferStringArrayList = new ArrayList<String>();
 
         titles = getResources().getStringArray(R.array.titles);
-        drawerList = (ListView) findViewById(R.id.drawer);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerList = (ListView) findViewById(R.id.driver_drawer);
+        driver_drawerLayout = (DrawerLayout) findViewById(R.id.driver_drawer_layout);
 
-        myStringArray = new String[]{"Profile", "QR","Reservation", "Schedule","Logout"};
-        drawerList.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_activated_1, myStringArray));
-        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        driverStringArray = new String[]{"Profile", "QR","Reservation", "Schedule","Logout"};
+
+        drawerList.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_activated_1, driverStringArray));
+        drawerList.setOnItemClickListener(new DriverMainActivity.DriverDrawerItemClickListener());
 
         if (mySavedInstanceState != null) {
             currentPosition = mySavedInstanceState.getInt("position");
@@ -70,7 +63,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
             selectItem(0);
         }
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+        drawerToggle = new ActionBarDrawerToggle(this, driver_drawerLayout,
                 R.string.open_drawer, R.string.close_drawer)  {
             //Called when a drawer has settled in a completely closed state
             @Override
@@ -86,69 +79,28 @@ public class CustomerMainActivity extends AppCompatActivity   {
                 invalidateOptionsMenu();
             }
         };
-        drawerLayout.addDrawerListener(drawerToggle);
+        driver_drawerLayout.addDrawerListener(drawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         drawerToggle.syncState();
 
 
-       // Toast.makeText(getApplicationContext(), getIntent().getStringExtra("deneme"), Toast.LENGTH_SHORT).show();
-     /*   userName = (TextView) findViewById(R.id.myUserName);
-
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = user.getUid();
-
-            userName.setText(name + ", " + email + ", " + photoUrl + ", " + uid + "." );
-        }*/
-
     }
 
     private void selectItem(int position) {
-        // update the main content by replacing fragments
+
         currentPosition = position;
         android.support.v4.app.FragmentManager fragmentManager2 = getSupportFragmentManager();
-        // Fragment fragment;
-       /* switch (position) {
-            case 0:
 
-                StartersFragment.catNum = 0;
-                break;
-            case 1:
-                fragment = new StartersFragment();
-                StartersFragment.catNum = 1;
-                break;
-            case 2:
-                fragment = new StartersFragment();
-                StartersFragment.catNum = 2;
-                break;
-            case 3:
-                fragment = new StartersFragment();
-                StartersFragment.catNum = 3;
-                break;
+        if(position== 0){
 
-            default:
-                fragment = new StartersFragment();
-        }*/
-
-            if(position== 0){
-
-            FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
+            FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
             contentFrameLayout.removeAllViews();
 
             ProfileFragment profileFrag = new ProfileFragment();
-           // profileFrag.user = myUser;
+
             fragmentManager2.beginTransaction()
-                    .replace(R.id.content_frame,profileFrag,"visible_fragment")
+                    .replace(R.id.driver_content_frame,profileFrag,"visible_fragment")
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
@@ -161,21 +113,20 @@ public class CustomerMainActivity extends AppCompatActivity   {
 
 
         }
-         else if(position == 2) {
+        else if(position == 2) {
 
-            FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
+            FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.driver_content_frame));
             contentFrameLayout.removeAllViews();
-
 
             ReservationFragment reservationFrag = new ReservationFragment();
             fragmentManager2.beginTransaction()
-                    .replace(R.id.content_frame,reservationFrag,"visible_fragment")
+                    .replace(R.id.driver_content_frame,reservationFrag,"visible_fragment")
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
-            }
+        }
         else{
-            FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
+            FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
             contentFrameLayout.removeAllViews();
         }
 
@@ -183,15 +134,16 @@ public class CustomerMainActivity extends AppCompatActivity   {
         setActionBarTitle(position);
         //Close drawer
 
-        drawerLayout.closeDrawer(drawerList);
+        driver_drawerLayout.closeDrawer(drawerList);
     }
+
 
     private void setActionBarTitle(int position) {
         String title;
         if (position == -1) {
             title = getResources().getString(R.string.app_name);
         } else {
-            title = myStringArray[position];
+            title = driverStringArray[position];
         }
         getSupportActionBar().setTitle(title);
     }
@@ -199,7 +151,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the drawer is open, hide action items related to the content view
-        boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
+        boolean drawerOpen = driver_drawerLayout.isDrawerOpen(drawerList);
         menu.findItem(R.id.action_share).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -216,7 +168,6 @@ public class CustomerMainActivity extends AppCompatActivity   {
         // Sync the toggle state after onRestoreInstanceState has occurred.
         //  drawerToggle.syncState();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -225,13 +176,6 @@ public class CustomerMainActivity extends AppCompatActivity   {
         shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         setIntent("This is example text");*/
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private void setIntent(String text) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        //  shareActionProvider.setShareIntent(intent);
     }
 
     @Override
@@ -258,7 +202,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 return true;
-          //  default:
+            //  default:
             //    return super.onOptionsItemSelected(item);
         }
         return true; // gecici
@@ -266,11 +210,4 @@ public class CustomerMainActivity extends AppCompatActivity   {
 
 
 
-    public void goQR(View view){
-
-        Intent intent = new Intent(this, QRActivity.class);
-
-        startActivity(intent);
-
-    }
 }
