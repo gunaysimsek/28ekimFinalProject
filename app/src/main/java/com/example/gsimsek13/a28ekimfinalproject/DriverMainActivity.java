@@ -46,11 +46,11 @@ public class DriverMainActivity extends AppCompatActivity {
         mySavedInstanceState = savedInstanceState;
         bufferStringArrayList = new ArrayList<String>();
 
-        titles = getResources().getStringArray(R.array.titles);
+        //titles = getResources().getStringArray(R.array.titles);
         drawerList = (ListView) findViewById(R.id.driver_drawer);
         driver_drawerLayout = (DrawerLayout) findViewById(R.id.driver_drawer_layout);
 
-        driverStringArray = new String[]{"Profile", "QR","Reservation", "Schedule","Logout"};
+        driverStringArray = new String[]{ "a","Take Payment"};
 
         drawerList.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_activated_1, driverStringArray));
@@ -92,7 +92,7 @@ public class DriverMainActivity extends AppCompatActivity {
         currentPosition = position;
         android.support.v4.app.FragmentManager fragmentManager2 = getSupportFragmentManager();
 
-        if(position== 0){
+        /*if(position== 0){
 
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
             contentFrameLayout.removeAllViews();
@@ -105,15 +105,26 @@ public class DriverMainActivity extends AppCompatActivity {
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
 
-        } else if(position== 1){
+        } else*/ if(position== 1){
 
-            Intent intent = new Intent(getApplicationContext(), QRActivity.class);
+          /*  Intent intent = new Intent(getApplicationContext(), QRActivity.class);
 
-            startActivity(intent);
+            startActivity(intent);*/
+            FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
+            contentFrameLayout.removeAllViews();
+
+            TakePaymentFragment takePaymentFragment = new TakePaymentFragment();
+
+            fragmentManager2.beginTransaction()
+                    .replace(R.id.driver_content_frame,takePaymentFragment,"visible_fragment")
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+
 
 
         }
-        else if(position == 2) {
+       /* else if(position == 2) {
 
             FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.driver_content_frame));
             contentFrameLayout.removeAllViews();
@@ -124,7 +135,7 @@ public class DriverMainActivity extends AppCompatActivity {
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
-        }
+        }*/
         else{
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
             contentFrameLayout.removeAllViews();

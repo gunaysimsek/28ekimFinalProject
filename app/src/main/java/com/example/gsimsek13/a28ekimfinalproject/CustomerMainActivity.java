@@ -54,11 +54,11 @@ public class CustomerMainActivity extends AppCompatActivity   {
         mySavedInstanceState = savedInstanceState;
         bufferStringArrayList = new ArrayList<String>();
 
-        titles = getResources().getStringArray(R.array.titles);
+        //titles = getResources().getStringArray(R.array.titles);
         drawerList = (ListView) findViewById(R.id.drawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        myStringArray = new String[]{"Profile", "QR","Reservation", "Schedule","Logout"};
+        myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Logout"};
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_activated_1, myStringArray));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -155,9 +155,16 @@ public class CustomerMainActivity extends AppCompatActivity   {
 
         } else if(position== 1){
 
-            Intent intent = new Intent(getApplicationContext(), QRActivity.class);
+                FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
+                contentFrameLayout.removeAllViews();
 
-            startActivity(intent);
+                QRFragment qrFrag = new QRFragment();
+                // profileFrag.user = myUser;
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.content_frame,qrFrag,"visible_fragment")
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
 
 
         }

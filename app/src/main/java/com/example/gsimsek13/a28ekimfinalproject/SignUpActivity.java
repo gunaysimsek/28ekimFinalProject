@@ -42,6 +42,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     private String[] myParts;
 
+    private Boolean isPassed;
+
 
     private FirebaseDatabase database ;
     private DatabaseReference myRef;
@@ -54,6 +56,8 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        isPassed = false;
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -162,12 +166,12 @@ public class SignUpActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
+                                                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                                            startActivity(intent);
 
                                                         }
                                                     });
 
-                                                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                                                    startActivity(intent);
 
                                                 }
                                                 else

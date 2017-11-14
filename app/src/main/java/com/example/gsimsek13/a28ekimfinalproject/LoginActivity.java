@@ -75,40 +75,41 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.wtf(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
+                        if(task.isSuccessful()){
+                            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
+                           {
 
-                        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
-                        {
+                                myRef.child("Drivers").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if (snapshot.child(parts[0]).exists()) {
 
-                            myRef.child("Drivers").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot snapshot) {
-                                    if (snapshot.child(parts[0]).exists()) {
+                                            Intent intent = new Intent(getApplicationContext(), DriverMainActivity.class);
+                                            startActivity(intent);
 
-                                        Intent intent = new Intent(getApplicationContext(), DriverMainActivity.class);
-                                        startActivity(intent);
+                                        }else{
+                                            Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
+                                            startActivity(intent);
 
-                                    }else{
-                                        Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
-                                        startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
                                     }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
+                                });
 
 
-                        }else if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+                            }else if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
 
-                            //FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
-                            Toast.makeText(getApplicationContext(),"Please verify your account!",Toast.LENGTH_LONG).show();
+                                //FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                                Toast.makeText(getApplicationContext(),"Please verify your account!",Toast.LENGTH_LONG).show();
 
-                        }
-                        if (!task.isSuccessful()) {
+                            }}
+                        else if (!task.isSuccessful()) {
                             Log.wtf(TAG, "signInWithEmail:failed", task.getException());
+                            Toast.makeText(getApplicationContext(),"Wrong Password!",Toast.LENGTH_LONG).show();
 
                         }
 
