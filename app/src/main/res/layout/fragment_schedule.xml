@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/Schedule_Constraint_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/Schedule_Text_View"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="124dp"
+            android:layout_marginTop="16dp"
+            android:text="Time"
+            android:textAlignment="textStart"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/Schedule_Text_View2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="From"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View" />
+
+        <TextView
+            android:id="@+id/Schedule_Text_View3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="15dp"
+            android:text="To"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/Schedule_Text_View2"
+            app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View" />
+
+        <TextView
+            android:id="@+id/Schedule_Text_View4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="15dp"
+            android:text="Time"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/Schedule_Text_View3"
+            app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View" />
+
+        <TextView
+            android:id="@+id/Schedule_Text_View5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="15dp"
+            android:text="Price"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/Schedule_Text_View4"
+            app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View" />
+
+        <ScrollView
+            android:id="@+id/Schedule_Scroll_View"
+            android:layout_width="368dp"
+            android:layout_height="398dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View2">
+
+            <LinearLayout
+                android:id="@+id/Schedule_Scroll_View_Linear_Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

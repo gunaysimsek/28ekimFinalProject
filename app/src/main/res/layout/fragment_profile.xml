@@ -139,7 +139,6 @@
             />
 
 
-
         <TextView
             android:id="@+id/profilePhoneTxt"
             android:layout_width="wrap_content"
@@ -174,7 +173,6 @@
             android:text="Balance:"
 
             />
-
 
 
         <TextView
