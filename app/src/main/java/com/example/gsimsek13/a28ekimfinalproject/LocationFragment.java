@@ -58,7 +58,7 @@ import java.util.Date;
  */
 public class LocationFragment extends Fragment implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-
+//last version
     private GoogleMap mMap;
     private Marker mCurrLocationMarker;
     private Marker mDriverLocationMarker;

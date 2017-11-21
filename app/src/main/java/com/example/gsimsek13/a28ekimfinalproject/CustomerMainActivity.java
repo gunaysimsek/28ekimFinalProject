@@ -58,7 +58,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
         drawerList = (ListView) findViewById(R.id.drawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Logout"};
+        myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Geolocation","Logout"};
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_activated_1, myStringArray));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -170,16 +170,29 @@ public class CustomerMainActivity extends AppCompatActivity   {
         }
          else if(position == 2) {
 
-            FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
-            contentFrameLayout.removeAllViews();
+                FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
+                contentFrameLayout.removeAllViews();
 
 
-            ReservationFragment reservationFrag = new ReservationFragment();
-            fragmentManager2.beginTransaction()
-                    .replace(R.id.content_frame,reservationFrag,"visible_fragment")
-                    .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
+                ReservationFragment reservationFrag = new ReservationFragment();
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.content_frame,reservationFrag,"visible_fragment")
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            }
+            else if(position == 4) {
+
+                FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
+                contentFrameLayout.removeAllViews();
+
+
+                LocationFragment locationFragment = new LocationFragment();
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.content_frame,locationFragment,"visible_fragment")
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
             }
         else{
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
