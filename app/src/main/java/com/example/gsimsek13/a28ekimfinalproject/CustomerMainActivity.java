@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
@@ -58,7 +59,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
         drawerList = (ListView) findViewById(R.id.drawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Logout"};
+        myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Geolocation","Logout"};
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_activated_1, myStringArray));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -180,6 +181,21 @@ public class CustomerMainActivity extends AppCompatActivity   {
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
+            }
+            else if(position == 4) {
+
+                FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
+                contentFrameLayout.removeAllViews();
+
+                LocationFragment locationFragment = new LocationFragment();
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.content_frame,locationFragment,"visible_fragment")
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+                //Intent intent = new Intent(this, MapsActivity.class );
+                //startActivity(intent);
+
             }
         else{
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
