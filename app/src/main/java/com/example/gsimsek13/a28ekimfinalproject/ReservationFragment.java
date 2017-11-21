@@ -97,7 +97,7 @@ public class ReservationFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d("failDeneme","u failed bitch");
+                //Log.d("failDeneme","u failed bitch");
             }
         });
 
@@ -141,19 +141,18 @@ public class ReservationFragment extends Fragment {
                 String toSpinnerValue = toSpinner.getSelectedItem().toString();
                 String fromSpinnerValue = fromSpinner.getSelectedItem().toString();
                 ArrayList<ArrayList<String>> myList = readFromDatabase(fromSpinnerValue,toSpinnerValue);
-                Log.d("deneme",myList.toString());
+                //Log.d("deneme",myList.toString());
 
                 //leftLinearLayout.addView(createNewTextView(myList.get(0).get(1)));
                 //rightLinearLayout.addView(createNewTextView(myList.get(0).get(3)));
                 //centerLeftLinearLayout.addView(createNewTextView(myList.get(0).get(0)));
                 //centerRightLinearLayout.addView(createNewTextView(myList.get(0).get(2)));
 
-
                 for(ArrayList<String> eachShuttle : myList){
-                    Log.d("deneme",eachShuttle.get(1));
-                    Log.d("deneme",eachShuttle.get(3));
-                    Log.d("deneme",eachShuttle.get(0));
-                    Log.d("deneme",eachShuttle.get(2));
+                    //Log.d("deneme",eachShuttle.get(1));
+                    //Log.d("deneme",eachShuttle.get(3));
+                    //Log.d("deneme",eachShuttle.get(0));
+                    //Log.d("deneme",eachShuttle.get(2));
 
                     leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
                     rightLinearLayout.addView(createNewTextView(eachShuttle.get(3)));
@@ -162,7 +161,7 @@ public class ReservationFragment extends Fragment {
 
                 }
                 if(leftLinearLayout.getChildCount() > 0) {
-                    Log.d("deneme", "Left child sayisi " + leftLinearLayout.getChildCount());
+                    //Log.d("deneme", "Left child sayisi " + leftLinearLayout.getChildCount());
                     for(int i=0; i<leftLinearLayout.getChildCount() ; i++){
                         //Log.d("deneme", "Left child "+i+" Idsi " + leftLinearLayout.getChildAt(i).get(i));
 
