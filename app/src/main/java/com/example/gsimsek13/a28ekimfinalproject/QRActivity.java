@@ -29,6 +29,8 @@ public class QRActivity extends Activity implements ZXingScannerView.ResultHandl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
+
+
         mScannerView = new ZXingScannerView(this);
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -38,6 +40,7 @@ public class QRActivity extends Activity implements ZXingScannerView.ResultHandl
                // return;
             }
         }
+
     }
     public void goMenuClick(View view){
 

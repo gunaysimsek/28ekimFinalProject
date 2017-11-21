@@ -16,27 +16,9 @@
     <string name="action_create_order">Create Order</string>
     <string name="action_share">Share</string>
     <string name="action_settings">Settings</string>
-    <string-array name="titles">
-        <item>Starters</item>
-        <item>Main Course</item>
-        <item>Desserts</item>
-        <item>Drinks</item>
-    </string-array>
 
-    <string-array name="starters">
-        <item>Tomoto Soup</item>
-        <item>Mozeralla Sticks</item>
-    </string-array>
 
-    <string-array name="mainCourses">
 
-        <item>Karni Yarik</item>
-        <item>Imam Bayildi</item>
-        <item>Hunkar Begendi</item>
-
-    </string-array>
-    
-    
     <string-array name="from_to_places">
         <item>Select One</item>
         <item>Ana Kampus</item>
@@ -48,21 +30,6 @@
 
     </string-array>
 
-    <string-array name="desserts">
-
-        <item>Aglayan Kek</item>
-        <item>Vezir parmagi</item>
-        <item>Dilber dudagı</item>
-
-    </string-array>
-
-    <string-array name="drinks">
-
-        <item>Yilan Sarabi</item>
-        <item>Pizzali Bira</item>
-        <item>Cola ama zero</item>
-
-    </string-array>
 
     <string-array name="quantity">
 

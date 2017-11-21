@@ -10,10 +10,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,36 +35,84 @@ public class LoginActivity extends AppCompatActivity {
 
     private Customer customer;
 
+    private FirebaseDatabase database ;
+    private DatabaseReference myRef;
+    String[] parts;
+
+    FirebaseAuth myAuth;
+
+    public void verifyBtnClicked(View view){
+
+        myAuth = FirebaseAuth.getInstance();
+
+        myAuth.getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                if(!myAuth.getCurrentUser().isEmailVerified()){
+                    Toast.makeText(LoginActivity.this, "Verfication mail is resent!", Toast.LENGTH_SHORT).show();
+                    myAuth.getCurrentUser().sendEmailVerification();
+
+                }
+
+
+            }
+        });
 
 
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    }
 
     public void signInClicked(View view){
 
         email = emailText.getText().toString();
         password = passwordText.getText().toString();
+        parts = email.split("@");
 
-        mAuth.signInWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        Log.wtf(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LoginActivity.this, "Auth Failed",
-                                    Toast.LENGTH_SHORT).show();
+                        if(task.isSuccessful()){
+                            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
+                           {
+
+                                myRef.child("Drivers").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if (snapshot.child(parts[0]).exists()) {
+
+                                            Intent intent = new Intent(getApplicationContext(), DriverMainActivity.class);
+                                            startActivity(intent);
+
+                                        }else{
+                                            Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
+                                            startActivity(intent);
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+                            }else if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+
+                                //FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                                Toast.makeText(getApplicationContext(),"Please verify your account!",Toast.LENGTH_LONG).show();
+
+                            }}
+                        else if (!task.isSuccessful()) {
+                            Log.wtf(TAG, "signInWithEmail:failed", task.getException());
+                            Toast.makeText(getApplicationContext(),"Wrong Password!",Toast.LENGTH_LONG).show();
+
                         }
-                      /*  else {
 
-                            checkIfEmailVerified();
-                        }*/
-
-                        // ...
                     }
                 });
 
@@ -69,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
         if (mAuth.getCurrentUser().isEmailVerified())
         {
             // user is verified, so you can finish this activity or send user to activity which you want.
-            Toast.makeText(LoginActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(LoginActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
             startActivity(intent);
 
@@ -78,9 +134,9 @@ public class LoginActivity extends AppCompatActivity {
         {
             // email is not verified, so just prompt the message to the user and restart this activity.
             // NOTE: don't forget to log out the user.
-            Toast.makeText(LoginActivity.this, "Please verify your account to continue.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(LoginActivity.this, "Please verify your account to continue.", Toast.LENGTH_SHORT).show();
            // mAuth.getCurrentUser().sendEmailVerification();
-            mAuth.signOut();
+           // mAuth.signOut();
             //recreate();
 
             //restart this activity
@@ -111,49 +167,19 @@ public class LoginActivity extends AppCompatActivity {
 
         startActivity(intent);*/
 
-
-
         emailText   = (EditText) findViewById(R.id.emailText);
         passwordText = (EditText) findViewById(R.id.passwordText);
+
+        database = FirebaseDatabase.getInstance();
+
+        myRef = database.getReference();
 
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signOut();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = mAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Toast.makeText(LoginActivity.this,"burdasin"+user.getEmail(),Toast.LENGTH_LONG).show();
-                    checkIfEmailVerified();
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    Toast.makeText(LoginActivity.this,"onAuthStateChanged:signed_out",Toast.LENGTH_LONG).show();
-                }
-
-            }
-        };
 
 
     }
 
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
 }

@@ -22,7 +22,8 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".CustomerMainActivity" />
         <activity android:name=".QRActivity" />
-        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".DriverMainActivity"></activity>
     </application>
 
 </manifest>

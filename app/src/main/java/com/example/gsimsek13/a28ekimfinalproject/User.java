@@ -14,7 +14,6 @@ public class User implements Serializable{
     public String name;
     public String surname;
     public String email;
-    //public String password;
     public double phoneNumber;
 
 
@@ -22,24 +21,24 @@ public class User implements Serializable{
 
 
     public User(){
+
         this.id = -1;
         this.role = -1;
         this.name = "";
         this.surname = "";
         this.email = "";
-        //this.password = "";
         this.phoneNumber = -1;
 
 
     }
 
     public User(int id, int role, String name, String surname, String email, double phoneNumber){
+
         this.id = id;
         this.role = role;
         this.name = name;
         this.surname = surname;
         this.email = email;
-       // this.password = password;
         this.phoneNumber = phoneNumber;
 
 
