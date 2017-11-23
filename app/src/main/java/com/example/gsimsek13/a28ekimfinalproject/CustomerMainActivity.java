@@ -181,6 +181,18 @@ public class CustomerMainActivity extends AppCompatActivity   {
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
             }
+            else if(position == 3){
+                FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
+                contentFrameLayout.removeAllViews();
+
+
+                ScheduleFragment scheduleFrag = new ScheduleFragment();
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.content_frame,scheduleFrag,"visible_fragment")
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            }
             else if(position == 4) {
 
                 FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
