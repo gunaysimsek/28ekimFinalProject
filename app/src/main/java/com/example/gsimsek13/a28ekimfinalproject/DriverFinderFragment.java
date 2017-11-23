@@ -69,7 +69,7 @@ public class DriverFinderFragment extends Fragment {
         List<String> spinnerArray =  new ArrayList<String>();
 
 
-
+        /*
         myRef.child("Routes").addValueEventListener(new ValueEventListener() { //BURASI DEGISICEK
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -89,7 +89,7 @@ public class DriverFinderFragment extends Fragment {
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         });
-
+        */
 
         spinnerArray.add("item1");
         spinnerArray.add("item2");

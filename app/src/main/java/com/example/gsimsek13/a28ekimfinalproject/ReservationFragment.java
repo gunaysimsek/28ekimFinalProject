@@ -4,6 +4,7 @@ import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +43,9 @@ public class ReservationFragment extends Fragment {
     ArrayList<ArrayList<String>> returningList = new ArrayList<ArrayList<String>>();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+    private String[] parts;
+    double userBalance;
+
 
 
 
@@ -102,7 +107,7 @@ public class ReservationFragment extends Fragment {
         });
 
 
-    return returningList;
+        return returningList;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,7 +128,9 @@ public class ReservationFragment extends Fragment {
         centerLeftLinearLayout = (LinearLayout) v.findViewById(R.id.centerLeftLinearLayout);
         centerRightLinearLayout = (LinearLayout) v.findViewById(R.id.centerRightLinearLayout);
 
+        parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
 
+        //Log.d("Reservation deneme",parts[0]);
         from_to_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -155,7 +162,13 @@ public class ReservationFragment extends Fragment {
                     //Log.d("deneme",eachShuttle.get(2));
 
                     leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
-                    rightLinearLayout.addView(createNewTextView(eachShuttle.get(3)));
+                    if(eachShuttle.get(3).equalsIgnoreCase("Button")) {
+                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2)));
+                    }
+                    else {
+                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],false,eachShuttle.get(2)));
+                    }
+                    //rightLinearLayout.addView(createNewTextView(eachShuttle.get(3)));
                     centerLeftLinearLayout.addView(createNewTextView(eachShuttle.get(0)));
                     centerRightLinearLayout.addView(createNewTextView(eachShuttle.get(2)));
 
@@ -211,11 +224,95 @@ public class ReservationFragment extends Fragment {
 
     public TextView createNewTextView(String text) {
 
-        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(300, 100);
         final TextView textView = new TextView(getActivity());
+
         textView.setLayoutParams(lparams);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textView.setText(text);
         return textView;
     }
 
+    public Button createNewButton(final String fromTo,final String time,final String user, boolean visible,final String price) {
+        Log.wtf("Dallama",fromTo);
+        Log.wtf("Dallama",time);
+        Log.wtf("Dallama",user);
+        Log.wtf("Dallama",price);
+
+        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(300,100);
+        final Button newButton = new Button(getActivity());
+        newButton.setLayoutParams(lparams);
+        if(visible) {
+            newButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            newButton.setVisibility(View.INVISIBLE);
+            newButton.setClickable(false);
+        }
+        newButton.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             Log.d("Reservation deneme", "hoooop");
+                                             WriteUserToTheRoute(fromTo,time,user,price);
+                                         }
+                                     }
+
+        );
+        return newButton;
+
+
+    }
+    public void WriteUserToTheRoute(String fromTo,String time,String user,String price) {
+        //String userBalance;
+
+
+        Log.d("Reservation deneme","bak burdayim");
+
+        myRef.child("Customers").child(user).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Customer wantedCustomer = dataSnapshot.getValue(Customer.class);
+                userBalance = wantedCustomer.balance;
+
+
+                //userBalance = Double.toString(wantedCustomer.balance);
+                /*
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    if (singleSnapshot.getKey().toString().equalsIgnoreCase(parts[0])) {
+                        Log.d("Dallama","hoooop");
+                        String snapshot = singleSnapshot.getKey().toString();
+                        Log.d("rezervasyon", snapshot);
+                        if (snapshot.equalsIgnoreCase("balance")) {
+                            Log.d("Dallama", snapshot);
+                            userBalance = singleSnapshot.getValue().toString();
+
+                        }
+                    }
+                }
+                */
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        if( (int) userBalance > Integer.parseInt(price.substring(0,2))){
+
+            myRef.child("Routes").child(fromTo).child(time).child("Users").child(user).setValue(user);
+
+            myRef.child("Customers").child(user).child("balance").setValue(userBalance - Integer.parseInt(price.substring(0,2)));
+        }
+        else {
+            Log.d("Reservation Deneme", "User in parasi = " +userBalance +", Gereken para = "+ price.substring(0,2));
+        }
+
+    }
+
+
+
 }
+
