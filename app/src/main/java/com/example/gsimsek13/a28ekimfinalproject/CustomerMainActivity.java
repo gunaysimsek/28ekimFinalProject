@@ -199,9 +199,9 @@ public class CustomerMainActivity extends AppCompatActivity   {
                 contentFrameLayout.removeAllViews();
 
 
-                LocationFragment locationFragment = new LocationFragment();
+                DriverFinderFragment driverFinderFragment = new DriverFinderFragment();
                 fragmentManager2.beginTransaction()
-                        .replace(R.id.content_frame,locationFragment,"visible_fragment")
+                        .replace(R.id.content_frame,driverFinderFragment,"visible_fragment")
                         .addToBackStack(null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();

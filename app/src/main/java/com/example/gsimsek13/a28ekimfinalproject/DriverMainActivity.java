@@ -264,7 +264,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
                 } else {
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                         mRequestingLocationUpdates = false;
-                        Toast.makeText(DriverMainActivity.this, "?", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DriverMainActivity.this, "Please enable location services", Toast.LENGTH_SHORT).show();
                     } else {
                         showRationaleDialog();
                     }
@@ -286,12 +286,12 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
                 .setNegativeButton("", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(DriverMainActivity.this, "?", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DriverMainActivity.this, "Please enable location services", Toast.LENGTH_SHORT).show();
                         mRequestingLocationUpdates = false;
                     }
                 })
-                .setCancelable(false)
-                .setMessage("?")
+                .setCancelable(true)
+                .setMessage("Please enable location services")
                 .show();
     }
 

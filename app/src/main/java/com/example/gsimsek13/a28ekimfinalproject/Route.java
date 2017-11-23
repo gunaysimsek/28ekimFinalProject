@@ -2,96 +2,57 @@ package com.example.gsimsek13.a28ekimfinalproject;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 /**
  * Created by Bartu on 11/2/2017.
  */
 
-public class Route {
-
-    private int id;
-    private String from;
-    private String to;
-    private double cost;
-    private Time time;
-    private Date date;
-    private Shuttle shuttle;
-    private Driver driver;
+public class Route{
 
 
-    public Route(int id, String from, String to, double cost, Time time, Date date, Shuttle shuttle, Driver driver) {
-        this.id = id;
-        this.from = from;
-        this.to = to;
-        this.cost = cost;
-        this.time = time;
-        this.date = date;
-        this.shuttle = shuttle;
-        this.driver = driver;
-    }
+    private String From;
+    private String To;
+    private List<Times> WeekdayTimes;
+    private List<Times> WeekendTimes;
 
-    public int getId() {
-
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Route(String from, String to, List<Times> weekdayTimes, List<Times> weekendTimes) {
+        From = from;
+        To = to;
+        WeekdayTimes = weekdayTimes;
+        WeekendTimes = weekendTimes;
     }
 
     public String getFrom() {
-        return from;
+
+        return From;
     }
 
     public void setFrom(String from) {
-        this.from = from;
+        From = from;
     }
 
     public String getTo() {
-        return to;
+        return To;
     }
 
     public void setTo(String to) {
-        this.to = to;
+        To = to;
     }
 
-    public double getCost() {
-        return cost;
+    public List<Times> getWeekdayTimes() {
+        return WeekdayTimes;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setWeekdayTimes(List<Times> weekdayTimes) {
+        WeekdayTimes = weekdayTimes;
     }
 
-    public Time getTime() {
-        return time;
+    public List<Times> getWeekendTimes() {
+        return WeekendTimes;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Shuttle getShuttle() {
-        return shuttle;
-    }
-
-    public void setShuttle(Shuttle shuttle) {
-        this.shuttle = shuttle;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+    public void setWeekendTimes(List<Times> weekendTimes) {
+        WeekendTimes = weekendTimes;
     }
 }
