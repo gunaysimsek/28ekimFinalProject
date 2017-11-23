@@ -226,7 +226,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
                 } else {
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                         mRequestingLocationUpdates = false;
-                        Toast.makeText(getContext(), "?", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Access to location services is needed.", Toast.LENGTH_SHORT).show();
                     } else {
                         showRationaleDialog();
                     }
@@ -248,12 +248,12 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
                 .setNegativeButton("", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(), "?", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Access to location services is needed.", Toast.LENGTH_SHORT).show();
                         mRequestingLocationUpdates = false;
                     }
                 })
-                .setCancelable(false)
-                .setMessage("?")
+                .setCancelable(true)
+                .setMessage("Access to location services is needed.")
                 .show();
     }
 
