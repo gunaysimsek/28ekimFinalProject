@@ -52,7 +52,7 @@
             android:layout_marginEnd="70dp"
             android:layout_marginTop="112dp"
             android:onClick="signUpClicked"
-            android:text="Sign Up"
+            android:text="SIGN UP"
             tools:layout_editor_absoluteX="64dp"
             tools:layout_editor_absoluteY="282dp" />
 
@@ -64,7 +64,7 @@
             android:layout_alignStart="@+id/passwordText"
             android:layout_marginBottom="24dp"
             android:onClick="signInClicked"
-            android:text="Login"
+            android:text="LOGIN"
             tools:layout_editor_absoluteX="183dp"
             tools:layout_editor_absoluteY="282dp" />
 
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="verifyBtnClicked"
-            android:text="Did not recieve verification email?" />
+            android:text="DID NOT RECIEVE VERIFICATION EMAIL?" />
 
     </LinearLayout>
 

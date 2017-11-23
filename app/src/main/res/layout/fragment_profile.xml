@@ -13,10 +13,24 @@
         android:columnCount="3"
 
         android:orientation="vertical"
-        android:rowCount="7"
+        android:rowCount="8"
 
 
         >
+
+        <TextView
+            android:id="@+id/textViewA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+
+            android:layout_columnSpan="3"
+
+            android:layout_gravity="top|left"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:text="Personal Information"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
 
 
         <TextView
@@ -25,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_column="0"
 
-            android:layout_row="0"
+            android:layout_row="1"
             android:layout_rowWeight="1"
             android:gravity="center_vertical"
 
@@ -40,7 +54,7 @@
             android:layout_columnSpan="2"
             android:layout_columnWeight="1"
 
-            android:layout_row="0"
+            android:layout_row="1"
 
             android:layout_rowWeight="1"
             android:ems="10"
@@ -55,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="1"
+            android:layout_row="2"
             android:layout_rowWeight="1"
 
             android:gravity="center_vertical"
@@ -69,7 +83,7 @@
             android:layout_columnSpan="2"
             android:layout_columnWeight="1"
 
-            android:layout_row="1"
+            android:layout_row="2"
             android:layout_rowWeight="1"
             android:ems="10"
             android:hint="Surname"
@@ -82,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="2"
+            android:layout_row="3"
             android:layout_rowWeight="1"
             android:gravity="center_vertical"
 
@@ -96,7 +110,7 @@
             android:layout_column="1"
             android:layout_columnSpan="2"
             android:layout_columnWeight="1"
-            android:layout_row="2"
+            android:layout_row="3"
             android:layout_rowWeight="1"
 
             android:gravity="center_vertical"
@@ -110,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="3"
+            android:layout_row="4"
             android:layout_rowWeight="1"
             android:gravity="center_vertical"
 
@@ -124,7 +138,7 @@
             android:layout_column="1"
             android:layout_columnSpan="2"
             android:layout_columnWeight="1"
-            android:layout_row="3"
+            android:layout_row="4"
 
             android:layout_rowWeight="1"
             android:ems="10"
@@ -139,7 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_row="4"
+            android:layout_row="5"
             android:layout_rowWeight="1"
             android:gravity="center_vertical"
 
@@ -153,7 +167,7 @@
             android:layout_column="1"
             android:layout_columnWeight="1"
 
-            android:layout_row="4"
+            android:layout_row="5"
             android:layout_rowWeight="1"
 
             android:gravity="center_vertical"
@@ -167,7 +181,7 @@
             android:layout_height="wrap_content"
             android:layout_column="2"
             android:layout_gravity="center"
-            android:layout_row="4"
+            android:layout_row="5"
             android:text="Top Up" />
 
         <Button
@@ -176,7 +190,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_column="0"
-            android:layout_row="5"
+            android:layout_row="6"
             android:layout_columnSpan="3"
             android:text="Update Profile"
             android:layout_rowWeight="1"
@@ -187,7 +201,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_column="0"
-            android:layout_row="6"
+            android:layout_row="7"
             android:layout_columnSpan="3"
             android:text="Change Password"
             android:layout_rowWeight="1"
