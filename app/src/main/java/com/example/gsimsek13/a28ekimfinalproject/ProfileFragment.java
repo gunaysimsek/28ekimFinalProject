@@ -1,13 +1,19 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,11 +28,14 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class ProfileFragment extends Fragment {
 
-    TextView nametv;
-    TextView surnametv;
+    EditText nametv;
+    EditText surnametv;
     TextView mailtv;
-    TextView phonetv;
+    EditText phonetv;
     TextView balancetv;
+    Button updateProfileBtn;
+    Button topUpProfileBtn;
+    Button changePasswordProfileBtn;
 
     private FirebaseDatabase database ;
     private DatabaseReference myRef;
@@ -51,11 +60,14 @@ public class ProfileFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
-        nametv = (TextView) v.findViewById(R.id.profileNameTxt);
-        surnametv = (TextView) v.findViewById(R.id.profileSurnameTxt);
-        mailtv = (TextView) v.findViewById(R.id.profileEmailTxt);
-        phonetv = (TextView) v.findViewById(R.id.profilePhoneTxt);
+        nametv =  v.findViewById(R.id.profileNameTxt);
+        surnametv = v.findViewById(R.id.profileSurnameTxt);
+        mailtv =  v.findViewById(R.id.profileEmailTxt);
+        phonetv =  v.findViewById(R.id.profilePhoneTxt);
         balancetv = v.findViewById(R.id.profileBalanceTxt);
+        updateProfileBtn = v.findViewById(R.id.profileUpdateBtn);
+        topUpProfileBtn = v.findViewById(R.id.profileTopUpBtn);
+        changePasswordProfileBtn = v.findViewById(R.id.profileChangePasswordBtn);
 
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
 
@@ -70,12 +82,63 @@ public class ProfileFragment extends Fragment {
                 surnametv.setText(customer.surname);
                 mailtv.setText(customer.email);
                 phonetv.setText(""+customer.phoneNumber);
-                balancetv.setText(""+customer.balance);
+                balancetv.setText("₺"+customer.balance);
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        updateProfileBtn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+
+                Double updatedPhoneNo = Double.parseDouble( phonetv.getText().toString());
+                String updatedName = nametv.getText().toString();
+                String updatedSurname = surnametv.getText().toString();
+
+
+                Customer updatedCustomer = new Customer(customer.id ,customer.role,updatedName,updatedSurname, customer.email, updatedPhoneNo, customer.balance);
+                myRef.child("Customers").child(parts[0]).setValue(updatedCustomer, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                        Toast.makeText(getContext(),"Customer's info is updated!",Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+
+            }
+        });
+
+        topUpProfileBtn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+
+                Fragment fragment = new TopUpFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
+            }
+        });
+
+        changePasswordProfileBtn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+
+                Fragment fragment = new ChangePasswordFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
 
             }
         });
