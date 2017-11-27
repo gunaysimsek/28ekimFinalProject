@@ -1,6 +1,7 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,24 +13,7 @@ public class Times implements Serializable {
     String driver;
     double price;
     String shuttle_Time;
-    List<String> users;
-
-    public Times(int availabilityy, String driverr, double pricee,String shuttle_Timee, List<String> userss) {
-        availability = availabilityy;
-        driver = driverr;
-        price = pricee;
-        shuttle_Time = shuttle_Timee;
-        users = userss;
-    }
-
-    public Times(){}
-    public String getShuttle_Time() {
-        return this.shuttle_Time;
-    }
-
-    public void setShuttle_Time(String shuttle_Time) {
-        this.shuttle_Time = shuttle_Time;
-    }
+    HashMap<String,String> users;
 
     public int getAvailability() {
         return availability;
@@ -55,11 +39,42 @@ public class Times implements Serializable {
         this.price = price;
     }
 
-    public List<String> getUsers() {
+    public String getShuttle_Time() {
+        return shuttle_Time;
+    }
+
+    public void setShuttle_Time(String shuttle_Time) {
+        this.shuttle_Time = shuttle_Time;
+    }
+
+    public HashMap<String, String> getUsers() {
         return users;
     }
 
-    public void setUsers(List<String> users) {
+    public void setUsers(HashMap<String, String> users) {
+        this.users = users;
+    }
+    public String getCustomerValue(String customername){
+        return users.get(customername);
+    }
+
+    @Override
+    public String toString() {
+        return "Times{" +
+                "availability=" + availability +
+                ", driver='" + driver + '\'' +
+                ", price=" + price +
+                ", shuttle_Time='" + shuttle_Time + '\'' +
+                ", users=" + users +
+                '}';
+    }
+
+    public Times(){}
+    public Times(int availability, String driver, double price, String shuttle_Time, HashMap<String, String> users) {
+        this.availability = availability;
+        this.driver = driver;
+        this.price = price;
+        this.shuttle_Time = shuttle_Time;
         this.users = users;
     }
 }

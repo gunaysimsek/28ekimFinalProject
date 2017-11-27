@@ -28,19 +28,17 @@
 
         <Spinner
             android:id="@+id/fromSpin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="131dp"
+            android:layout_height="31dp"
             android:layout_column="3"
-            android:layout_row="0"
-            />
+            android:layout_row="0" />
 
         <Spinner
             android:id="@+id/toSpin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="131dp"
+            android:layout_height="31dp"
             android:layout_column="3"
-            android:layout_row="1"
-            />
+            android:layout_row="1" />
 
         <TextView
             android:id="@+id/textView15"
@@ -53,8 +51,8 @@
 
         <Spinner
             android:id="@+id/timeSpin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="131dp"
+            android:layout_height="31dp"
             android:layout_column="3"
             android:layout_row="2" />
 
