@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -28,8 +29,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -37,9 +43,8 @@ import java.util.Set;
  * A simple {@link Fragment} subclass.
  */
 
-//TIME SPINNER HALLEDILECEK
-    // ONCE FROM SPINNER SEC SONRA ONA GORE TO SPINNER EN SON IKISINE GORE TIMESPINNER
-    // DRIVER LOCATION ONA GORE UPDATE EDILECEK
+
+    // value passlayip driver secmek eksik
     // FOCUS DRIVER FOCUS CUSTOMER BUTTONLARI EKLENECEK
 public class DriverFinderFragment extends Fragment {
     Spinner toSpin;
@@ -48,7 +53,7 @@ public class DriverFinderFragment extends Fragment {
     Button findDriver;
     //List<String> fromArray =  new ArrayList<String>();
     //List<String> toArray =  new ArrayList<String>();
-    List<String> timeArray =  new ArrayList<String>();
+    //List<String> timeArray =  new ArrayList<String>();
     GridLayout find_driver_gridlayout;
     FrameLayout find_driver_frame;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -56,6 +61,8 @@ public class DriverFinderFragment extends Fragment {
     Route route;
     Calendar calender;
     boolean isWeekday = true;
+    HashMap<String,ArrayList<String>> fromToTable = new HashMap<>();
+
 
 
     public DriverFinderFragment() {
@@ -92,32 +99,90 @@ public class DriverFinderFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //final List<String> fromList = new ArrayList<String>();
                 Set<String> fromSet = new HashSet<>();
-                //final List<String> toList = new ArrayList<String>();
-                Set<String> toSet = new HashSet<>();
-                for (DataSnapshot eachFromToSnapshot : dataSnapshot.getChildren()) {
 
+                // final HashMap<String, ArrayList<String>> fromToTable = new HashMap<>();
+
+                //final HashMap<String,ArrayList<String>> fromToTable = new HashMap<>();
+
+                //final List<String> toList = new ArrayList<String>();
+                //Set<String> toSet = new HashSet<>();
+                for (DataSnapshot eachFromToSnapshot : dataSnapshot.getChildren()) {
+                    ArrayList<String> to = new ArrayList<>();
                     String [] fromTo = eachFromToSnapshot.getKey().toString().split("-");
+                    //Log.wtf("yeter",fromTo[0]+" "+fromTo[1]);
                     String from = fromTo[0];
-                    String to = fromTo[1];
                     fromSet.add(from);
-                    toSet.add(to);
-                    Log.wtf("hELLOOGGGgggg",from);
+                    /*Log.wtf("to nedir=?",to.toString());
+                    to.clear();
+                    Log.wtf("to simdi nedir=?",to.toString());
+                    to.add(fromTo[1]);
+                    Log.wtf("to asil simdi nedir=?",to.toString());
+                    Log.wtf("from asil simdi nedir=?",from);
+                    fromToTable.put(from,to);*/
+
+                   if(fromToTable.get(from)!=null){
+                        //to.removeAll(to);
+                        to = fromToTable.get(from);
+                        to.add(fromTo[1]);
+                        //Log.wtf("onlyoncebabe",from);
+                        //Log.wtf("onlyoncebabae",to.toString());
+                        fromToTable.put(from,to);
+
+                        //Log.wtf("HOHOHOHO2",fromToTable.get(from).toString());
+                        //Log.wtf("HOHOHO2",to.toString());
+                    }else{
+                        //to.removeAll(to);
+                        to.add(fromTo[1]);
+                        //Log.wtf("ANAAAAAAAAAAAAAAAAAAAAAA",from);
+                        //Log.wtf("BABBABABABAAAAAAAAAAAAAA",to.toString());
+                        fromToTable.put(from,to);
+
+                    }
+
+                    //Log.wtf("aaaaaaaaaaaaaaaaaaaaaaaa",fromToTable.keySet().toString());
+                    //Log.wtf("HOHOHO======"+fromToTable.get(from).size(),"asdasdfasd");
+
+                    //Log.wtf("HOHOHOHO2",fromToTable.get(from).toString());
+
+
+                    //fromToTable.put(from,to);
+
+                    //toSet.add(to);
+                    //Log.wtf("hELLOOGGGgggg",from);
+
 
                 }
+                /*for(String a : fromToTable.keySet()){
+                    Log.wtf("lolololololololo",a);
+                    Log.wtf("hahahahahahaha",fromToTable.get(a).toString());
+                }*/
+
+
+                if(fromToTable.get("Ana Kampus")!=null)
+                    Log.wtf("Ana Kampusten Nereye?",fromToTable.get("Ana Kampus").toString());
+                if(fromToTable.get("Bati")!=null)
+                    Log.wtf("Batidan Nereye?",fromToTable.get("Bati").toString());
+                if(fromToTable.get("Haciosman")!=null)
+                    Log.wtf("Haciosmandan Nereye?",fromToTable.get("Haciosman").toString());
+
                 List<String> fromList = new ArrayList<>(fromSet);
-                List<String> toList = new ArrayList<>(toSet);
+                //List<String> toList = new ArrayList<>(toSet);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                         getContext(), android.R.layout.simple_spinner_item, fromList);
-                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
-                        getContext(), android.R.layout.simple_spinner_item, toList);
+                //ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
+                 //       getContext(), android.R.layout.simple_spinner_item, toList);
 
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                //adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
 
                 fromSpin.setAdapter(adapter);
-                toSpin.setAdapter(adapter2);
+
+
+
+
+
             }
 
             @Override
@@ -125,6 +190,86 @@ public class DriverFinderFragment extends Fragment {
                 Log.w("HELLOOG", "Failed to read value.", databaseError.toException());
             }
         });
+
+
+
+
+        fromSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String text = fromSpin.getSelectedItem().toString();
+                //Log.wtf("TEXT DEGISTIII",text);
+                //Log.wtf("TEXT DEGISTIII",fromToTable.get(text).toString());
+                //Log.wtf("TEXT DEGISTIII========="+fromToTable.get(text).size(),"hohoho");
+                //Log.wtf("asdfasdf",fromToTable.get(text).toString());
+
+                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
+                        getContext(), android.R.layout.simple_spinner_item, fromToTable.get(text));
+
+                adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                adapter2.notifyDataSetChanged();
+                toSpin.setAdapter(adapter2);
+
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        //toSpin.setAdapter(adapter2);
+
+
+
+
+        toSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String text1 = fromSpin.getSelectedItem().toString();
+                String text2 = toSpin.getSelectedItem().toString();
+                //Log.wtf("TEXT DEGISTIII",text);
+                //Log.wtf("TEXT DEGISTIII",fromToTable.get(text).toString());
+                //Log.wtf("TEXT DEGISTIII========="+fromToTable.get(text).size(),"hohoho");
+                //Log.wtf("asdfasdf",fromToTable.get(text).toString());
+                myRef.child("Routes").child(text1+"-"+text2).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        route = dataSnapshot.getValue(Route.class);
+                        ArrayList<String> timeList = new ArrayList<>();
+                        if(isWeekday){
+                            timeList.addAll(route.getWeekdayTimes().keySet());
+                            Collections.sort(timeList);
+                            //Log.wtf("adfasdaf",timeList.toString());
+                        }else{
+                            timeList.addAll(route.getWeekendTimes().keySet());
+                            Collections.sort(timeList);
+                        }
+                        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(
+                                getContext(), android.R.layout.simple_spinner_item, timeList);
+
+                        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter3.notifyDataSetChanged();
+                        timeSpin.setAdapter(adapter3);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
 
 
        /* for(int i=0;i<fromArray.size();i++){
@@ -161,27 +306,27 @@ public class DriverFinderFragment extends Fragment {
         */
 
         //Log.wtf("hELLOOGGG",fromArray.toString());
-        Log.wtf("hELLOOGGG",timeArray.toString());
+        //Log.wtf("hELLOOGGG",timeArray.toString());
 
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(
         //        getContext(), android.R.layout.simple_spinner_item, fromArray);
         //ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
         //        getContext(), android.R.layout.simple_spinner_item, toArray);
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(
-                getContext(), android.R.layout.simple_spinner_item, timeArray);
+        //ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(
+        //        getContext(), android.R.layout.simple_spinner_item, timeArray);
 
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
         //Spinner sItems = (Spinner) v.findViewById(R.id.fromSpin);
         //Spinner sItems2 = (Spinner) v.findViewById(R.id.toSpin);
-        Spinner sItems3 = (Spinner) v.findViewById(R.id.timeSpin);
+        //Spinner sItems3 = (Spinner) v.findViewById(R.id.timeSpin);
 
         //sItems.setAdapter(adapter);
         //sItems2.setAdapter(adapter2);
-        sItems3.setAdapter(adapter3);
+        //sItems3.setAdapter(adapter3);
 
 
 
