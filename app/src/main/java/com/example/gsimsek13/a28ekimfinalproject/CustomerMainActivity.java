@@ -232,7 +232,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the drawer is open, hide action items related to the content view
         boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
-        menu.findItem(R.id.action_share).setVisible(!drawerOpen);
+      //  menu.findItem(R.id.action_share).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 

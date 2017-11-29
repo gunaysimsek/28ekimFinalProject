@@ -20,28 +20,30 @@
             android:id="@+id/emailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/passwordText"
+            android:layout_alignEnd="@+id/passwordText"
+            android:layout_marginBottom="52dp"
+            android:layout_marginEnd="11dp"
             android:ems="10"
             android:hint="E-mail"
             android:inputType="textEmailAddress"
+            android:text="gsimsek13@ku.edu.tr"
             tools:layout_editor_absoluteX="56dp"
-            tools:layout_editor_absoluteY="114dp"
-            android:layout_above="@+id/passwordText"
-            android:layout_alignEnd="@+id/passwordText"
-            android:layout_marginEnd="11dp"
-            android:layout_marginBottom="52dp" />
+            tools:layout_editor_absoluteY="114dp" />
 
         <EditText
             android:id="@+id/passwordText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="29dp"
+            android:layout_toStartOf="@+id/signUpButton"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
+            android:text="123456"
             tools:layout_editor_absoluteX="56dp"
-            tools:layout_editor_absoluteY="200dp"
-            android:layout_marginEnd="29dp"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/signUpButton" />
+            tools:layout_editor_absoluteY="200dp" />
 
         <Button
             android:id="@+id/signUpButton"

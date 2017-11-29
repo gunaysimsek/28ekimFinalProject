@@ -46,6 +46,7 @@ public class QRActivity extends Activity implements ZXingScannerView.ResultHandl
 
         setContentView(mScannerView);
         mScannerView.setResultHandler(this);
+
         mScannerView.startCamera();
 
 

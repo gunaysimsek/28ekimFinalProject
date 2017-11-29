@@ -12,6 +12,8 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -402,9 +404,9 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
             }
         });
 
-        Toast.makeText(this, "location updated", Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Latitude==="+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Longtitude==="+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "location updated", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Latitude==="+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Longtitude==="+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
         Log.i("SELAM","Latitude=== "+mCurrentLocation.getLatitude());
         Log.i("SELAM2","Longtitude=== "+mCurrentLocation.getLongitude());
     }
@@ -500,7 +502,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the drawer is open, hide action items related to the content view
         boolean drawerOpen = driver_drawerLayout.isDrawerOpen(drawerList);
-        menu.findItem(R.id.action_share).setVisible(!drawerOpen);
+        //menu.findItem(R.id.action_share).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -523,7 +525,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_customer, menu);
+        getMenuInflater().inflate(R.menu.menu_driver, menu);
         /*MenuItem menuItem = menu.findItem(R.id.action_share);
         shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         setIntent("This is example text");*/
@@ -545,10 +547,24 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
             case R.id.action_check_out:
                 Intent intent2 = new Intent(this, CheckActivity.class);
                 startActivity(intent2);
-                return true;
-            case R.id.action_settings:
-                //Code to run when the settings item is clicked
                 return true;*/
+            case R.id.action_go_back:
+                //Code to run when the settings item is clicked
+              //  Fragment fragment = new ChangePasswordFragment();
+               /* FrameLayout contentFrameLayout =  findViewById(R.id.driver_content_frame);
+                contentFrameLayout.removeAllViews();
+
+                TakePaymentFragment takePaymentFragment = new TakePaymentFragment();
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.driver_content_frame,takePaymentFragment,"visible_fragment")
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();*/
+
+
+
+                return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(this, LoginActivity.class);

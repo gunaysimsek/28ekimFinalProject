@@ -63,11 +63,16 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void signInClicked(View view){
+    public void signInClicked(View view) {
+
 
         email = emailText.getText().toString();
         password = passwordText.getText().toString();
         parts = email.split("@");
+
+        if (email.equals("") || password.equals("")) {
+            Toast.makeText(this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
+        }else{
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -75,9 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.wtf(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                        if(task.isSuccessful()){
-                            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
-                           {
+                        if (task.isSuccessful()) {
+                            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
 
                                 myRef.child("Drivers").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
@@ -87,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Intent intent = new Intent(getApplicationContext(), DriverMainActivity.class);
                                             startActivity(intent);
 
-                                        }else{
+                                        } else {
                                             Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
                                             startActivity(intent);
 
@@ -101,20 +105,21 @@ public class LoginActivity extends AppCompatActivity {
                                 });
 
 
-                            }else if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+                            } else if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
 
                                 //FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
-                                Toast.makeText(getApplicationContext(),"Please verify your account!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Please verify your account!", Toast.LENGTH_LONG).show();
 
-                            }}
-                        else if (!task.isSuccessful()) {
+                            }
+                        } else if (!task.isSuccessful()) {
                             Log.wtf(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(getApplicationContext(),"Wrong Password!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Wrong Password or Email!", Toast.LENGTH_LONG).show();
 
                         }
 
                     }
                 });
+        }
 
     }
 
@@ -163,9 +168,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-       /* Intent intent = new Intent(this, CustomerMainActivity.class);
-
-        startActivity(intent);*/
 
         emailText   = (EditText) findViewById(R.id.emailText);
         passwordText = (EditText) findViewById(R.id.passwordText);
