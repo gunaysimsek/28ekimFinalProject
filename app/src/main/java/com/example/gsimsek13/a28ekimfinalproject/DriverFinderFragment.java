@@ -43,9 +43,6 @@ import java.util.Set;
  * A simple {@link Fragment} subclass.
  */
 
-
-    // value passlayip driver secmek eksik
-    // FOCUS DRIVER FOCUS CUSTOMER BUTTONLARI EKLENECEK
 public class DriverFinderFragment extends Fragment {
     Spinner toSpin;
     Spinner fromSpin;
@@ -56,11 +53,13 @@ public class DriverFinderFragment extends Fragment {
     //List<String> timeArray =  new ArrayList<String>();
     GridLayout find_driver_gridlayout;
     FrameLayout find_driver_frame;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
+    FirebaseDatabase database;
+    DatabaseReference myRef;
     Route route;
     Calendar calender;
+    String driverN;
     boolean isWeekday = true;
+    Times times;
     HashMap<String,ArrayList<String>> fromToTable = new HashMap<>();
 
 
@@ -76,6 +75,8 @@ public class DriverFinderFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_driver_finder,container,false );
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
         findDriver = (Button) v.findViewById(R.id.findDriverButton);
         toSpin = (Spinner) v.findViewById(R.id.toSpin);
@@ -87,7 +88,7 @@ public class DriverFinderFragment extends Fragment {
         calender = Calendar.getInstance();
         int day = calender.get(Calendar.DAY_OF_WEEK);
         // 7 saturday 1 sunday.
-        if((day!=7 || day !=1)){
+        if((day!=7 && day !=1)){
             isWeekday = true;
         }else{
             isWeekday = false;
@@ -238,6 +239,7 @@ public class DriverFinderFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         route = dataSnapshot.getValue(Route.class);
                         ArrayList<String> timeList = new ArrayList<>();
+
                         if(isWeekday){
                             timeList.addAll(route.getWeekdayTimes().keySet());
                             Collections.sort(timeList);
@@ -268,6 +270,63 @@ public class DriverFinderFragment extends Fragment {
 
             }
         });
+
+
+
+        timeSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String text1 = fromSpin.getSelectedItem().toString();
+                String text2 = toSpin.getSelectedItem().toString();
+                String text3 = timeSpin.getSelectedItem().toString();
+                //Log.wtf("TEXT DEGISTIII",text);
+                //Log.wtf("TEXT DEGISTIII",fromToTable.get(text).toString());
+                //Log.wtf("TEXT DEGISTIII========="+fromToTable.get(text).size(),"hohoho");
+                //Log.wtf("asdfasdf",fromToTable.get(text).toString());
+                if(isWeekday){
+                    myRef.child("Routes").child(text1+"-"+text2).child("weekdayTimes").child(text3).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            times = dataSnapshot.getValue(Times.class);
+                            Log.wtf("TIMES===>",times.toString());
+                            driverN = times.driver;
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }else{
+                    myRef.child("Routes").child(text1+"-"+text2).child("weekendTimes").child(text3).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            times = dataSnapshot.getValue(Times.class);
+                            Log.wtf("TIMES===>",times.toString());
+                            driverN = times.driver;
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
 
 
 
@@ -345,12 +404,14 @@ public class DriverFinderFragment extends Fragment {
 
                 find_driver_frame.removeAllViews();
                 LocationFragment newFragment = new LocationFragment();
+                LocationFragment.drivername = driverN;
                 // consider using Java coding conventions (upper first char class names!!!)
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 // Replace whatever is in the fragment_container view with this fragment,
                 // and add the transaction to the back stack
                 transaction.replace(R.id.driver_frame, newFragment);
                 transaction.addToBackStack(null);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 // Commit the transaction
                 transaction.commit();
             }

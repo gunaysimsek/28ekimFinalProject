@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -59,6 +60,8 @@ import java.util.Date;
 public class LocationFragment extends Fragment implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 //last version
+    //Dateleri kaldir
+
     private GoogleMap mMap;
     private Marker mCurrLocationMarker;
     private Marker mDriverLocationMarker;
@@ -85,6 +88,12 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
     private FirebaseDatabase database ;
     private DatabaseReference myRef;
     private Driver driver;
+    public static String drivername;
+
+    Button driverLocation;
+    Button userLocation;
+    LatLng driverLatLng;
+    LatLng userLatLng;
 
     public LocationFragment() {
         // Required empty public constructor
@@ -114,6 +123,28 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
             mapFrag.getMapAsync(this);
             // Check if we were successful in obtaining the map.
         }
+
+        driverLocation = (Button) v.findViewById(R.id.setDriverRangeButton);
+        userLocation = (Button) v.findViewById(R.id.setUserRangeButton);
+
+
+        driverLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(driverLatLng != null)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLatLng,20));
+                Toast.makeText(getContext(),"Location Services is needed for this feature. Please upate your settings.",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        userLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(userLatLng != null)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng,20));
+                Toast.makeText(getContext(),"Location Services is needed for this feature. Please upate your settings.",Toast.LENGTH_SHORT).show();
+            }
+        });
         return v;
     }
 
@@ -168,6 +199,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                 showRationaleDialog();
             } else {
+                //showRationaleDialog();
                 ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
         }
@@ -226,7 +258,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
                 } else {
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                         mRequestingLocationUpdates = false;
-                        Toast.makeText(getContext(), "Access to location services is needed.", Toast.LENGTH_SHORT).show();
                     } else {
                         showRationaleDialog();
                     }
@@ -248,12 +279,11 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
                 .setNegativeButton("", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(), "Access to location services is needed.", Toast.LENGTH_SHORT).show();
                         mRequestingLocationUpdates = false;
                     }
                 })
                 .setCancelable(true)
-                .setMessage("Access to location services is needed.")
+                .setMessage("Access to location services is needed. Please update your settings")
                 .show();
     }
 
@@ -275,6 +305,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
                         startLocationUpdates();
                         break;
                     case Activity.RESULT_CANCELED:
+                        showRationaleDialog();
                         break;
                 }
                 break;
@@ -361,9 +392,37 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
+        userLatLng = latLng;
+
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+
+
+        myRef.child("Drivers").child(drivername).addValueEventListener(new ValueEventListener() { //burdaki child yerine hangi driveri istiyosak onu yazicaz
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                driver  =  dataSnapshot.getValue(Driver.class);
+                LatLng latLng = new LatLng(driver.getLatitude(), driver.getLongitude());
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title("Shuttle");
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                mDriverLocationMarker = mMap.addMarker(markerOptions);
+                driverLatLng = latLng;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        });
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,20));
+
     }
 
     @Override
@@ -403,31 +462,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
 
         // Add a marker in Sydney and move the camera
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-
-
-
-        myRef.child("Drivers").child("byilmaz13").addValueEventListener(new ValueEventListener() { //burdaki child yerine hangi driveri istiyosak onu yazicaz
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                driver  =  dataSnapshot.getValue(Driver.class);
-                LatLng latLng = new LatLng(driver.getLatitude(), driver.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                markerOptions.title("Shuttle");
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-                mDriverLocationMarker = mMap.addMarker(markerOptions);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "Failed to read value.", databaseError.toException());
-            }
-        });
-
+        LatLng latLng = new LatLng(41.0082, 28.9784);//Istanbul's location
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
