@@ -2,19 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.gsimsek13.a28ekimfinalproject.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
 
-    <GridLayout
+    <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnCount="3"
-
-        android:orientation="vertical"
-        android:rowCount="8"
-
 
         >
 
@@ -22,13 +18,13 @@
             android:id="@+id/textViewA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
+            app:layout_column="0"
 
-            android:layout_columnSpan="3"
+            app:layout_columnSpan="3"
 
-            android:layout_gravity="top|left"
-            android:layout_row="0"
-            android:layout_rowWeight="1"
+            app:layout_gravity="top|left"
+            app:layout_row="0"
+            app:layout_rowWeight="1"
             android:text="Personal Information"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
 
@@ -37,10 +33,10 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
+            app:layout_column="0"
 
-            android:layout_row="1"
-            android:layout_rowWeight="1"
+            app:layout_row="1"
+            app:layout_rowWeight="1"
             android:gravity="center_vertical"
 
             android:text="Name" />
@@ -49,14 +45,14 @@
             android:id="@+id/profileNameTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="1"
+            app:layout_column="1"
 
-            android:layout_columnSpan="2"
-            android:layout_columnWeight="1"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
 
-            android:layout_row="1"
+            app:layout_row="1"
 
-            android:layout_rowWeight="1"
+            app:layout_rowWeight="1"
             android:ems="10"
             android:hint="Name"
 
@@ -68,9 +64,9 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:layout_rowWeight="1"
+            app:layout_column="0"
+            app:layout_row="2"
+            app:layout_rowWeight="1"
 
             android:gravity="center_vertical"
             android:text="Surname:" />
@@ -79,12 +75,12 @@
             android:id="@+id/profileSurnameTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_columnSpan="2"
-            android:layout_columnWeight="1"
+            app:layout_column="1"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
 
-            android:layout_row="2"
-            android:layout_rowWeight="1"
+            app:layout_row="2"
+            app:layout_rowWeight="1"
             android:ems="10"
             android:hint="Surname"
             android:inputType="textPersonName"
@@ -95,9 +91,9 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="3"
-            android:layout_rowWeight="1"
+            app:layout_column="0"
+            app:layout_row="3"
+            app:layout_rowWeight="1"
             android:gravity="center_vertical"
 
             android:text="Email:" />
@@ -107,11 +103,11 @@
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_columnSpan="2"
-            android:layout_columnWeight="1"
-            android:layout_row="3"
-            android:layout_rowWeight="1"
+            app:layout_column="1"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_row="3"
+            app:layout_rowWeight="1"
 
             android:gravity="center_vertical"
 
@@ -123,9 +119,9 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="4"
-            android:layout_rowWeight="1"
+            app:layout_column="0"
+            app:layout_row="4"
+            app:layout_rowWeight="1"
             android:gravity="center_vertical"
 
             android:text="Phone No:" />
@@ -135,12 +131,12 @@
             android:id="@+id/profilePhoneTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_columnSpan="2"
-            android:layout_columnWeight="1"
-            android:layout_row="4"
+            app:layout_column="1"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_row="4"
 
-            android:layout_rowWeight="1"
+            app:layout_rowWeight="1"
             android:ems="10"
             android:hint="Phone Number(Optional)"
             android:inputType="phone"
@@ -152,9 +148,9 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="5"
-            android:layout_rowWeight="1"
+            app:layout_column="0"
+            app:layout_row="5"
+            app:layout_rowWeight="1"
             android:gravity="center_vertical"
 
             android:text="Balance:" />
@@ -164,11 +160,11 @@
             android:id="@+id/profileBalanceTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
+            app:layout_column="1"
+            app:layout_columnWeight="1"
 
-            android:layout_row="5"
-            android:layout_rowWeight="1"
+            app:layout_row="5"
+            app:layout_rowWeight="1"
 
             android:gravity="center_vertical"
 
@@ -179,38 +175,38 @@
             android:id="@+id/profileTopUpBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_gravity="center"
-            android:layout_row="5"
+            app:layout_column="2"
+            app:layout_gravity="center"
+            app:layout_row="5"
             android:text="Top Up" />
 
         <Button
             android:id="@+id/profileUpdateBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_column="0"
-            android:layout_row="6"
-            android:layout_columnSpan="3"
+            app:layout_gravity="center"
+            app:layout_column="0"
+            app:layout_row="6"
+            app:layout_columnSpan="3"
             android:text="Update Profile"
-            android:layout_rowWeight="1"
+            app:layout_rowWeight="1"
             />
         <Button
             android:id="@+id/profileChangePasswordBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_column="0"
-            android:layout_row="7"
-            android:layout_columnSpan="3"
+            app:layout_gravity="center"
+            app:layout_column="0"
+            app:layout_row="7"
+            app:layout_columnSpan="3"
             android:text="Change Password"
-            android:layout_rowWeight="1"
+            app:layout_rowWeight="1"
             />
 
 
 
 
-    </GridLayout>
+    </android.support.v7.widget.GridLayout>
 
 
 </FrameLayout>
