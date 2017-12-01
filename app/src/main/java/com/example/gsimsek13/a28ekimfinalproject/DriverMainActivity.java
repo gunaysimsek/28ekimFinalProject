@@ -121,7 +121,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
         drawerList = (ListView) findViewById(R.id.driver_drawer);
         driver_drawerLayout = (DrawerLayout) findViewById(R.id.driver_drawer_layout);
 
-        driverStringArray = new String[]{ "My TimeList","Take Payment with QR"};
+        driverStringArray = new String[]{ "My TimeList","QR Payment", "Offline Payment"};
 
 
         drawerList.setAdapter(new ArrayAdapter<>(this,
@@ -468,18 +468,18 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
 
 
         }
-       /* else if(position == 2) {
+       else if(position == 2) {
 
             FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.driver_content_frame));
             contentFrameLayout.removeAllViews();
 
-            ReservationFragment reservationFrag = new ReservationFragment();
+            OfflineTakePaymentFragment offlineTakePaymentFragment = new OfflineTakePaymentFragment();
             fragmentManager2.beginTransaction()
-                    .replace(R.id.driver_content_frame,reservationFrag,"visible_fragment")
+                    .replace(R.id.driver_content_frame,offlineTakePaymentFragment,"visible_fragment")
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
-        }*/
+        }
         else{
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
             contentFrameLayout.removeAllViews();
