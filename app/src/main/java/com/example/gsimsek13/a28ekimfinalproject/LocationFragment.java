@@ -83,7 +83,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
     private LocationRequest mLocationRequest;
     private Location mCurrentLocation;
     private Boolean mRequestingLocationUpdates;
-    private String mLastUpdateTime;
+    //private String mLastUpdateTime;
 
     private FirebaseDatabase database ;
     private DatabaseReference myRef;
@@ -108,7 +108,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
         View v = inflater.inflate(R.layout.fragment_location, container, false);
 
         mRequestingLocationUpdates = false;
-        mLastUpdateTime = "";
+        //mLastUpdateTime = "";
 
         updateValuesFromBundle(savedInstanceState);
         buildGoogleApiClient();
@@ -131,19 +131,23 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
         driverLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(driverLatLng != null)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLatLng,20));
-                Toast.makeText(getContext(),"Location Services is needed for this feature. Please upate your settings.",Toast.LENGTH_SHORT).show();
+                if(driverLatLng != null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLatLng, 20));
+                }else{
+                    Toast.makeText(getContext(),"Location Services is needed for this feature. Please upate your settings.",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         userLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(userLatLng != null)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng,20));
-                Toast.makeText(getContext(),"Location Services is needed for this feature. Please upate your settings.",Toast.LENGTH_SHORT).show();
-            }
+                if(userLatLng != null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 20));
+                }else {
+                    Toast.makeText(getContext(), "Location Services is needed for this feature. Please upate your settings.", Toast.LENGTH_SHORT).show();
+                }
+                }
         });
         return v;
     }
@@ -160,9 +164,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
             if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
                 mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
             }
-            if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)) {
-                mLastUpdateTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
-            }
+            //if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)) {
+            //    mLastUpdateTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
+            //}
 
         }
     }
@@ -360,7 +364,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
         }
         if (mCurrentLocation == null) {
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+            //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         }
 
         if (mRequestingLocationUpdates) {
@@ -372,13 +376,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
     public void onLocationChanged(Location location) {
         Log.i(TAG, "onLocationChanged");
         mCurrentLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
         //Toast.makeText(this, "location updated", Toast.LENGTH_SHORT).show();
         //Toast.makeText(this, "Latitude==="+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
        // Toast.makeText(this, "Longtitude==="+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-        Log.i("SELAM","Latitude=== "+mCurrentLocation.getLatitude());
-        Log.i("SELAM2","Longtitude=== "+mCurrentLocation.getLongitude());
+        //Log.i("SELAM","Latitude=== "+mCurrentLocation.getLatitude());
+        //Log.i("SELAM2","Longtitude=== "+mCurrentLocation.getLongitude());
 
         mCurrentLocation = location;
         if (mCurrLocationMarker != null) {
@@ -405,13 +409,18 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 driver  =  dataSnapshot.getValue(Driver.class);
-                LatLng latLng = new LatLng(driver.getLatitude(), driver.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                markerOptions.title("Shuttle");
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-                mDriverLocationMarker = mMap.addMarker(markerOptions);
-                driverLatLng = latLng;
+                if(driver.getLatitude()!= 0.0 && driver.getLongitude() != 0.0){
+                    LatLng latLng = new LatLng(driver.getLatitude(), driver.getLongitude());
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latLng);
+                    markerOptions.title("Shuttle");
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                    mDriverLocationMarker = mMap.addMarker(markerOptions);
+                    driverLatLng = latLng;
+                }else{
+                    Toast.makeText(getContext(), "Driver is not working", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
 
@@ -441,7 +450,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
         savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
-        savedInstanceState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
+        //savedInstanceState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
         super.onSaveInstanceState(savedInstanceState);
     }
 

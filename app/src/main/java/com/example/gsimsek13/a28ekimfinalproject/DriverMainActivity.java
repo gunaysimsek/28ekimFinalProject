@@ -51,6 +51,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
     private LocationRequest mLocationRequest;
     private Location mCurrentLocation;
     private Boolean mRequestingLocationUpdates;
-    private String mLastUpdateTime;
+    //private String mLastUpdateTime;
 
 
     ArrayList<String> bufferStringArrayList;
@@ -108,7 +109,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
         setContentView(R.layout.activity_driver_main);
 
         mRequestingLocationUpdates = false;
-        mLastUpdateTime = "";
+        //mLastUpdateTime = "";
 
         updateValuesFromBundle(savedInstanceState);
         buildGoogleApiClient();
@@ -120,7 +121,8 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
         drawerList = (ListView) findViewById(R.id.driver_drawer);
         driver_drawerLayout = (DrawerLayout) findViewById(R.id.driver_drawer_layout);
 
-        driverStringArray = new String[]{ "a","Take Payment"};
+        driverStringArray = new String[]{ "My TimeList","Take Payment with QR"};
+
 
         drawerList.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_activated_1, driverStringArray));
@@ -168,9 +170,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
             if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
                 mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
             }
-            if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)) {
-                mLastUpdateTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
-            }
+
 
         }
     }
@@ -266,7 +266,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
                 } else {
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                         mRequestingLocationUpdates = false;
-                        Toast.makeText(DriverMainActivity.this, "Please enable location services", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(DriverMainActivity.this, "Please enable location services", Toast.LENGTH_SHORT).show();
                     } else {
                         showRationaleDialog();
                     }
@@ -369,7 +369,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
         }
         if (mCurrentLocation == null) {
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+            //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         }
 
         if (mRequestingLocationUpdates) {
@@ -381,7 +381,9 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
     public void onLocationChanged(Location location) {
         Log.i(TAG, "onLocationChanged");
         mCurrentLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        // currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        //mLastUpdateTime = currentDateTimeString;
+        //Log.wtf("DATE",mLastUpdateTime);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -395,7 +397,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
 
                 dataSnapshot.getRef().child("latitude").setValue(mCurrentLocation.getLatitude());
                 dataSnapshot.getRef().child("longitude").setValue(mCurrentLocation.getLongitude());
-
+                //dataSnapshot.getRef().child("dateTime").setValue(mLastUpdateTime);
             }
 
             @Override
@@ -407,8 +409,8 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
         //Toast.makeText(this, "location updated", Toast.LENGTH_SHORT).show();
         //Toast.makeText(this, "Latitude==="+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
         //Toast.makeText(this, "Longtitude==="+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-        Log.i("SELAM","Latitude=== "+mCurrentLocation.getLatitude());
-        Log.i("SELAM2","Longtitude=== "+mCurrentLocation.getLongitude());
+        //Log.i("SELAM","Latitude=== "+mCurrentLocation.getLatitude());
+        //Log.i("SELAM2","Longtitude=== "+mCurrentLocation.getLongitude());
     }
 
     @Override
@@ -431,20 +433,20 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
         currentPosition = position;
         android.support.v4.app.FragmentManager fragmentManager2 = getSupportFragmentManager();
 
-        /*if(position== 0){
+        if(position== 0){
 
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
             contentFrameLayout.removeAllViews();
 
-            ProfileFragment profileFrag = new ProfileFragment();
+            DriverTimeListFragment driverTimeListFragment = new DriverTimeListFragment();
 
             fragmentManager2.beginTransaction()
-                    .replace(R.id.driver_content_frame,profileFrag,"visible_fragment")
+                    .replace(R.id.driver_content_frame,driverTimeListFragment,"visible_fragment")
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
 
-        } else*/ if(position== 1){
+        } else if(position== 1){
 
           /*  Intent intent = new Intent(getApplicationContext(), QRActivity.class);
 
@@ -512,7 +514,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
         outState.putInt("position", currentPosition);
         outState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
         outState.putParcelable(LOCATION_KEY, mCurrentLocation);
-        outState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
+
 
     }
 
