@@ -446,6 +446,9 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
 
+
+            
+
         } else if(position== 1){
 
           /*  Intent intent = new Intent(getApplicationContext(), QRActivity.class);
