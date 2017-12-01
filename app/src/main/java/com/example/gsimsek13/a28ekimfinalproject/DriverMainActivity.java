@@ -56,34 +56,14 @@ import java.util.Date;
 
 import java.util.ArrayList;
 
-public class DriverMainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener{
+public class DriverMainActivity extends AppCompatActivity {
 
     private DrawerLayout driver_drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private int currentPosition = 1;
-    private String[] titles;
+
     private ListView drawerList;
 
-
-    protected static final String TAG = "==================";
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
-            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
-
-
-    private final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
-    private final static String LOCATION_KEY = "location-key";
-    private final static String LAST_UPDATED_TIME_STRING_KEY = "last-updated-time-string-key";
-
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final int REQUEST_CHECK_SETTINGS = 10;
-
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
-    private Location mCurrentLocation;
-    private Boolean mRequestingLocationUpdates;
     //private String mLastUpdateTime;
 
 
@@ -91,9 +71,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
     String[] driverStringArray;
     Bundle mySavedInstanceState;
 
-    private FirebaseDatabase database ;
-    private DatabaseReference myRef;
-    private String[] parts;
+
 
     private class DriverDrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -108,11 +86,9 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
 
-        mRequestingLocationUpdates = false;
+
         //mLastUpdateTime = "";
 
-        updateValuesFromBundle(savedInstanceState);
-        buildGoogleApiClient();
 
         mySavedInstanceState = savedInstanceState;
         bufferStringArrayList = new ArrayList<String>();
@@ -158,273 +134,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
 
 
     }
-    private void updateValuesFromBundle(Bundle savedInstanceState) {
-        Log.i(TAG, "Updating values from bundle");
-        if (savedInstanceState != null) {
-            if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
-                mRequestingLocationUpdates = savedInstanceState.getBoolean(
-                        REQUESTING_LOCATION_UPDATES_KEY);
 
-            }
-
-            if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
-                mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
-            }
-
-
-        }
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        Log.i(TAG, "Building GoogleApiClient");
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        createLocationRequest();
-    }
-
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        if (!isPlayServicesAvailable(this)) return;
-        if (!mRequestingLocationUpdates) {
-            mRequestingLocationUpdates = true;
-        } else {
-            return;
-        }
-
-        if (Build.VERSION.SDK_INT < 23) {
-            startLocationUpdates();
-            return;
-        }
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            startLocationUpdates();
-        } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-                showRationaleDialog();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            }
-        }
-    }
-
-
-
-
-    private void startLocationUpdates() {
-        Log.i(TAG, "startLocationUpdates");
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
-
-        PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
-        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-            @Override
-            public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
-                final Status status = locationSettingsResult.getStatus();
-
-                switch (status.getStatusCode()) {
-                    case LocationSettingsStatusCodes.SUCCESS:
-
-                        if (ContextCompat.checkSelfPermission(DriverMainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, DriverMainActivity.this);
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-
-                        try {
-                            status.startResolutionForResult(DriverMainActivity.this, REQUEST_CHECK_SETTINGS);
-                        } catch (IntentSender.SendIntentException e) {
-
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        break;
-                }
-            }
-        });
-    }
-
-
-    protected void stopLocationUpdates() {
-        Log.i(TAG, "stopLocationUpdates");
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startLocationUpdates();
-                } else {
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        mRequestingLocationUpdates = false;
-                        //Toast.makeText(DriverMainActivity.this, "Please enable location services", Toast.LENGTH_SHORT).show();
-                    } else {
-                        showRationaleDialog();
-                    }
-                }
-                break;
-            }
-        }
-    }
-
-    private void showRationaleDialog() {
-        new AlertDialog.Builder(this)
-                .setPositiveButton("", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(DriverMainActivity.this,
-                                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-                    }
-                })
-                .setNegativeButton("", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(DriverMainActivity.this, "Please enable location services", Toast.LENGTH_SHORT).show();
-                        mRequestingLocationUpdates = false;
-                    }
-                })
-                .setCancelable(true)
-                .setMessage("Please enable location services")
-                .show();
-    }
-
-    public static boolean isPlayServicesAvailable(Context context) {
-        int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            GoogleApiAvailability.getInstance().getErrorDialog((Activity) context, resultCode, 2).show();
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CHECK_SETTINGS:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        startLocationUpdates();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        break;
-                }
-                break;
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        isPlayServicesAvailable(this);
-
-
-
-        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        if (mGoogleApiClient.isConnected()) {
-            stopLocationUpdates();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        stopLocationUpdates();
-        mGoogleApiClient.disconnect();
-
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "onConnected");
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (mCurrentLocation == null) {
-            mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        }
-
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i(TAG, "onLocationChanged");
-        mCurrentLocation = location;
-        // currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-        //mLastUpdateTime = currentDateTimeString;
-        //Log.wtf("DATE",mLastUpdateTime);
-
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-
-        parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
-
-
-        myRef.child("Drivers").child(parts[0]).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                dataSnapshot.getRef().child("latitude").setValue(mCurrentLocation.getLatitude());
-                dataSnapshot.getRef().child("longitude").setValue(mCurrentLocation.getLongitude());
-                //dataSnapshot.getRef().child("dateTime").setValue(mLastUpdateTime);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "Failed to read value.", databaseError.toException());
-            }
-        });
-
-        //Toast.makeText(this, "location updated", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this, "Latitude==="+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this, "Longtitude==="+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-        //Log.i("SELAM","Latitude=== "+mCurrentLocation.getLatitude());
-        //Log.i("SELAM2","Longtitude=== "+mCurrentLocation.getLongitude());
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-        Log.i(TAG, "Connection suspended");
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
-    }
 
 
 
@@ -515,8 +225,7 @@ public class DriverMainActivity extends AppCompatActivity implements GoogleApiCl
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("position", currentPosition);
-        outState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
-        outState.putParcelable(LOCATION_KEY, mCurrentLocation);
+
 
 
     }
