@@ -1,0 +1,45 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/routeControllerFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.gsimsek13.a28ekimfinalproject.RouteControllerFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/routeControllerRelative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/routeStartButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="63dp"
+            android:text="START ROUTE"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/routeCancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/routeStartButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/routeStartButton"
+            android:layout_marginBottom="63dp"
+            android:text="CANCEL ROUTE"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/routeStopButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/routeCancelButton"
+            android:layout_alignStart="@+id/routeCancelButton"
+            android:layout_centerVertical="true"
+            android:text="END ROUTE"
+            android:textSize="30sp" />
+    </RelativeLayout>
+</FrameLayout>

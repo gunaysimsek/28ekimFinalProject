@@ -3,6 +3,7 @@ package com.example.gsimsek13.a28ekimfinalproject;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -278,7 +280,34 @@ public class DriverTimeListFragment extends Fragment {
         });
 
 
+        driverTimeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedTime = (driverTimeListView.getItemAtPosition(i)).toString();
+                String from = driverFromSpin.getSelectedItem().toString();
+                String to = driverToSpin.getSelectedItem().toString();
+                //Log.wtf("asdfasdfa",selectedFromList);
 
+                driverTimeListFrame.removeAllViews();
+                RouteControllerFragment newFragment = new RouteControllerFragment();
+                RouteControllerFragment.drivetime = selectedTime;
+                RouteControllerFragment.drivefrom = from;
+                RouteControllerFragment.driveto = to;
+
+                Log.wtf("asdfsdfas",selectedTime);
+                Log.wtf("asdfasdfasdfa",from);
+                Log.wtf("asdfasdfasdfasdf",to);
+                // consider using Java coding conventions (upper first char class names!!!)
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.replace(R.id.driverTimeListFrame, newFragment);
+                transaction.addToBackStack(null);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                // Commit the transaction
+                transaction.commit();
+            }
+        });
 
 
 

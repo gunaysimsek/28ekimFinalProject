@@ -57,7 +57,7 @@ public class Driver extends User {
     public void setRoutes(HashMap<String, DriverRoutes> routes) {
         this.routes = routes;
     }
-    private DriverRoutes getRouteValue(String route){
+    public DriverRoutes getRouteValue(String route){
         return routes.get(route);
     }
     public boolean isOnWork() {

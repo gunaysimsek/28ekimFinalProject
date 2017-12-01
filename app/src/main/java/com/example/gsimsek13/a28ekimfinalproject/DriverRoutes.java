@@ -54,11 +54,18 @@ public class DriverRoutes {
     public void setWeekendTimeList(HashMap<String, String> weekendTimeList) {
         this.weekendTimeList = weekendTimeList;
     }
-    private String getWeekdayTimeListValue(String time){
+    public String getWeekdayTimeListValue(String time){
         return weekdayTimeList.get(time);
     }
-    private String getWeekendTimeListValue(String time){
+    public String getWeekendTimeListValue(String time){
         return weekendTimeList.get(time);
+    }
+
+    public void setWeekdayTimeListValue(String time,String value){
+        weekdayTimeList.put(time,value);
+    }
+    public void setWeekendTimeListValue(String time,String value){
+        weekendTimeList.put(time,value);
     }
 
 
