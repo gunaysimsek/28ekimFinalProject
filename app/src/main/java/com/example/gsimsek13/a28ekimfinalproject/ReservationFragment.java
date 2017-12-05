@@ -106,6 +106,8 @@ public class ReservationFragment extends Fragment {
                 ArrayList<ArrayList<String>> myList = new ArrayList<ArrayList<String>>();
                 route = dataSnapshot.getValue(Route.class);
 
+
+
                 ArrayList<String> timeList = new ArrayList<>();
                 if(isWeekday){
 
@@ -166,10 +168,10 @@ public class ReservationFragment extends Fragment {
 
                     leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
                     if(eachShuttle.get(3).equalsIgnoreCase("Button")) {
-                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2),eachShuttle.get(4)));
+                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2),eachShuttle.get(4),Integer.parseInt(eachShuttle.get(1))));
                     }
                     else {
-                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],false,eachShuttle.get(2),eachShuttle.get(4)));
+                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],false,eachShuttle.get(2),eachShuttle.get(4),Integer.parseInt(eachShuttle.get(1))));
                     }
                     //rightLinearLayout.addView(createNewTextView(eachShuttle.get(3)));
                     centerLeftLinearLayout.addView(createNewTextView(eachShuttle.get(0)));
@@ -511,7 +513,7 @@ public class ReservationFragment extends Fragment {
         return textView;
     }
 
-    public Button createNewButton(final String fromTo,final String time,final String user, boolean visible,final String price,final String weekDay) {
+    public Button createNewButton(final String fromTo,final String time,final String user, boolean visible,final String price,final String weekDay,final int availability) {
         //Log.wtf("Dallama",fromTo);
         //Log.wtf("Dallama",time);
         //Log.wtf("Dallama",user);
@@ -531,7 +533,7 @@ public class ReservationFragment extends Fragment {
                                          @Override
                                          public void onClick(View v) {
                                              Log.d("Reservation deneme", "hoooop");
-                                             WriteUserToTheRoute(fromTo,time,user,price,weekDay);
+                                             WriteUserToTheRoute(fromTo,time,user,price,weekDay,availability);
                                          }
                                      }
 
@@ -540,7 +542,7 @@ public class ReservationFragment extends Fragment {
 
 
     }
-    public void WriteUserToTheRoute(final String fromTo, final String time, final String user, final String price, final String currentDay) {
+    public void WriteUserToTheRoute(final String fromTo, final String time, final String user, final String price, final String currentDay,final int availability) {
         //String userBalance;
 
 
@@ -555,6 +557,47 @@ public class ReservationFragment extends Fragment {
 
 
 
+                if( (int) userBalance >= Integer.parseInt(price.substring(0,2))){
+                    myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("users").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                                Log.d("singleSnapshotlii", singleSnapshot.getKey().toString() + "   " + user);
+                                if (singleSnapshot.getKey().toString().equalsIgnoreCase(user)) {
+                                    alreadyRegistered = true;
+
+
+                                }
+
+                            }
+
+                            if (alreadyRegistered) {
+                                Toast.makeText(getContext(), "You already made reservation for that shuttle", Toast.LENGTH_SHORT).show();
+                            } else {
+                                myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("users").child(user).setValue(user);
+                                myRef.child("Customers").child(parts[0]).child("reservations").child(fromTo).child("times").child(time).setValue(time);
+                                myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability").setValue(availability - 1);
+                                //int availability = myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability");
+                                //myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability").setValue()
+                                myRef.child("Customers").child(user).child("balance").setValue(userBalance - Integer.parseInt(price.substring(0, 2)));
+                            }
+
+                            alreadyRegistered = false;
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+
+
+                else {
+                    Log.d("Reservation Deneme", "User in parasi = " +userBalance +", Gereken para = "+ price.substring(0,2));
+                }
                 //userBalance = Double.toString(wantedCustomer.balance);
                 /*
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
@@ -578,46 +621,7 @@ public class ReservationFragment extends Fragment {
             }
         });
 
-        if( (int) userBalance >= Integer.parseInt(price.substring(0,2))){
-            myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("users").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                        Log.d("singleSnapshotlii", singleSnapshot.getKey().toString() + "   " + user);
-                        if (singleSnapshot.getKey().toString().equalsIgnoreCase(user)) {
-                            alreadyRegistered = true;
 
-
-                        }
-
-                    }
-
-                    if (alreadyRegistered) {
-                        Toast.makeText(getContext(), "You already made reservation for that shuttle", Toast.LENGTH_SHORT).show();
-                    } else {
-                        myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("users").child(user).setValue(user);
-                        myRef.child("Customers").child(parts[0]).child("reservations").child(fromTo).child("times").child(time).setValue(time);
-                        //int availability = myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability");
-                        //myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability").setValue()
-                        myRef.child("Customers").child(user).child("balance").setValue(userBalance - Integer.parseInt(price.substring(0, 2)));
-                    }
-
-                    alreadyRegistered = false;
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-        }
-
-
-        else {
-            Log.d("Reservation Deneme", "User in parasi = " +userBalance +", Gereken para = "+ price.substring(0,2));
-        }
 
     }
 
