@@ -58,6 +58,9 @@ import java.util.Collections;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+// geolocation ne zaman calismali ayarla
+    // driver in location i sadece activese goster.
 public class RouteControllerFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
