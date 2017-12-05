@@ -26,6 +26,7 @@ public class TopUpFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
+
     private long oldAmount;
     private EditText topUpAmountET;
 

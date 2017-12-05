@@ -29,7 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private String name;
     private String surname;
-    private Double phoneNo;
+    private String phoneNo;
 
 
     private EditText emailText;
@@ -106,7 +106,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void signUpSend(View view){
 
 
-            phoneNo = Double.parseDouble( phoneText.getText().toString());
+            phoneNo = phoneText.getText().toString();
 
 
             email = emailText.getText().toString();

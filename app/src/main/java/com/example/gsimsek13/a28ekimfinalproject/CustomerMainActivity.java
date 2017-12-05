@@ -271,7 +271,9 @@ public class CustomerMainActivity extends AppCompatActivity   {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        android.support.v4.app.FragmentManager fragmentManager2 = getSupportFragmentManager();
         switch (item.getItemId()) {
+
 
           /*  case R.id.action_create_order:
                 //Code to run when the Create Order item is clicked
@@ -281,10 +283,23 @@ public class CustomerMainActivity extends AppCompatActivity   {
             case R.id.action_check_out:
                 Intent intent2 = new Intent(this, CheckActivity.class);
                 startActivity(intent2);
-                return true;
-            case R.id.action_settings:
-                //Code to run when the settings item is clicked
                 return true;*/
+            case R.id.action_sendMoney:
+                //Code to run when the settings item is clicked
+
+                FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
+                contentFrameLayout.removeAllViews();
+
+                getSupportActionBar().setTitle("Send Money");
+
+                SendMoneyFragment sendMoneyFragment = new SendMoneyFragment();
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.content_frame,sendMoneyFragment,"visible_fragment")
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+
+                return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(this, LoginActivity.class);

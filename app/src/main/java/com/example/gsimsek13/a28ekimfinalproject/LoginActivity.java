@@ -1,6 +1,8 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,30 +37,33 @@ public class LoginActivity extends AppCompatActivity {
 
     private Customer customer;
 
-    private FirebaseDatabase database ;
+    private FirebaseDatabase database;
     private DatabaseReference myRef;
     String[] parts;
 
     FirebaseAuth myAuth;
 
-    public void verifyBtnClicked(View view){
+    public void verifyBtnClicked(View view) {
 
         myAuth = FirebaseAuth.getInstance();
+        if (myAuth.getCurrentUser() != null) {
 
-        myAuth.getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
+            myAuth.getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
 
-                if(!myAuth.getCurrentUser().isEmailVerified()){
-                    Toast.makeText(LoginActivity.this, "Verfication mail is resent!", Toast.LENGTH_SHORT).show();
-                    myAuth.getCurrentUser().sendEmailVerification();
+
+                    if (!myAuth.getCurrentUser().isEmailVerified()) {
+                        Toast.makeText(LoginActivity.this, "Verfication mail is resent!", Toast.LENGTH_SHORT).show();
+                        myAuth.getCurrentUser().sendEmailVerification();
+
+
+                    }
+
 
                 }
-
-
-            }
-        });
-
+            });
+        }
 
 
     }
@@ -72,76 +77,72 @@ public class LoginActivity extends AppCompatActivity {
 
         if (email.equals("") || password.equals("")) {
             Toast.makeText(this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
 
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.wtf(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.wtf(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                        if (task.isSuccessful()) {
-                            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                            if (task.isSuccessful()) {
+                                if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
 
-                                myRef.child("Drivers").addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot snapshot) {
-                                        if (snapshot.child(parts[0]).exists()) {
+                                    myRef.child("Drivers").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot snapshot) {
+                                            if (snapshot.child(parts[0]).exists()) {
 
-                                            Intent intent = new Intent(getApplicationContext(), DriverMainActivity.class);
-                                            startActivity(intent);
+                                                Intent intent = new Intent(getApplicationContext(), DriverMainActivity.class);
+                                                startActivity(intent);
 
-                                        } else {
-                                            Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
-                                            startActivity(intent);
+                                            } else {
+                                                Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
+                                                startActivity(intent);
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
                                         }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
+                                    });
 
 
-                            } else if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                                } else if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
 
-                                //FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
-                                Toast.makeText(getApplicationContext(), "Please verify your account!", Toast.LENGTH_LONG).show();
+                                    //FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                                    Toast.makeText(getApplicationContext(), "Please verify your account!", Toast.LENGTH_LONG).show();
+
+                                }
+                            } else if (!task.isSuccessful()) {
+                                Log.wtf(TAG, "signInWithEmail:failed", task.getException());
+                                Toast.makeText(getApplicationContext(), "Wrong Password or Email!", Toast.LENGTH_LONG).show();
 
                             }
-                        } else if (!task.isSuccessful()) {
-                            Log.wtf(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(getApplicationContext(), "Wrong Password or Email!", Toast.LENGTH_LONG).show();
 
                         }
-
-                    }
-                });
+                    });
         }
 
     }
 
-    private void checkIfEmailVerified()
-    {
-     //   FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private void checkIfEmailVerified() {
+        //   FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (mAuth.getCurrentUser().isEmailVerified())
-        {
+        if (mAuth.getCurrentUser().isEmailVerified()) {
             // user is verified, so you can finish this activity or send user to activity which you want.
             //Toast.makeText(LoginActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), CustomerMainActivity.class);
             startActivity(intent);
 
-        }
-        else
-        {
+        } else {
             // email is not verified, so just prompt the message to the user and restart this activity.
             // NOTE: don't forget to log out the user.
             //Toast.makeText(LoginActivity.this, "Please verify your account to continue.", Toast.LENGTH_SHORT).show();
-           // mAuth.getCurrentUser().sendEmailVerification();
-           // mAuth.signOut();
+            // mAuth.getCurrentUser().sendEmailVerification();
+            // mAuth.signOut();
             //recreate();
 
             //restart this activity
@@ -149,14 +150,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void signUpClicked(View view){
+    public void signUpClicked(View view) {
 
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
 
     }
 
-    public void forgetBtnClicked(View view){
+    public void forgetBtnClicked(View view) {
 
         Intent intent = new Intent(this, ResetPasswordActivity.class);
         startActivity(intent);
@@ -168,8 +169,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF303F9F")) );
+        getSupportActionBar().setTitle("ShutApp");
+        getSupportActionBar().hide();
 
-        emailText   = (EditText) findViewById(R.id.emailText);
+
+        emailText = (EditText) findViewById(R.id.emailText);
         passwordText = (EditText) findViewById(R.id.passwordText);
 
         database = FirebaseDatabase.getInstance();
@@ -179,7 +184,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signOut();
-
 
 
     }

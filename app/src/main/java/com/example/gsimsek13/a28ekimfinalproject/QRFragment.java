@@ -31,24 +31,32 @@ public class QRFragment extends Fragment {
     public QRFragment() {
         // Required empty public constructor
     }
-    ImageView qrIW ;
-    Bitmap bitmap ;
-    Thread thread ;
+
+    ImageView qrIW;
+    Thread thread;
     private String[] parts;
-    public final static int QRcodeWidth = 500 ;
+    public final static int QRcodeWidth = 500;
+
+    private Bitmap bm;
+
+    DatabaseHelper myDb ;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_qr,container,false );
+        View v = inflater.inflate(R.layout.fragment_qr, container, false);
 
+        myDb =  new DatabaseHelper(getContext());
         qrIW = v.findViewById(R.id.qrIW);
 
-        Log.wtf("asad",FirebaseAuth.getInstance().getCurrentUser().getEmail() +"asdajfgşsgjaşg burdaasiin");
+        Log.wtf("asad", FirebaseAuth.getInstance().getCurrentUser().getEmail() + "asdajfgşsgjaşg burdaasiin");
 
 
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
+
+        String customerID = parts[0];
 
         /*QRCodeWriter writer = new QRCodeWriter();
         try {
@@ -67,17 +75,27 @@ public class QRFragment extends Fragment {
         } catch (WriterException e) {
             e.printStackTrace();
         }*/
-        try {
-            // generate a 150x150 QR code
-            Bitmap bm = TextToImageEncode(parts[0]);
 
-            if(bm != null) {
-                qrIW.setImageBitmap(bm);
+        bm = myDb.getEntry(customerID);
+
+        if (bm != null) {
+
+            qrIW.setImageBitmap(bm);
+
+        } else {
+            try {
+                // generate a 150x150 QR code
+                bm = TextToImageEncode(customerID);
+
+                if (bm != null) {
+                    qrIW.setImageBitmap(bm);
+                    myDb.addEntry(customerID, DbBitmapUtility.getBytes(bm));
+                }
+            } catch (WriterException e) {
+
             }
-        } catch (WriterException e) {
 
         }
-
 
 
         return v;
@@ -108,7 +126,7 @@ public class QRFragment extends Fragment {
             for (int x = 0; x < bitMatrixWidth; x++) {
 
                 pixels[offset + x] = bitMatrix.get(x, y) ?
-                        getResources().getColor(R.color.black):getResources().getColor(R.color.white);
+                        getResources().getColor(R.color.black) : getResources().getColor(R.color.white);
             }
         }
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);

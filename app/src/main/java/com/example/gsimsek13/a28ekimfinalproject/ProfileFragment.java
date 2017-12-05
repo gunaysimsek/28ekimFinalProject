@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
                 nametv.setText(customer.name);
                 surnametv.setText(customer.surname);
                 mailtv.setText(customer.email);
-                phonetv.setText(""+customer.phoneNumber);
+                phonetv.setText(customer.phoneNumber);
                 balancetv.setText("₺"+customer.balance);
 
             }
@@ -98,9 +98,10 @@ public class ProfileFragment extends Fragment {
         updateProfileBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
 
-                Double updatedPhoneNo = Double.parseDouble( phonetv.getText().toString());
+                String updatedPhoneNo = phonetv.getText().toString();
                 String updatedName = nametv.getText().toString();
                 String updatedSurname = surnametv.getText().toString();
+                
 
 
                 Customer updatedCustomer = new Customer(customer.id ,customer.role,updatedName,updatedSurname, customer.email, updatedPhoneNo, customer.balance);

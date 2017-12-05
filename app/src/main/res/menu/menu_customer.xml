@@ -5,13 +5,17 @@
     tools:context="com.example.gsimsek13.a28ekimfinalproject.CustomerMainActivity">
 
     <item
-        android:id="@+id/action_go_back"
-        android:icon="@android:drawable/ic_menu_revert"
-        app:showAsAction="always"
-        android:title="Go Back" />
+        android:id="@+id/action_sendMoney"
+        android:icon="@drawable/gift"
+        android:title="Send Money"
+        app:showAsAction="always" />
 
-    <item android:id="@+id/logout"
-        android:title="Logout"
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/logout"
+        app:showAsAction="never"
+        android:title = "Log out"
+
 
 
         />

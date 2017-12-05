@@ -228,7 +228,7 @@ public class TakePaymentFragment extends Fragment implements ZXingScannerView.Re
             public void onClick(final View v) {
 
              //   FrameLayout contentFrameLayout = getActivity().findViewById(R.id.driver_content_frame);
-                FrameLayout contentFrameLayout = getActivity().findViewById(R.id.content_frame);
+                FrameLayout contentFrameLayout = getActivity().findViewById(R.id.driver_content_frame);
                 contentFrameLayout.removeAllViews();
                 contentFrameLayout.addView(mScannerView);
 
@@ -282,8 +282,6 @@ public class TakePaymentFragment extends Fragment implements ZXingScannerView.Re
 
                 if (isWeekday) {
 
-                    //takeAvailability = (long) dataSnapshot.child("Routes").child(handleFrom + "-" + handleTo).child("weekdayTimes").child(handleTime).child("availability").getValue();
-                    //takePrice = (long) dataSnapshot.child("Routes").child(handleFrom + "-" + handleTo).child("weekdayTimes").child(handleTime).child("price").getValue();
                     takeAvailability = myRoute.getWeekdayTimesValue(handleTime).getAvailability();
                     takePrice = (long) myRoute.getWeekdayTimesValue(handleTime).getPrice();
 
@@ -294,8 +292,6 @@ public class TakePaymentFragment extends Fragment implements ZXingScannerView.Re
                     takeAvailability = myRoute.getWeekendTimesValue(handleTime).getAvailability();
                     takePrice = (long) myRoute.getWeekendTimesValue(handleTime).getPrice();
 
-                    // takeAvailability = (long) dataSnapshot.child("Routes").child(handleFrom + "-" + handleTo).child("weekendTimes").child(handleTime).child("availability").getValue();
-                    //takePrice = (long) dataSnapshot.child("Routes").child(handleFrom + "-" + handleTo).child("weekendTimes").child(handleTime).child("price").getValue();
 
                 }
 
@@ -339,20 +335,7 @@ public class TakePaymentFragment extends Fragment implements ZXingScannerView.Re
                                     }
                                 });
 
-                               /* takeRef.child("Routes").child(handleFrom + "-" + handleTo).child("weekdayTimes").child(handleTime).child("availability").setValue(takeNewAvailability, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                        takeRef.child("Routes").child(handleFrom + "-" + handleTo).child("weekdayTimes").child(handleTime).child("users").child(customerID).setValue(customerID, new DatabaseReference.CompletionListener() {
-                                            @Override
-                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                                Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
-                                                // SystemClock.sleep(1000);
-                                                mScannerView.resumeCameraPreview(TakePaymentFragment.this);
-                                            }
-                                        });
 
-                                    }
-                                });*/
 
                             } else {
 
@@ -370,23 +353,6 @@ public class TakePaymentFragment extends Fragment implements ZXingScannerView.Re
                                     }
                                 });
 
-                                /*takeRef.child("Routes").child(handleFrom + "-" + handleTo).child("weekendTimes").child(handleTime).child("availability").setValue(takeNewAvailability, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                        takeRef.child("Routes").child(handleFrom + "-" + handleTo).child("weekendTimes").child(handleTime).child("users").child(customerID).setValue(customerID, new DatabaseReference.CompletionListener() {
-                                            @Override
-                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                                Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
-                                                // SystemClock.sleep(1000);
-                                                mScannerView.resumeCameraPreview(TakePaymentFragment.this);
-
-                                            }
-                                        });
-
-
-                                    }
-                                });*/
 
                             }
 

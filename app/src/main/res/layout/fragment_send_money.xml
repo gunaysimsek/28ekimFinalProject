@@ -1,0 +1,97 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.gsimsek13.a28ekimfinalproject.SendMoneyFragment">
+
+
+    <android.support.v7.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <TextView
+            android:id="@+id/sendMoneyBalanceLabelTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Your balance:  "
+            android:textSize="20sp"
+
+            app:layout_column="0"
+
+
+            app:layout_gravity="center"
+            app:layout_row="0"
+            app:layout_rowWeight="1" />
+
+        <TextView
+            android:id="@+id/sendMoneyBalanceTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "
+            app:layout_column="1"
+            app:layout_columnWeight="1"
+
+            app:layout_gravity="center_vertical|center"
+            app:layout_row="0"
+            app:layout_rowWeight="1" />
+
+        <EditText
+            android:id="@+id/sendMoneyFriendET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your friend's ID"
+            android:inputType="textPersonName"
+            android:textSize="20sp"
+
+            app:layout_column="0"
+
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+
+            app:layout_gravity="top|left"
+            app:layout_row="1"
+            app:layout_rowWeight="1" />
+
+
+        <EditText
+            android:id="@+id/sendMoneyAmountET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="₺"
+
+            android:inputType="number"
+            android:textSize="20sp"
+
+            app:layout_column="0"
+
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+
+            app:layout_gravity="top|left"
+            app:layout_row="2"
+            app:layout_rowWeight="1" />
+
+        <ImageButton
+            android:id="@+id/sendMoneySendBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/sendmoney"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_column="0"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_gravity="center"
+            app:layout_row="3"
+            app:layout_rowWeight="8"
+
+            />
+
+    </android.support.v7.widget.GridLayout>
+
+
+</FrameLayout>
