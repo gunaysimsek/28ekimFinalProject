@@ -13,6 +13,7 @@ public class Driver extends User {
     private int raters;
     //private boolean onWork;
     private HashMap<String,DriverRoutes> routes;
+    private String password;
 
 
     public Driver(){
@@ -52,13 +53,14 @@ public class Driver extends User {
         this.raters = raters;
     }
 
-    public Driver(int id, int role, String name, String surname, String email, String phoneNumber, double rating, double latitude, double longitude,int raters,HashMap<String, DriverRoutes> routes){
+    public Driver(int id, int role, String name, String surname, String email, String phoneNumber, double rating, double latitude, double longitude,int raters,HashMap<String, DriverRoutes> routes, String password){
         super(id,role,name,surname,email,phoneNumber);
         this.rating = rating;
         this.latitude = latitude;
         this.longitude = longitude;
         this.raters = raters;
         this.routes = routes;
+        this.password = password;
     }
 
     public HashMap<String, DriverRoutes> getRoutes() {

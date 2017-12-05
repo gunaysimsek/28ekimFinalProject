@@ -63,22 +63,16 @@ public class OfflineTakePaymentFragment extends Fragment {
     private long takeBalance;
     private long takeNewBalance;
 
-    public String takeFromBtnPressed;
-    public String takeToBtnPressed;
-    public String takeTimeBtnPressed;
 
     private EditText offlineTakeEmailET;
     private EditText offlineTakePasswordET;
 
-    //private  String offlineTakeEmail;
-    //private String offlineTakePassword;
 
-    private FirebaseUser user;
-
+    private String driverID;
+    private String driverEmail;
+    private String driverPassword;
 
     public OfflineTakePaymentFragment() {
-        // Required empty public constructor
-
 
     }
 
@@ -88,6 +82,14 @@ public class OfflineTakePaymentFragment extends Fragment {
                              Bundle savedInstanceState) {
         takeDatabase = FirebaseDatabase.getInstance();
         takeRef = takeDatabase.getReference();
+
+        driverEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        String[] parts2 = driverEmail.split("@");
+
+        driverID = parts2[0];
+
+
 
 
         View v = inflater.inflate(R.layout.fragment_offline_take_payment, container, false);
@@ -223,228 +225,25 @@ public class OfflineTakePaymentFragment extends Fragment {
         takePaymentBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(final View v) {
 
-                //   FrameLayout contentFrameLayout = getActivity().findViewById(R.id.driver_content_frame);
-                //  FrameLayout contentFrameLayout = getActivity().findViewById(R.id.driver_content_frame);
-                // contentFrameLayout.removeAllViews();
 
-                takeFromBtnPressed = fromSpin.getSelectedItem().toString();
-                takeToBtnPressed = toSpin.getSelectedItem().toString();
-                takeTimeBtnPressed = timeSpin.getSelectedItem().toString();
-
-             //   offlineTakeEmail = offlineTakeEmailET.getText().toString();
-               // offlineTakePassword = offlineTakePasswordET.getText().toString();
-
-
-                final String handleFrom = takeFromBtnPressed;
-                final String handleTo = takeToBtnPressed;
-                final String handleTime = takeTimeBtnPressed;
+                final String handleFrom = fromSpin.getSelectedItem().toString();
+                final String handleTo = toSpin.getSelectedItem().toString();
+                final String handleTime = timeSpin.getSelectedItem().toString();
 
                 final String offlineTakeEmail = offlineTakeEmailET.getText().toString();
                 final String offlineTakePassword = offlineTakePasswordET.getText().toString();
 
                 String[] parts = offlineTakeEmail.split("@");
 
-                String part1 = parts[0];
-
-                final String customerID = part1;
-
-
+                final String customerID = parts[0];
 
                 if (offlineTakeEmail.equals("") || offlineTakePassword.equals("")) {
                     Toast.makeText(getContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show();
                 } else {
 
-                   // user = FirebaseAuth.getInstance().getCurrentUser();
-
-
-                    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-                    mUser.getToken(true)
-                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                    if (task.isSuccessful()) {
-
-                                        final String driverToken = task.getResult().getToken();
-
-                                        //String driverToken2 = task.getResult().getToken();
-
-
-
-                                        Toast.makeText(getContext(), "Driver's token is " + driverToken, Toast.LENGTH_SHORT).show();
-
-
-                                       // FirebaseAuth.getInstance().signOut();
-
-
-                                        Toast.makeText(getContext(), "is successful: " + FirebaseAuth.getInstance().signInWithCustomToken(driverToken).isSuccessful(), Toast.LENGTH_SHORT).show();
-
-
-                                        AuthCredential credential = EmailAuthProvider
-                                                .getCredential(offlineTakeEmail, offlineTakePassword);
-                                        FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if (task.isSuccessful()) {
-
-                                                    takeRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                                            takeBalance = (long) dataSnapshot.child("Customers").child(customerID).child("balance").getValue();
-                                                            final Route myRoute = dataSnapshot.child("Routes").child(handleFrom + "-" + handleTo).getValue(Route.class);
-                                                            List<String> customersWithReservation = new ArrayList<String>();
-
-                                                            if (isWeekday) {
-
-                                                                takeAvailability = myRoute.getWeekdayTimesValue(handleTime).getAvailability();
-                                                                takePrice = (long) myRoute.getWeekdayTimesValue(handleTime).getPrice();
-
-                                                                customersWithReservation.addAll(myRoute.getWeekdayTimesValue(handleTime).getUsers().keySet());
-
-                                                            } else {
-
-                                                                takeAvailability = myRoute.getWeekendTimesValue(handleTime).getAvailability();
-                                                                takePrice = (long) myRoute.getWeekendTimesValue(handleTime).getPrice();
-
-                                                                customersWithReservation.addAll(myRoute.getWeekendTimesValue(handleTime).getUsers().keySet());
-
-
-                                                            }
-
-
-                                                            if (takeAvailability <= 0) {
-
-                                                                Toast.makeText(getContext(), "No available seats!", Toast.LENGTH_SHORT).show();
-
-                                                            } else if (takeBalance < takePrice) {
-
-                                                                Toast.makeText(getContext(), "Insufficient balance!", Toast.LENGTH_SHORT).show();
-
-                                                            } else if (customersWithReservation.contains(customerID)) {
-
-                                                                Toast.makeText(getContext(), "Thank you for reservation, " + customerID, Toast.LENGTH_SHORT).show();
-
-                                                            } else {
-
-                                                                takeNewBalance = takeBalance - takePrice;
-
-                                                                takeNewAvailability = (int) takeAvailability - 1;
-
-
-                                                                takeRef.child("Customers").child(customerID).child("balance").setValue(takeNewBalance, new DatabaseReference.CompletionListener() {
-                                                                    @Override
-                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                                                        if (isWeekday) {
-
-                                                                            myRoute.getWeekdayTimesValue(handleTime).setAvailability(takeNewAvailability);
-                                                                            myRoute.getWeekdayTimesValue(handleTime).getUsers().put(customerID, customerID);
-
-                                                                            takeRef.child("Routes").child(handleFrom + "-" + handleTo).setValue(myRoute, new DatabaseReference.CompletionListener() {
-                                                                                @Override
-                                                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                                                                    Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
-                                                                                    offlineTakeEmailET.setText("");
-                                                                                    offlineTakePasswordET.setText("");
-                                                                                    FirebaseAuth.getInstance().signOut();
-
-                                                                                    FirebaseAuth.getInstance().signInWithCustomToken(driverToken).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                                                        @Override
-                                                                                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                                                                            if(task.isSuccessful()){
-                                                                                                Toast.makeText(getContext(), "Driver signed in again" + FirebaseAuth.getInstance().getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-                                                                                            }else{
-                                                                                                Toast.makeText(getContext(), "Driver could not sign in back", Toast.LENGTH_SHORT).show();
-                                                                                            }
-
-                                                                                        }
-                                                                                    });
-
-                                                                                }
-                                                                            });
-
-
-                                                                        } else {
-
-                                                                            myRoute.getWeekendTimesValue(handleTime).setAvailability(takeNewAvailability);
-                                                                            myRoute.getWeekendTimesValue(handleTime).getUsers().put(customerID, customerID);
-
-                                                                            takeRef.child("Routes").child(handleFrom + "-" + handleTo).setValue(myRoute, new DatabaseReference.CompletionListener() {
-                                                                                @Override
-                                                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                                                                    Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
-                                                                                    offlineTakeEmailET.setText("");
-                                                                                    offlineTakePasswordET.setText("");
-                                                                                    FirebaseAuth.getInstance().signOut();
-
-
-                                                                                    FirebaseAuth.getInstance().signInWithCustomToken(driverToken).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                                                        @Override
-                                                                                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                                                                            if(task.isSuccessful()){
-                                                                                                Toast.makeText(getContext(), "Driver signed in again" + FirebaseAuth.getInstance().getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-                                                                                            }else{
-                                                                                                Toast.makeText(getContext(), "Driver could not sign in back", Toast.LENGTH_SHORT).show();
-                                                                                            }
-
-                                                                                        }
-                                                                                    });
-                                                                                }
-                                                                            });
-
-
-                                                                        }
-
-                                                                    }
-                                                                });
-
-                                                            }
-
-
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
-
-                                                        }
-
-
-                                                    });
-
-
-                                                } else {
-
-                                                    Toast.makeText(getContext(), "Wrong password or email!", Toast.LENGTH_SHORT).show();
-
-                                                    FirebaseAuth.getInstance().signInWithCustomToken(driverToken).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                                        }
-                                                    });
-
-
-                                                }
-                                            }
-                                        });
-
-
-
-
-                                    } else {
-
-                                    }
-                                }
-                            });
-
-
-                   // AuthCredential credential = EmailAuthProvider
-                     //       .getCredential(offlineTakeEmail, offlineTakePassword);
-
-                    /*FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    AuthCredential credential = EmailAuthProvider
+                            .getCredential(offlineTakeEmail, offlineTakePassword);
+                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
@@ -452,6 +251,8 @@ public class OfflineTakePaymentFragment extends Fragment {
                                 takeRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        final DataSnapshot myDataSnaphShot = dataSnapshot;
 
                                         takeBalance = (long) dataSnapshot.child("Customers").child(customerID).child("balance").getValue();
                                         final Route myRoute = dataSnapshot.child("Routes").child(handleFrom + "-" + handleTo).getValue(Route.class);
@@ -469,6 +270,7 @@ public class OfflineTakePaymentFragment extends Fragment {
                                             takeAvailability = myRoute.getWeekendTimesValue(handleTime).getAvailability();
                                             takePrice = (long) myRoute.getWeekendTimesValue(handleTime).getPrice();
 
+                                            customersWithReservation.addAll(myRoute.getWeekendTimesValue(handleTime).getUsers().keySet());
 
                                         }
 
@@ -476,16 +278,45 @@ public class OfflineTakePaymentFragment extends Fragment {
                                         if (takeAvailability <= 0) {
 
                                             Toast.makeText(getContext(), "No available seats!", Toast.LENGTH_SHORT).show();
+                                            FirebaseAuth.getInstance().signOut();
+
+                                            driverPassword = (String) myDataSnaphShot.child("Drivers").child(driverID).child("password").getValue();
+                                            FirebaseAuth.getInstance().signInWithEmailAndPassword(driverEmail, driverPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    Toast.makeText(getContext(), "Driver signed back.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
 
                                         } else if (takeBalance < takePrice) {
 
                                             Toast.makeText(getContext(), "Insufficient balance!", Toast.LENGTH_SHORT).show();
+                                            FirebaseAuth.getInstance().signOut();
+
+                                            driverPassword = (String) myDataSnaphShot.child("Drivers").child(driverID).child("password").getValue();
+                                            FirebaseAuth.getInstance().signInWithEmailAndPassword(driverEmail, driverPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    Toast.makeText(getContext(), "Driver signed back.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
 
                                         } else if (customersWithReservation.contains(customerID)) {
 
                                             Toast.makeText(getContext(), "Thank you for reservation, " + customerID, Toast.LENGTH_SHORT).show();
+                                            FirebaseAuth.getInstance().signOut();
+
+                                            driverPassword = (String) myDataSnaphShot.child("Drivers").child(driverID).child("password").getValue();
+                                            FirebaseAuth.getInstance().signInWithEmailAndPassword(driverEmail, driverPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    Toast.makeText(getContext(), "Driver signed back.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
 
                                         } else {
+
                                             takeNewBalance = takeBalance - takePrice;
 
                                             takeNewAvailability = (int) takeAvailability - 1;
@@ -507,6 +338,16 @@ public class OfflineTakePaymentFragment extends Fragment {
                                                                 Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
                                                                 offlineTakeEmailET.setText("");
                                                                 offlineTakePasswordET.setText("");
+                                                                FirebaseAuth.getInstance().signOut();
+
+                                                                driverPassword = (String) myDataSnaphShot.child("Drivers").child(driverID).child("password").getValue();
+                                                                FirebaseAuth.getInstance().signInWithEmailAndPassword(driverEmail, driverPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                        Toast.makeText(getContext(), "Driver signed back.", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+
 
                                                             }
                                                         });
@@ -524,8 +365,16 @@ public class OfflineTakePaymentFragment extends Fragment {
                                                                 Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
                                                                 offlineTakeEmailET.setText("");
                                                                 offlineTakePasswordET.setText("");
-                                                                Toast.makeText(getContext(), "Current user: "+  FirebaseAuth.getInstance().getCurrentUser().getEmail() , Toast.LENGTH_SHORT).show();
                                                                 FirebaseAuth.getInstance().signOut();
+
+                                                                driverPassword = (String) myDataSnaphShot.child("Drivers").child(driverID).child("password").getValue();
+                                                                FirebaseAuth.getInstance().signInWithEmailAndPassword(driverEmail, driverPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                        Toast.makeText(getContext(), "Driver signed back.", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+
                                                             }
                                                         });
 
@@ -545,7 +394,6 @@ public class OfflineTakePaymentFragment extends Fragment {
 
                                     }
 
-
                                 });
 
 
@@ -556,153 +404,8 @@ public class OfflineTakePaymentFragment extends Fragment {
 
                             }
                         }
-                    });*/
+                    });
 
-                    //FirebaseAuth.getInstance().signInWithCredential()
-
-                   /* final String idToken;
-                    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-                    mUser.getToken(true)
-                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                    if (task.isSuccessful()) {
-                                         idToken = task.getResult().getToken();
-                                        // Send token to your backend via HTTPS
-                                        // ...
-                                    } else {
-                                        // Handle error -> task.getException();
-                                    }
-                                }
-                            });
-
-                    FirebaseAuth.getInstance().signInWithCustomToken()
-
-                    FirebaseAuth.getInstance().signOut();
-                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-
-                            }else if(!task.isSuccessful()){
-
-                            }
-
-                        }
-                    });*/
-
-                  /*  user.reauthenticate(credential)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-
-                                        takeRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                                takeBalance = (long) dataSnapshot.child("Customers").child(customerID).child("balance").getValue();
-                                                final Route myRoute = dataSnapshot.child("Routes").child(handleFrom + "-" + handleTo).getValue(Route.class);
-                                                List<String> customersWithReservation = new ArrayList<String>();
-
-                                                if (isWeekday) {
-
-                                                    takeAvailability = myRoute.getWeekdayTimesValue(handleTime).getAvailability();
-                                                    takePrice = (long) myRoute.getWeekdayTimesValue(handleTime).getPrice();
-
-                                                    customersWithReservation.addAll(myRoute.getWeekdayTimesValue(handleTime).getUsers().keySet());
-
-                                                } else {
-
-                                                    takeAvailability = myRoute.getWeekendTimesValue(handleTime).getAvailability();
-                                                    takePrice = (long) myRoute.getWeekendTimesValue(handleTime).getPrice();
-
-
-                                                }
-
-
-                                                if (takeAvailability <= 0) {
-
-                                                    Toast.makeText(getContext(), "No available seats!", Toast.LENGTH_SHORT).show();
-
-                                                } else if (takeBalance < takePrice) {
-
-                                                    Toast.makeText(getContext(), "Insufficient balance!", Toast.LENGTH_SHORT).show();
-
-                                                } else if (customersWithReservation.contains(customerID)) {
-
-                                                    Toast.makeText(getContext(), "Thank you for reservation, " + customerID, Toast.LENGTH_SHORT).show();
-
-                                                } else {
-                                                    takeNewBalance = takeBalance - takePrice;
-
-                                                    takeNewAvailability = (int) takeAvailability - 1;
-
-
-                                                    takeRef.child("Customers").child(customerID).child("balance").setValue(takeNewBalance, new DatabaseReference.CompletionListener() {
-                                                        @Override
-                                                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                                            if (isWeekday) {
-
-                                                                myRoute.getWeekdayTimesValue(handleTime).setAvailability(takeNewAvailability);
-                                                                myRoute.getWeekdayTimesValue(handleTime).getUsers().put(customerID, customerID);
-
-                                                                takeRef.child("Routes").child(handleFrom + "-" + handleTo).setValue(myRoute, new DatabaseReference.CompletionListener() {
-                                                                    @Override
-                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                                                        Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
-                                                                        offlineTakeEmailET.setText("");
-                                                                        offlineTakePasswordET.setText("");
-
-                                                                    }
-                                                                });
-
-
-                                                            } else {
-
-                                                                myRoute.getWeekendTimesValue(handleTime).setAvailability(takeNewAvailability);
-                                                                myRoute.getWeekendTimesValue(handleTime).getUsers().put(customerID, customerID);
-
-                                                                takeRef.child("Routes").child(handleFrom + "-" + handleTo).setValue(myRoute, new DatabaseReference.CompletionListener() {
-                                                                    @Override
-                                                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                                                        Toast.makeText(getContext(), customerID, Toast.LENGTH_SHORT).show();
-                                                                        offlineTakeEmailET.setText("");
-                                                                        offlineTakePasswordET.setText("");
-
-                                                                    }
-                                                                });
-
-
-                                                            }
-
-                                                        }
-                                                    });
-
-                                                }
-
-
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-
-
-                                        });
-
-
-                                    } else {
-
-                                        Toast.makeText(getContext(), "Wrong password or email!", Toast.LENGTH_SHORT).show();
-
-
-                                    }
-                                }
-                            });*/
 
                 }
 
@@ -713,5 +416,17 @@ public class OfflineTakePaymentFragment extends Fragment {
 
         return v;
     }
+
+
+    @Override
+    public void onPause(){
+        super.onPause();
+
+
+    }
+
+
+
+
 
 }
