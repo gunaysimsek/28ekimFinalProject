@@ -58,6 +58,10 @@ public class DriverFinderFragment extends Fragment {
     Route route;
     Calendar calender;
     String driverN;
+    String fromN;
+    String toN;
+    String timeN;
+    String timeIntervalN;
     boolean isWeekday = true;
     Times times;
     HashMap<String,ArrayList<String>> fromToTable = new HashMap<>();
@@ -90,8 +94,10 @@ public class DriverFinderFragment extends Fragment {
         // 7 saturday 1 sunday.
         if((day!=7 && day !=1)){
             isWeekday = true;
+            timeIntervalN = "weekdayTimeList";
         }else{
             isWeekday = false;
+            timeIntervalN = "weekendTimeList";
         }
 
 
@@ -279,6 +285,10 @@ public class DriverFinderFragment extends Fragment {
                 String text1 = fromSpin.getSelectedItem().toString();
                 String text2 = toSpin.getSelectedItem().toString();
                 String text3 = timeSpin.getSelectedItem().toString();
+
+                fromN = text1;
+                toN = text2;
+                timeN = text3;
                 //Log.wtf("TEXT DEGISTIII",text);
                 //Log.wtf("TEXT DEGISTIII",fromToTable.get(text).toString());
                 //Log.wtf("TEXT DEGISTIII========="+fromToTable.get(text).size(),"hohoho");
@@ -406,6 +416,11 @@ public class DriverFinderFragment extends Fragment {
                 find_driver_frame.removeAllViews();
                 LocationFragment newFragment = new LocationFragment();
                 LocationFragment.drivername = driverN;
+                LocationFragment.fromname = fromN;
+                LocationFragment.toname = toN;
+                LocationFragment.timename = timeN;
+                LocationFragment.timeintervalname = timeIntervalN;
+
                 // consider using Java coding conventions (upper first char class names!!!)
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 // Replace whatever is in the fragment_container view with this fragment,

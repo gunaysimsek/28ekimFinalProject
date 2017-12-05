@@ -59,14 +59,10 @@ import java.util.Collections;
  * A simple {@link Fragment} subclass.
  */
 
-// geolocation ne zaman calismali ayarla
-    // driver in location i sadece activese goster.
+//yan cevirince crash
 public class RouteControllerFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-
-    // route un durumuna gore driver location update i burda olucak.
-    // location fragmentda ended ise shuttle in yeri gozukmeyecek.
     public static String drivefrom;
     public static String driveto;
     public static String drivetime;
@@ -91,7 +87,7 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
 
     private final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     private final static String LOCATION_KEY = "location-key";
-    private final static String LAST_UPDATED_TIME_STRING_KEY = "last-updated-time-string-key";
+    //private final static String LAST_UPDATED_TIME_STRING_KEY = "last-updated-time-string-key";
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int REQUEST_CHECK_SETTINGS = 10;
@@ -148,6 +144,7 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
                                 Toast.makeText(getContext(), "Route is now active.", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        startLocationUpdates();
                     }
 
                     @Override
@@ -206,6 +203,7 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
                                 Toast.makeText(getContext(), "Route is now ended.", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        stopLocationUpdates();
                     }
 
                     @Override
@@ -225,7 +223,7 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {
-        Log.i(TAG, "Updating values from bundle");
+        //Log.i(TAG, "Updating values from bundle");
         if (savedInstanceState != null) {
             if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
                 mRequestingLocationUpdates = savedInstanceState.getBoolean(

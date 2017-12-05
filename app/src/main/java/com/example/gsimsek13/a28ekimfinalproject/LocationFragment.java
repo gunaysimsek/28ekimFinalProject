@@ -89,6 +89,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
     private DatabaseReference myRef;
     private Driver driver;
     public static String drivername;
+    public static String fromname;
+    public static String toname;
+    public static String timename;
+    public static String timeintervalname;
 
     Button driverLocation;
     Button userLocation;
@@ -403,13 +407,16 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
         myRef = database.getReference();
 
 
-
         myRef.child("Drivers").child(drivername).addValueEventListener(new ValueEventListener() { //burdaki child yerine hangi driveri istiyosak onu yazicaz
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                String value;
                 driver  =  dataSnapshot.getValue(Driver.class);
-                if(driver.getLatitude()!= 0.0 && driver.getLongitude() != 0.0){
+                if(timeintervalname.equalsIgnoreCase("weekdayTimeList"))
+                    value = driver.getRouteValue(fromname+"-"+toname).getWeekdayTimeListValue(timename);
+                else
+                    value = driver.getRouteValue(fromname+"-"+toname).getWeekendTimeListValue(timename);
+                if(driver.getLatitude()!= 0.0 && driver.getLongitude() != 0.0&&value.equalsIgnoreCase("active")){
                     LatLng latLng = new LatLng(driver.getLatitude(), driver.getLongitude());
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latLng);
