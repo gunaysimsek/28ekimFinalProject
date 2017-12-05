@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class SignUpActivity extends AppCompatActivity {
 
     private static final String TAG = "adasd";
@@ -116,8 +118,9 @@ public class SignUpActivity extends AppCompatActivity {
             name = nameText.getText().toString();
             surname = surnameText.getText().toString();
 
+        HashMap<String,Reservations> myReservations = new HashMap<String, Reservations>();
 
-            customer = new Customer(1, 1, name, surname, email, phoneNo, 0.0);
+        customer = new Customer(1, 1, name, surname, email, phoneNo, 0.0,myReservations);
 
         String[] parts = email.split("@");
 
@@ -161,7 +164,8 @@ public class SignUpActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                    // (int id, int role, String name, String surname, String email, double phoneNumber,double balance)
-                                                    customer = new Customer(12,1,name,surname,email, phoneNo, 0.0);
+                                                    HashMap<String,Reservations> myReservations = new HashMap<String, Reservations>();
+                                                    customer = new Customer(12,1,name,surname,email, phoneNo, 0.0,myReservations);
                                                     myRef.child("Customers").child(myParts[0]).setValue(customer, new DatabaseReference.CompletionListener() {
                                                         @Override
                                                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

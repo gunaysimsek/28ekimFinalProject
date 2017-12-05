@@ -101,8 +101,8 @@ public class MyReservationsFragment extends Fragment {
                         //final String driverName = "";
                         //final Times shuttleTimeClass;
                         if(isWeekday){
-                            theDay = "weekDayTimes";
-                            theTimeList = "weekDayTimeList";
+                            theDay = "weekdayTimes";
+                            theTimeList = "weekdayTimeList";
                         }
                         else {
                             theDay = "weekendTimes";

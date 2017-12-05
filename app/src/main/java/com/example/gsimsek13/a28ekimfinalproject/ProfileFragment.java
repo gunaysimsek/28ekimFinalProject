@@ -101,10 +101,10 @@ public class ProfileFragment extends Fragment {
                 String updatedPhoneNo = phonetv.getText().toString();
                 String updatedName = nametv.getText().toString();
                 String updatedSurname = surnametv.getText().toString();
-                
 
 
-                Customer updatedCustomer = new Customer(customer.id ,customer.role,updatedName,updatedSurname, customer.email, updatedPhoneNo, customer.balance);
+
+                Customer updatedCustomer = new Customer(customer.id ,customer.role,updatedName,updatedSurname, customer.email, updatedPhoneNo, customer.balance,customer.getReservations());
                 myRef.child("Customers").child(parts[0]).setValue(updatedCustomer, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
