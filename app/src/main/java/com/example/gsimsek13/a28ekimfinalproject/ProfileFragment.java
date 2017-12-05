@@ -36,6 +36,7 @@ public class ProfileFragment extends Fragment {
     Button updateProfileBtn;
     Button topUpProfileBtn;
     Button changePasswordProfileBtn;
+    Button myReservationsButton;
 
     private FirebaseDatabase database ;
     private DatabaseReference myRef;
@@ -68,6 +69,7 @@ public class ProfileFragment extends Fragment {
         updateProfileBtn = v.findViewById(R.id.profileUpdateBtn);
         topUpProfileBtn = v.findViewById(R.id.profileTopUpBtn);
         changePasswordProfileBtn = v.findViewById(R.id.profileChangePasswordBtn);
+        myReservationsButton = v.findViewById(R.id.profileMyReservations);
 
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
 
@@ -140,6 +142,17 @@ public class ProfileFragment extends Fragment {
                 fragmentTransaction.commit();
 
 
+            }
+        });
+
+        myReservationsButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Fragment fragment = new MyReservationsFragment(parts[0]);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame,fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 

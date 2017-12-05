@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/rate_Driver_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="132dp"
+        android:text="Rate Driver"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/Bad_RadioButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Dialog_Text_View_Very_Bad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="60dp"
+        android:text="Very Bad:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Dialog_Text_View_Bad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
+        android:text="Bad:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Dialog_Text_View_Very_Bad" />
+
+    <TextView
+        android:id="@+id/Dialog_Text_View_Average"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
+        android:text="Average:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Dialog_Text_View_Bad" />
+
+    <TextView
+        android:id="@+id/Dialog_Text_View_Good"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
+        android:text="Good:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Dialog_Text_View_Average" />
+
+    <TextView
+        android:id="@+id/Dialog_Text_View_Very_Good"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
+        android:text="Very Good:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Dialog_Text_View_Good" />
+
+<RadioGroup
+    android:id="@+id/Rate_Driver_Radio_Group"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RadioButton
+        android:id="@+id/Very_Bad_RadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="57dp"
+        android:text="Very Bad"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/Dialog_Text_View_Very_Bad"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioButton
+        android:id="@+id/Bad_RadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="23dp"
+        android:text="Bad"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintStart_toEndOf="@+id/Dialog_Text_View_Bad"
+        app:layout_constraintTop_toBottomOf="@+id/Very_Bad_RadioButton" />
+
+    <RadioButton
+        android:id="@+id/Average_RadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="23dp"
+        android:text="Average"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintStart_toEndOf="@+id/Dialog_Text_View_Average"
+        app:layout_constraintTop_toBottomOf="@+id/Bad_RadioButton" />
+
+    <RadioButton
+        android:id="@+id/Good_RadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="23dp"
+        android:text="Good"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintStart_toEndOf="@+id/Dialog_Text_View_Good"
+        app:layout_constraintTop_toBottomOf="@+id/Average_RadioButton" />
+
+    <RadioButton
+        android:id="@+id/Very_Good_RadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="21dp"
+        android:text="Very Good"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintStart_toEndOf="@+id/Dialog_Text_View_Very_Good"
+        app:layout_constraintTop_toBottomOf="@+id/Good_RadioButton" />
+</RadioGroup>
+
+</android.support.constraint.ConstraintLayout>

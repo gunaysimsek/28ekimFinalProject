@@ -203,6 +203,17 @@
             app:layout_rowWeight="1"
             />
 
+        <Button
+            android:id="@+id/profileMyReservations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_column="0"
+            app:layout_columnSpan="3"
+            app:layout_gravity="center"
+            app:layout_row="8"
+            app:layout_rowWeight="1"
+            android:text="My Reservations" />
+
 
 
 
