@@ -145,15 +145,6 @@
             app:layout_constraintEnd_toStartOf="@+id/rightLinearLayout"
             app:layout_constraintTop_toBottomOf="@+id/Make_Reservation_GridLayout"></LinearLayout>
 
-        <Button
-            android:id="@+id/rate_Driver_Fragment_Opener_Button"
-            android:layout_width="70dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="46dp"
-            android:layout_marginTop="16dp"
-            android:text="Rate"
-            app:layout_constraintStart_toEndOf="@+id/fromSpinner"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>

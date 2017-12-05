@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -46,8 +47,6 @@ import java.util.Set;
 public class ReservationFragment extends Fragment {
 
     //TextView exampleTV;
-    Button rateDriver;
-    Button rateDriverFragmentOpener;
     boolean alreadyRegistered = false;
     Spinner toSpin;
     Spinner fromSpin;
@@ -67,7 +66,8 @@ public class ReservationFragment extends Fragment {
     boolean isWeekday = true;
     HashMap<String,ArrayList<String>> fromToTable = new HashMap<>();
     Route route;
-    RadioGroup myRadioGroup;
+    int routeAvailability;
+
 
 
 
@@ -80,15 +80,32 @@ public class ReservationFragment extends Fragment {
 
     }
 
-    public ArrayList<ArrayList<String>> readFromDatabase(String from, String to) {
+    public ArrayList<ArrayList<String>> readFromDatabase() {
         //ArrayList<ArrayList<String>> returningList = new ArrayList<ArrayList<String>>();
 
-        myRef.child("Routes").child(from+"-"+to).addValueEventListener(new ValueEventListener() {
+        leftLinearLayout.removeAllViews();
+        centerRightLinearLayout.removeAllViews();
+        centerLeftLinearLayout.removeAllViews();
+        rightLinearLayout.removeAllViews();
+
+
+
+        //exampleTV.setText(toSpinner.getSelectedItem().toString());
+        //exampleTV.setVisibility(View.VISIBLE);
+
+        final String toSpinnerValue = toSpin.getSelectedItem().toString();
+        final String fromSpinnerValue = fromSpin.getSelectedItem().toString();
+
+        myRef.child("Routes").child(fromSpinnerValue+"-"+toSpinnerValue).addValueEventListener(new ValueEventListener() {
             @Override
+
+
+
             public void onDataChange(DataSnapshot dataSnapshot) {
                 returningList = new ArrayList<ArrayList<String>>();
-
+                ArrayList<ArrayList<String>> myList = new ArrayList<ArrayList<String>>();
                 route = dataSnapshot.getValue(Route.class);
+
                 ArrayList<String> timeList = new ArrayList<>();
                 if(isWeekday){
 
@@ -110,6 +127,7 @@ public class ReservationFragment extends Fragment {
                         }
                         eachShuttle.add("weekdayTimes");
                         returningList.add(eachShuttle);
+                        myList.add(eachShuttle);
 
                     }
                 }
@@ -133,13 +151,38 @@ public class ReservationFragment extends Fragment {
                         }
                         eachShuttle.add("weekendTimes");
                         returningList.add(eachShuttle);
+                        myList.add(eachShuttle);
 
                     }
                 }
 
                 Log.d("route deneme",route.toString());
 
+                for(ArrayList<String> eachShuttle : myList){
+                    //Log.d("deneme",eachShuttle.get(1));
+                    //Log.d("deneme",eachShuttle.get(3));
+                    //Log.d("deneme",eachShuttle.get(0));
+                    //Log.d("deneme",eachShuttle.get(2));
 
+                    leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
+                    if(eachShuttle.get(3).equalsIgnoreCase("Button")) {
+                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2),eachShuttle.get(4)));
+                    }
+                    else {
+                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],false,eachShuttle.get(2),eachShuttle.get(4)));
+                    }
+                    //rightLinearLayout.addView(createNewTextView(eachShuttle.get(3)));
+                    centerLeftLinearLayout.addView(createNewTextView(eachShuttle.get(0)));
+                    centerRightLinearLayout.addView(createNewTextView(eachShuttle.get(2)));
+
+                }
+                if(leftLinearLayout.getChildCount() > 0) {
+                    //Log.d("deneme", "Left child sayisi " + leftLinearLayout.getChildCount());
+                    for(int i=0; i<leftLinearLayout.getChildCount() ; i++){
+                        //Log.d("deneme", "Left child "+i+" Idsi " + leftLinearLayout.getChildAt(i).get(i));
+
+                    }
+                }
                 /*
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     ArrayList<String> eachShuttle = new ArrayList<String>();
@@ -203,7 +246,6 @@ public class ReservationFragment extends Fragment {
         centerRightLinearLayout = (LinearLayout) v.findViewById(R.id.centerRightLinearLayout);
 
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
-        rateDriverFragmentOpener = (Button) v.findViewById(R.id.rate_Driver_Fragment_Opener_Button);
 
         toSpin = (Spinner) v.findViewById(R.id.toSpinner);
         fromSpin = (Spinner) v.findViewById(R.id.fromSpinner);
@@ -315,7 +357,7 @@ public class ReservationFragment extends Fragment {
             }
         });
 
-
+/*
         rateDriverFragmentOpener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -341,7 +383,7 @@ public class ReservationFragment extends Fragment {
 
             }
         });
-
+*/
         fromSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -375,19 +417,26 @@ public class ReservationFragment extends Fragment {
             @Override
             public void onClick(View view){
 
-                leftLinearLayout.removeAllViews();
-                centerRightLinearLayout.removeAllViews();
-                centerLeftLinearLayout.removeAllViews();
-                rightLinearLayout.removeAllViews();
+//                leftLinearLayout.removeAllViews();
+//                centerRightLinearLayout.removeAllViews();
+//                centerLeftLinearLayout.removeAllViews();
+//                rightLinearLayout.removeAllViews();
+//
+//
+//
+//
+//
+//                String toSpinnerValue = toSpin.getSelectedItem().toString();
+//                String fromSpinnerValue = fromSpin.getSelectedItem().toString();
 
 
 
-                //exampleTV.setText(toSpinner.getSelectedItem().toString());
-                //exampleTV.setVisibility(View.VISIBLE);
 
-                String toSpinnerValue = toSpin.getSelectedItem().toString();
-                String fromSpinnerValue = fromSpin.getSelectedItem().toString();
-                ArrayList<ArrayList<String>> myList = readFromDatabase(fromSpinnerValue,toSpinnerValue);
+
+                ArrayList<ArrayList<String>> myList = readFromDatabase();
+
+
+
                 //Log.d("deneme",myList.toString());
 
                 //leftLinearLayout.addView(createNewTextView(myList.get(0).get(1)));
@@ -395,39 +444,27 @@ public class ReservationFragment extends Fragment {
                 //centerLeftLinearLayout.addView(createNewTextView(myList.get(0).get(0)));
                 //centerRightLinearLayout.addView(createNewTextView(myList.get(0).get(2)));
 
-                for(ArrayList<String> eachShuttle : myList){
-                    //Log.d("deneme",eachShuttle.get(1));
-                    //Log.d("deneme",eachShuttle.get(3));
-                    //Log.d("deneme",eachShuttle.get(0));
-                    //Log.d("deneme",eachShuttle.get(2));
-
-                    leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
-                    if(eachShuttle.get(3).equalsIgnoreCase("Button")) {
-                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2),eachShuttle.get(4)));
-                    }
-                    else {
-                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],false,eachShuttle.get(2),eachShuttle.get(4)));
-                    }
-                    //rightLinearLayout.addView(createNewTextView(eachShuttle.get(3)));
-                    centerLeftLinearLayout.addView(createNewTextView(eachShuttle.get(0)));
-                    centerRightLinearLayout.addView(createNewTextView(eachShuttle.get(2)));
-
-                }
-                if(leftLinearLayout.getChildCount() > 0) {
-                    //Log.d("deneme", "Left child sayisi " + leftLinearLayout.getChildCount());
-                    for(int i=0; i<leftLinearLayout.getChildCount() ; i++){
-                        //Log.d("deneme", "Left child "+i+" Idsi " + leftLinearLayout.getChildAt(i).get(i));
-
-                    }
-                }
-                //leftLinearLayout.addView(createNewTextView("3"));
-                //rightLinearLayout.addView(createNewTextView("Button"));
-                //centerLeftLinearLayout.addView(createNewTextView("10:30"));
-                //centerRightLinearLayout.addView(createNewTextView("15 TL"));
-
-
-                //Log.d("deneme",fromSpinnerValue+"-"+toSpinnerValue);
-                //readFromDatabase(fromSpinnerValue,toSpinnerValue);
+//                for(ArrayList<String> eachShuttle : myList){
+//
+//
+//                    leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
+//                    if(eachShuttle.get(3).equalsIgnoreCase("Button")) {
+//                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2),eachShuttle.get(4)));
+//                    }
+//                    else {
+//                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],false,eachShuttle.get(2),eachShuttle.get(4)));
+//                    }
+//                    centerLeftLinearLayout.addView(createNewTextView(eachShuttle.get(0)));
+//                    centerRightLinearLayout.addView(createNewTextView(eachShuttle.get(2)));
+//
+//                }
+//                if(leftLinearLayout.getChildCount() > 0) {
+//                    //Log.d("deneme", "Left child sayisi " + leftLinearLayout.getChildCount());
+//                    for(int i=0; i<leftLinearLayout.getChildCount() ; i++){
+//                        //Log.d("deneme", "Left child "+i+" Idsi " + leftLinearLayout.getChildAt(i).get(i));
+//
+//                    }
+//                }
             }
         });
 
@@ -559,6 +596,7 @@ public class ReservationFragment extends Fragment {
                         Toast.makeText(getContext(), "You already made reservation for that shuttle", Toast.LENGTH_SHORT).show();
                     } else {
                         myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("users").child(user).setValue(user);
+                        myRef.child("Customers").child(parts[0]).child("reservations").child(fromTo).child("times").child(time).setValue(time);
                         //int availability = myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability");
                         //myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability").setValue()
                         myRef.child("Customers").child(user).child("balance").setValue(userBalance - Integer.parseInt(price.substring(0, 2)));

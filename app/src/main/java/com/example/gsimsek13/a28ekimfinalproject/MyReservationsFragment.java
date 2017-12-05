@@ -45,7 +45,7 @@ public class MyReservationsFragment extends Fragment {
     int raters;
 
 
-    public MyReservationsFragment(){
+    public MyReservationsFragment() {
 
     }
 
@@ -58,16 +58,21 @@ public class MyReservationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_my_reservations,container,false );
+
+        View v = inflater.inflate(R.layout.fragment_my_reservations, container, false);
+        if (savedInstanceState != null) {
+            userName = savedInstanceState.getString("userName");
+        }
+
+
         calender = Calendar.getInstance();
         int day = calender.get(Calendar.DAY_OF_WEEK);
         // 7 saturday 1 sunday.
-        if((day!=7 && day !=1)){
+        if ((day != 7 && day != 1)) {
             isWeekday = true;
-        }else{
+        } else {
             isWeekday = false;
         }
-
 
 
         ScrollViewLayout = v.findViewById(R.id.my_reservations_linear_layout);
@@ -76,7 +81,7 @@ public class MyReservationsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userReservations = new ArrayList<Reservations>();
-                for( DataSnapshot eachSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot eachSnapshot : dataSnapshot.getChildren()) {
                     //Log.d("MyReservations deneme", userName);
                     //Log.d("MyReservations deneme",eachSnapshot.toString());
                     Reservations eachRouteReservation = eachSnapshot.getValue(Reservations.class);
@@ -86,52 +91,47 @@ public class MyReservationsFragment extends Fragment {
                 }
 
 
-
-
-
-                for(Reservations eachReservation : userReservations ){
+                for (Reservations eachReservation : userReservations) {
                     final String from = eachReservation.from;
                     final String to = eachReservation.to;
 
                     //Log.d("My Reservations deneme","From: " +eachReservation.from + " To: " +eachReservation.to);
-                    for(String eachTime : eachReservation.getTimes().keySet()){
+                    for (String eachTime : eachReservation.getTimes().keySet()) {
                         final String time = eachTime;
                         String theDay;
                         final String theTimeList;
                         //final String driverName = "";
                         //final Times shuttleTimeClass;
-                        if(isWeekday){
+                        if (isWeekday) {
                             theDay = "weekdayTimes";
                             theTimeList = "weekdayTimeList";
-                        }
-                        else {
+                        } else {
                             theDay = "weekendTimes";
                             theTimeList = "weekendTimeList";
                         }
                         //Log.d("Timesdeneme",from+"-"+to +" "+theDay+ " " +time);
-                        myRef.child("Routes").child(from+"-"+to).child(theDay).child(time).addValueEventListener(new ValueEventListener() {
+                        myRef.child("Routes").child(from + "-" + to).child(theDay).child(time).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Times shuttleTimeClass = dataSnapshot.getValue(Times.class);
                                 //Log.d("Timesdeneme",shuttleTimeClass.toString());
                                 final String driverName = shuttleTimeClass.driver;
-                                Log.d("Timesdeneme",driverName+ "  "+time);
+                                Log.d("Timesdeneme", driverName + "  " + time);
                                 //ScrollViewLayout.addView(createNewTextView("From: " +from + " To: " + to + " Time: " + time));
 
 
-                                myRef.child("Drivers").child(driverName).child("routes").child(from+"-"+to).child(theTimeList).child(time).addValueEventListener(new ValueEventListener() {
+                                myRef.child("Drivers").child(driverName).child("routes").child(from + "-" + to).child(theTimeList).child(time).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        Log.d("Timessss",driverName+" " +from+"-"+to +" "+theTimeList + " " + time);
-                                        Log.d("Timesdeneme",dataSnapshot.getValue().toString());
+                                        Log.d("Timessss", driverName + " " + from + "-" + to + " " + theTimeList + " " + time);
+                                        Log.d("Timesdeneme", dataSnapshot.getValue().toString());
                                         String value = dataSnapshot.getValue(String.class);
-                                        Log.d("Timesdeneme",value);
-                                        ScrollViewLayout.addView(createNewTextView("From: " +from + " To: " + to + " Time: " + time));
+                                        Log.d("Timesdeneme", value);
+                                        ScrollViewLayout.addView(createNewTextView("From: " + from + " To: " + to + " Time: " + time));
 
-                                        if(value.equalsIgnoreCase("Ended")){
+                                        if (value.equalsIgnoreCase("Ended")) {
                                             ScrollViewLayout.addView(createNewButton(driverName, true));
-                                        }
-                                        else {
+                                        } else {
                                             ScrollViewLayout.addView(createNewButton(driverName, false));
                                         }
 
@@ -152,11 +152,6 @@ public class MyReservationsFragment extends Fragment {
                         });
 
 
-
-
-
-
-
                         //Log.d("My Reservations deneme", eachTime);
                     }
 
@@ -166,16 +161,11 @@ public class MyReservationsFragment extends Fragment {
             }
 
 
-
-
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-
 
 
         return v;
@@ -184,7 +174,7 @@ public class MyReservationsFragment extends Fragment {
 
     public TextView createNewTextView(String text) {
 
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1.0f);
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         final TextView textView = new TextView(getActivity());
 
         textView.setLayoutParams(lparams);
@@ -195,19 +185,18 @@ public class MyReservationsFragment extends Fragment {
         return textView;
     }
 
-    public Button createNewButton(final String driver,final boolean visible) {
+    public Button createNewButton(final String driver, final boolean visible) {
         //Log.wtf("Dallama",fromTo);
         //Log.wtf("Dallama",time);
         //Log.wtf("Dallama",user);
         //Log.wtf("Dallama",price);
 
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final Button newButton = new Button(getActivity());
         newButton.setLayoutParams(lparams);
-        if(visible) {
+        if (visible) {
             newButton.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             newButton.setVisibility(View.INVISIBLE);
             newButton.setClickable(false);
         }
@@ -216,9 +205,9 @@ public class MyReservationsFragment extends Fragment {
                                          public void onClick(View v) {
 
                                              AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-                                             View mView = getLayoutInflater().inflate(R.layout.dialog_rate_driver,null);
+                                             View mView = getLayoutInflater().inflate(R.layout.dialog_rate_driver, null);
                                              myRadioGroup = (RadioGroup) mView.findViewById(R.id.Rate_Driver_Radio_Group);
-                                             rateDriver = (Button) mView.findViewById(R.id.rate_Driver_Button) ;
+                                             rateDriver = (Button) mView.findViewById(R.id.rate_Driver_Button);
 
                                              mBuilder.setView(mView);
                                              final AlertDialog dialog = mBuilder.create();
@@ -233,31 +222,26 @@ public class MyReservationsFragment extends Fragment {
                                                      int radioId = myRadioGroup.indexOfChild(radioButton);
                                                      RadioButton btn = (RadioButton) myRadioGroup.getChildAt(radioId);
                                                      String selection = (String) btn.getText();
-                                                     Log.d("RadioButtonDeneme",radioButtonID +"");
+                                                     Log.d("RadioButtonDeneme", radioButtonID + "");
                                                      int driverRating;
 
-                                                     if(selection.equalsIgnoreCase("Very Bad")){
+                                                     if (selection.equalsIgnoreCase("Very Bad")) {
                                                          driverRating = 1;
-                                                     }
-                                                     else if(selection.equalsIgnoreCase("Bad")){
+                                                     } else if (selection.equalsIgnoreCase("Bad")) {
                                                          driverRating = 2;
-                                                     }
-                                                     else if(selection.equalsIgnoreCase("Average")){
+                                                     } else if (selection.equalsIgnoreCase("Average")) {
                                                          driverRating = 3;
-                                                     }
-                                                     else if(selection.equalsIgnoreCase("Good")){
+                                                     } else if (selection.equalsIgnoreCase("Good")) {
                                                          driverRating = 4;
-                                                     }
-                                                     else {
+                                                     } else {
                                                          driverRating = 5;
                                                      }
-                                                     final int finalDriverRating =driverRating;
-                                                     Log.d("FailDeneme","hooooop");
+                                                     final int finalDriverRating = driverRating;
+                                                     Log.d("FailDeneme", "hooooop");
 
                                                      myRef.child("Drivers").child(driver).addValueEventListener(new ValueEventListener() {
                                                          @Override
                                                          public void onDataChange(DataSnapshot dataSnapshot) {
-
 
 
                                                              rating = dataSnapshot.child("rating").getValue(int.class);
@@ -317,4 +301,12 @@ public class MyReservationsFragment extends Fragment {
         return driverName;
     }
     */
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putString("userName", userName);
+        // etc.
+    }
+
 }
