@@ -161,9 +161,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
         } else if(position== 1){
 
-          /*  Intent intent = new Intent(getApplicationContext(), QRActivity.class);
 
-            startActivity(intent);*/
             FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
             contentFrameLayout.removeAllViews();
 

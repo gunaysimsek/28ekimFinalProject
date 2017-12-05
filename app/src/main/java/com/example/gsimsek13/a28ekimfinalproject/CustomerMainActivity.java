@@ -313,11 +313,5 @@ public class CustomerMainActivity extends AppCompatActivity   {
 
 
 
-    public void goQR(View view){
 
-        Intent intent = new Intent(this, QRActivity.class);
-
-        startActivity(intent);
-
-    }
 }
