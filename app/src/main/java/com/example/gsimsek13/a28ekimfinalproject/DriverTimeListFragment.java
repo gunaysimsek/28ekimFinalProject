@@ -297,6 +297,9 @@ public class DriverTimeListFragment extends Fragment {
                 Log.wtf("asdfsdfas",selectedTime);
                 Log.wtf("asdfasdfasdfa",from);
                 Log.wtf("asdfasdfasdfasdf",to);
+
+
+
                 // consider using Java coding conventions (upper first char class names!!!)
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 // Replace whatever is in the fragment_container view with this fragment,
@@ -306,6 +309,7 @@ public class DriverTimeListFragment extends Fragment {
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 // Commit the transaction
                 transaction.commit();
+
             }
         });
 

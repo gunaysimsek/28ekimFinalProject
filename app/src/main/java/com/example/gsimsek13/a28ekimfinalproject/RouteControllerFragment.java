@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -113,6 +114,9 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
         routeControllerRelative = (RelativeLayout) v.findViewById(R.id.routeControllerRelative);
         routeControllerFrame = (FrameLayout) v.findViewById(R.id.routeControllerFrame) ;
 
+
+
+
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
@@ -218,6 +222,7 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
 
         updateValuesFromBundle(savedInstanceState);
         buildGoogleApiClient();
+
         // Inflate the layout for this fragment
         return v;
     }
@@ -395,6 +400,8 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
     @Override
     public void onResume() {
         super.onResume();
+        if(getActivity()!=null)
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         isPlayServicesAvailable(getContext());
 
 
