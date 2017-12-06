@@ -2,6 +2,7 @@ package com.example.gsimsek13.a28ekimfinalproject;
 
 import android.app.AlertDialog;
 import android.provider.ContactsContract;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,6 +57,7 @@ public class ReservationFragment extends Fragment {
     LinearLayout rightLinearLayout;
     LinearLayout centerLeftLinearLayout;
     LinearLayout centerRightLinearLayout;
+    ConstraintLayout constraintLayout;
     //ArrayList<ArrayList<String>> returningList2 = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> returningList = new ArrayList<ArrayList<String>>();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -243,12 +245,18 @@ public class ReservationFragment extends Fragment {
         //exampleTV = (TextView) v.findViewById(R.id.exampleTextView);
         make_Reservation_GridLayout = (GridLayout) v.findViewById(R.id.Make_Reservation_GridLayout);
         leftLinearLayout = (LinearLayout) v.findViewById(R.id.leftLinearLayout);
+//        ViewGroup.LayoutParams lparam = leftLinearLayout.getLayoutParams();
+//        lparam.width = 10000;
+//        leftLinearLayout.setLayoutParams(lparam);
         rightLinearLayout = (LinearLayout) v.findViewById(R.id.rightLinearLayout) ;
         centerLeftLinearLayout = (LinearLayout) v.findViewById(R.id.centerLeftLinearLayout);
         centerRightLinearLayout = (LinearLayout) v.findViewById(R.id.centerRightLinearLayout);
 
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
 
+
+        constraintLayout = (ConstraintLayout) v.findViewById(R.id.make_reservation_constraint_layout);
+        Log.d("LayoutDenemeee",constraintLayout.getLayoutParams().toString());
         toSpin = (Spinner) v.findViewById(R.id.toSpinner);
         fromSpin = (Spinner) v.findViewById(R.id.fromSpinner);
 
@@ -548,7 +556,7 @@ public class ReservationFragment extends Fragment {
 
         Log.d("Reservation deneme","bak burdayim");
 
-        myRef.child("Customers").child(user).addValueEventListener(new ValueEventListener() {
+        myRef.child("Customers").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -558,7 +566,7 @@ public class ReservationFragment extends Fragment {
 
 
                 if( (int) userBalance >= Integer.parseInt(price.substring(0,2))){
-                    myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("users").addValueEventListener(new ValueEventListener() {
+                    myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
@@ -575,7 +583,7 @@ public class ReservationFragment extends Fragment {
                                 Toast.makeText(getContext(), "You already made reservation for that shuttle", Toast.LENGTH_SHORT).show();
                             } else {
                                 myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("users").child(user).setValue(user);
-                                myRef.child("Customers").child(parts[0]).child("reservations").child(fromTo).child("times").child(time).setValue(time);
+                                myRef.child("Customers").child(parts[0]).child("reservations").child(fromTo).child("times").child(time).setValue("unrated");
                                 myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability").setValue(availability - 1);
                                 //int availability = myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability");
                                 //myRef.child("Routes").child(fromTo).child(currentDay).child(time).child("availability").setValue()

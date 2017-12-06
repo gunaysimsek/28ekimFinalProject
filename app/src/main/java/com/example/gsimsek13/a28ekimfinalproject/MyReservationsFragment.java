@@ -77,7 +77,7 @@ public class MyReservationsFragment extends Fragment {
 
         ScrollViewLayout = v.findViewById(R.id.my_reservations_linear_layout);
 
-        myRef.child("Customers").child(userName).child("reservations").addValueEventListener(new ValueEventListener() {
+        myRef.child("Customers").child(userName).child("reservations").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userReservations = new ArrayList<Reservations>();
@@ -85,6 +85,7 @@ public class MyReservationsFragment extends Fragment {
                     //Log.d("MyReservations deneme", userName);
                     //Log.d("MyReservations deneme",eachSnapshot.toString());
                     Reservations eachRouteReservation = eachSnapshot.getValue(Reservations.class);
+
                     //Log.d("MyReservations deneme",eachRouteReservation.toString());
 
                     userReservations.add(eachRouteReservation);
@@ -100,6 +101,7 @@ public class MyReservationsFragment extends Fragment {
                         final String time = eachTime;
                         String theDay;
                         final String theTimeList;
+                        final String keyToValue = eachReservation.getTimesValue(time);
                         //final String driverName = "";
                         //final Times shuttleTimeClass;
                         if (isWeekday) {
@@ -110,7 +112,7 @@ public class MyReservationsFragment extends Fragment {
                             theTimeList = "weekendTimeList";
                         }
                         //Log.d("Timesdeneme",from+"-"+to +" "+theDay+ " " +time);
-                        myRef.child("Routes").child(from + "-" + to).child(theDay).child(time).addValueEventListener(new ValueEventListener() {
+                        myRef.child("Routes").child(from + "-" + to).child(theDay).child(time).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Times shuttleTimeClass = dataSnapshot.getValue(Times.class);
@@ -120,7 +122,7 @@ public class MyReservationsFragment extends Fragment {
                                 //ScrollViewLayout.addView(createNewTextView("From: " +from + " To: " + to + " Time: " + time));
 
 
-                                myRef.child("Drivers").child(driverName).child("routes").child(from + "-" + to).child(theTimeList).child(time).addValueEventListener(new ValueEventListener() {
+                                myRef.child("Drivers").child(driverName).child("routes").child(from + "-" + to).child(theTimeList).child(time).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         Log.d("Timessss", driverName + " " + from + "-" + to + " " + theTimeList + " " + time);
@@ -129,10 +131,10 @@ public class MyReservationsFragment extends Fragment {
                                         Log.d("Timesdeneme", value);
                                         ScrollViewLayout.addView(createNewTextView("From: " + from + " To: " + to + " Time: " + time));
 
-                                        if (value.equalsIgnoreCase("Ended")) {
-                                            ScrollViewLayout.addView(createNewButton(driverName, true));
+                                        if (value.equalsIgnoreCase("Ended") && keyToValue.equalsIgnoreCase("unrated")) {
+                                            ScrollViewLayout.addView(createNewButton(driverName, true,from+"-"+to,time));
                                         } else {
-                                            ScrollViewLayout.addView(createNewButton(driverName, false));
+                                            ScrollViewLayout.addView(createNewButton(driverName, false,from+"-"+to,time));
                                         }
 
                                     }
@@ -185,7 +187,7 @@ public class MyReservationsFragment extends Fragment {
         return textView;
     }
 
-    public Button createNewButton(final String driver, final boolean visible) {
+    public Button createNewButton(final String driver, final boolean visible,final String fromTo,final String time) {
         //Log.wtf("Dallama",fromTo);
         //Log.wtf("Dallama",time);
         //Log.wtf("Dallama",user);
@@ -239,13 +241,19 @@ public class MyReservationsFragment extends Fragment {
                                                      final int finalDriverRating = driverRating;
                                                      Log.d("FailDeneme", "hooooop");
 
-                                                     myRef.child("Drivers").child(driver).addValueEventListener(new ValueEventListener() {
+                                                     myRef.child("Drivers").child(driver).addListenerForSingleValueEvent(new ValueEventListener() {
                                                          @Override
                                                          public void onDataChange(DataSnapshot dataSnapshot) {
 
 
                                                              rating = dataSnapshot.child("rating").getValue(int.class);
                                                              raters = dataSnapshot.child("raters").getValue(int.class);
+                                                             myRef.child("Drivers").child(driver).child("rating").setValue(rating + finalDriverRating);
+                                                             myRef.child("Drivers").child(driver).child("raters").setValue(raters + 1);
+                                                             myRef.child("Customers").child(userName).child("reservations").child(fromTo).child("times").child(time).setValue("rated");
+
+                                                             dialog.hide();
+                                                             newButton.setVisibility(View.INVISIBLE);
 
                                                          }
 
@@ -255,11 +263,7 @@ public class MyReservationsFragment extends Fragment {
                                                          }
                                                      });
 
-                                                     myRef.child("Drivers").child(driver).child("rating").setValue(rating + finalDriverRating);
-                                                     myRef.child("Drivers").child(driver).child("raters").setValue(raters + 1);
 
-                                                     dialog.hide();
-                                                     newButton.setVisibility(View.INVISIBLE);
                                                      //Log.d("RadioButtonDeneme",selection+"hoop");
                                                  }
                                              });

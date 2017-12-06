@@ -36,5 +36,9 @@ public class Reservations implements Serializable {
         this.times = times;
     }
 
+    public String getTimesValue(String timeValue){
+        return times.get(timeValue);
+    }
+
 
 }

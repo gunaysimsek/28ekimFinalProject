@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/make_reservation_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -64,12 +65,11 @@
 
         <GridLayout
             android:id="@+id/Make_Reservation_GridLayout"
-            android:layout_width="368dp"
+            android:layout_width="match_parent"
             android:layout_height="18dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toSpinner">
+            app:layout_constraintTop_toBottomOf="@+id/toSpinner"
+            tools:layout_editor_absoluteX="8dp">
 
             <TextView
                 android:id="@+id/Available_Seats_TextView"
@@ -105,13 +105,11 @@
 
         <LinearLayout
             android:id="@+id/leftLinearLayout"
-            android:layout_width="115dp"
+            android:layout_width="90dp"
             android:layout_height="298dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/centerLeftLinearLayout"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Make_Reservation_GridLayout"></LinearLayout>
 
@@ -119,30 +117,30 @@
             android:id="@+id/centerLeftLinearLayout"
             android:layout_width="53dp"
             android:layout_height="298dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/centerRightLinearLayout"
+            app:layout_constraintStart_toEndOf="@+id/leftLinearLayout"
             app:layout_constraintTop_toBottomOf="@+id/Make_Reservation_GridLayout"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/rightLinearLayout"
             android:layout_width="106dp"
             android:layout_height="298dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/centerRightLinearLayout"
             app:layout_constraintTop_toBottomOf="@+id/Make_Reservation_GridLayout"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/centerRightLinearLayout"
             android:layout_width="55dp"
             android:layout_height="298dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/rightLinearLayout"
+            app:layout_constraintStart_toEndOf="@+id/centerLeftLinearLayout"
             app:layout_constraintTop_toBottomOf="@+id/Make_Reservation_GridLayout"></LinearLayout>
 
 

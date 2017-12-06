@@ -324,6 +324,9 @@ public class ScheduleFragment extends Fragment{
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ArrayList<ArrayList<String>> myList = readFromDatabase();
+                /*
                 scrollViewLinearLayout.removeAllViews();
 
                 String toSpinnerValue = Schedule_To_Spinnerr.getSelectedItem().toString();
@@ -334,6 +337,8 @@ public class ScheduleFragment extends Fragment{
 
                     scrollViewLinearLayout.addView(createNewTextView(fromSpinnerValue,toSpinnerValue,eachShuttle.get(0),eachShuttle.get(2)));
                 }
+
+                */
             }
         });
 
@@ -396,12 +401,22 @@ public class ScheduleFragment extends Fragment{
     }
 
 
-    public ArrayList<ArrayList<String>> readFromDatabase(String from, String to) {
+    public ArrayList<ArrayList<String>> readFromDatabase() {
         //ArrayList<ArrayList<String>> returningList = new ArrayList<ArrayList<String>>();
 
-        myRef.child("Routes").child(from+"-"+to).addValueEventListener(new ValueEventListener() {
+
+        scrollViewLinearLayout.removeAllViews();
+
+        final String toSpinnerValue = Schedule_To_Spinnerr.getSelectedItem().toString();
+        final String fromSpinnerValue = Schedule_From_Spinnerr.getSelectedItem().toString();
+
+
+
+
+        myRef.child("Routes").child(fromSpinnerValue+"-"+toSpinnerValue).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<ArrayList<String>> myList = new ArrayList<ArrayList<String>>();
                 returningList = new ArrayList<ArrayList<String>>();
 
                 route = dataSnapshot.getValue(Route.class);
@@ -426,6 +441,7 @@ public class ScheduleFragment extends Fragment{
                         }
                         eachShuttle.add("weekdayTimes");
                         returningList.add(eachShuttle);
+                        myList.add(eachShuttle);
 
                     }
                 }
@@ -449,8 +465,13 @@ public class ScheduleFragment extends Fragment{
                         }
                         eachShuttle.add("weekendTimes");
                         returningList.add(eachShuttle);
-
+                        myList.add(eachShuttle);
                     }
+                }
+
+                for(ArrayList<String> eachShuttle : myList){
+
+                    scrollViewLinearLayout.addView(createNewTextView(fromSpinnerValue,toSpinnerValue,eachShuttle.get(0),eachShuttle.get(2)));
                 }
 
                 Log.d("route deneme",route.toString());
