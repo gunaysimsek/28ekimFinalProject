@@ -58,7 +58,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
         drawerList = (ListView) findViewById(R.id.drawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Geolocation","Logout"};
+        myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Geolocation","Announcement","Logout"};
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_activated_1, myStringArray));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -202,6 +202,19 @@ public class CustomerMainActivity extends AppCompatActivity   {
                 DriverFinderFragment driverFinderFragment = new DriverFinderFragment();
                 fragmentManager2.beginTransaction()
                         .replace(R.id.content_frame,driverFinderFragment,"visible_fragment")
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            }
+            else if(position == 5) {
+
+                FrameLayout contentFrameLayout = (FrameLayout) findViewById((R.id.content_frame));
+                contentFrameLayout.removeAllViews();
+
+
+                AnnouncementFragment announcementFragment = new AnnouncementFragment();
+                fragmentManager2.beginTransaction()
+                        .replace(R.id.content_frame,announcementFragment,"visible_fragment")
                         .addToBackStack(null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
