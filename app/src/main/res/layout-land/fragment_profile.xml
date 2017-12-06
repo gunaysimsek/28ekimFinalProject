@@ -1,0 +1,245 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.gsimsek13.a28ekimfinalproject.ProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <android.support.v7.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <TextView
+            android:id="@+id/textViewA"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text=" "
+            app:layout_column="0"
+            app:layout_columnSpan="3"
+            app:layout_row="0"
+            android:textSize="15sp"
+
+            />
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+
+            android:text="Name"
+            android:textColor="@color/black"
+            app:layout_column="0"
+            android:textSize="15sp"
+
+            app:layout_row="1"
+            app:layout_rowWeight="1" />
+
+        <EditText
+            android:id="@+id/profileNameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_column="1"
+
+            app:layout_columnWeight="1"
+
+            app:layout_row="1"
+
+            app:layout_rowWeight="1"
+            android:ems="10"
+            android:hint="Name"
+            android:textSize="15sp"
+
+            android:inputType="textPersonName"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+
+
+        <EditText
+            android:id="@+id/profileSurnameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_column="2"
+            app:layout_columnWeight="1"
+            android:textSize="15sp"
+
+            app:layout_row="1"
+            app:layout_rowWeight="1"
+            android:ems="10"
+            android:hint="Surname"
+            android:inputType="textPersonName"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Email:"
+            android:textColor="@color/black"
+            app:layout_column="0"
+            android:textSize="15sp"
+
+            app:layout_row="3"
+            app:layout_rowWeight="1" />
+
+        <TextView
+            android:id="@+id/profileEmailTxt"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            app:layout_column="1"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_row="3"
+            app:layout_rowWeight="1"
+
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+
+            android:text="email"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Phone No:"
+            android:textColor="@color/black"
+            app:layout_column="0"
+
+            app:layout_row="4"
+            app:layout_rowWeight="1"
+            android:textSize="15sp"
+
+            />
+
+
+        <EditText
+            android:id="@+id/profilePhoneTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_column="1"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_row="4"
+
+            app:layout_rowWeight="1"
+            android:ems="10"
+            android:hint="Phone Number"
+            android:inputType="phone"
+
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textSize="15sp"
+
+            />
+
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Balance:"
+            android:textColor="@color/black"
+            app:layout_column="0"
+
+            app:layout_row="5"
+            app:layout_rowWeight="1"
+            android:textSize="15sp"
+
+            />
+
+
+        <TextView
+            android:id="@+id/profileBalanceTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_column="1"
+            app:layout_columnWeight="1"
+
+            app:layout_row="5"
+            app:layout_rowWeight="1"
+
+            android:gravity="center_vertical"
+
+            android:text="balance"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textSize="15sp"
+
+            />
+
+        <Button
+            android:id="@+id/profileTopUpBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Up"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            app:layout_column="2"
+            app:layout_gravity="center"
+            app:layout_row="5"
+
+            />
+
+        <Button
+            android:id="@+id/profileUpdateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:text="Update Profile"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            app:layout_column="0"
+            app:layout_columnWeight="1"
+            app:layout_gravity="center|fill"
+            app:layout_row="6"
+            app:layout_rowWeight="1"
+
+            />
+
+        <Button
+            android:id="@+id/profileChangePasswordBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:text="Change Password"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_column="1"
+
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_row="6"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/profileMyReservations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:text="My Reservations"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_column="2"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_row="6"
+            app:layout_rowWeight="1" />
+
+
+
+
+    </android.support.v7.widget.GridLayout>
+
+
+</FrameLayout>
