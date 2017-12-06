@@ -124,7 +124,7 @@ public class ScheduleFragment extends Fragment{
         //CurrentTime.setText(currentTime.toString());
 
 
-        myRef.child("Routes").addValueEventListener(new ValueEventListener() {
+        myRef.child("Routes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

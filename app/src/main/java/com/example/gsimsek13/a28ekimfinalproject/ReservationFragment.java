@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -49,14 +50,12 @@ public class ReservationFragment extends Fragment {
 
     //TextView exampleTV;
     boolean alreadyRegistered = false;
+
     Spinner toSpin;
     Spinner fromSpin;
     Button from_to_button;
-    GridLayout make_Reservation_GridLayout;
-    LinearLayout leftLinearLayout;
-    LinearLayout rightLinearLayout;
-    LinearLayout centerLeftLinearLayout;
-    LinearLayout centerRightLinearLayout;
+//    GridLayout make_Reservation_GridLayout;
+    LinearLayout make_reservation_scroll_view_linearLayout;
     ConstraintLayout constraintLayout;
     //ArrayList<ArrayList<String>> returningList2 = new ArrayList<ArrayList<String>>();
     ArrayList<ArrayList<String>> returningList = new ArrayList<ArrayList<String>>();
@@ -78,6 +77,7 @@ public class ReservationFragment extends Fragment {
 
 
 
+
     public ReservationFragment() {
 
     }
@@ -85,10 +85,7 @@ public class ReservationFragment extends Fragment {
     public ArrayList<ArrayList<String>> readFromDatabase() {
         //ArrayList<ArrayList<String>> returningList = new ArrayList<ArrayList<String>>();
 
-        leftLinearLayout.removeAllViews();
-        centerRightLinearLayout.removeAllViews();
-        centerLeftLinearLayout.removeAllViews();
-        rightLinearLayout.removeAllViews();
+        make_reservation_scroll_view_linearLayout.removeAllViews();
 
 
 
@@ -168,25 +165,27 @@ public class ReservationFragment extends Fragment {
                     //Log.d("deneme",eachShuttle.get(0));
                     //Log.d("deneme",eachShuttle.get(2));
 
-                    leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
+                    String layoutString = " Time: "+eachShuttle.get(0)+"     Price: "+eachShuttle.get(2)+ "     Available seats: " + eachShuttle.get(1);
+                    make_reservation_scroll_view_linearLayout.addView(createNewTextView(layoutString));
+                    //leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
                     if(eachShuttle.get(3).equalsIgnoreCase("Button")) {
-                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2),eachShuttle.get(4),Integer.parseInt(eachShuttle.get(1))));
+                        make_reservation_scroll_view_linearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2),eachShuttle.get(4),Integer.parseInt(eachShuttle.get(1))));
                     }
                     else {
-                        rightLinearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],false,eachShuttle.get(2),eachShuttle.get(4),Integer.parseInt(eachShuttle.get(1))));
+                        make_reservation_scroll_view_linearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],false,eachShuttle.get(2),eachShuttle.get(4),Integer.parseInt(eachShuttle.get(1))));
                     }
                     //rightLinearLayout.addView(createNewTextView(eachShuttle.get(3)));
-                    centerLeftLinearLayout.addView(createNewTextView(eachShuttle.get(0)));
-                    centerRightLinearLayout.addView(createNewTextView(eachShuttle.get(2)));
+                    //centerLeftLinearLayout.addView(createNewTextView(eachShuttle.get(0)));
+                    //centerRightLinearLayout.addView(createNewTextView(eachShuttle.get(2)));
 
                 }
-                if(leftLinearLayout.getChildCount() > 0) {
-                    //Log.d("deneme", "Left child sayisi " + leftLinearLayout.getChildCount());
-                    for(int i=0; i<leftLinearLayout.getChildCount() ; i++){
-                        //Log.d("deneme", "Left child "+i+" Idsi " + leftLinearLayout.getChildAt(i).get(i));
-
-                    }
-                }
+//                if(leftLinearLayout.getChildCount() > 0) {
+//                    //Log.d("deneme", "Left child sayisi " + leftLinearLayout.getChildCount());
+//                    for(int i=0; i<leftLinearLayout.getChildCount() ; i++){
+//                        //Log.d("deneme", "Left child "+i+" Idsi " + leftLinearLayout.getChildAt(i).get(i));
+//
+//                    }
+//                }
                 /*
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     ArrayList<String> eachShuttle = new ArrayList<String>();
@@ -241,22 +240,28 @@ public class ReservationFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_reservation,container,false );
 
+
+        make_reservation_scroll_view_linearLayout = (LinearLayout) v.findViewById(R.id.make_reservation_scroll_view_LinearLayout);
         from_to_button = (Button) v.findViewById(R.id.from_to_button);
         //exampleTV = (TextView) v.findViewById(R.id.exampleTextView);
-        make_Reservation_GridLayout = (GridLayout) v.findViewById(R.id.Make_Reservation_GridLayout);
-        leftLinearLayout = (LinearLayout) v.findViewById(R.id.leftLinearLayout);
-//        ViewGroup.LayoutParams lparam = leftLinearLayout.getLayoutParams();
-//        lparam.width = 10000;
-//        leftLinearLayout.setLayoutParams(lparam);
-        rightLinearLayout = (LinearLayout) v.findViewById(R.id.rightLinearLayout) ;
-        centerLeftLinearLayout = (LinearLayout) v.findViewById(R.id.centerLeftLinearLayout);
-        centerRightLinearLayout = (LinearLayout) v.findViewById(R.id.centerRightLinearLayout);
+//        make_Reservation_GridLayout = (GridLayout) v.findViewById(R.id.Make_Reservation_GridLayout);
+//        leftLinearLayout = (LinearLayout) v.findViewById(R.id.leftLinearLayout);
+////        ViewGroup.LayoutParams lparam = leftLinearLayout.getLayoutParams();
+////        lparam.width = 10000;
+////        leftLinearLayout.setLayoutParams(lparam);
+//        rightLinearLayout = (LinearLayout) v.findViewById(R.id.rightLinearLayout) ;
+//        centerLeftLinearLayout = (LinearLayout) v.findViewById(R.id.centerLeftLinearLayout);
+//        centerRightLinearLayout = (LinearLayout) v.findViewById(R.id.centerRightLinearLayout);
 
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
 
 
         constraintLayout = (ConstraintLayout) v.findViewById(R.id.make_reservation_constraint_layout);
-        Log.d("LayoutDenemeee",constraintLayout.getLayoutParams().toString());
+        ViewGroup.LayoutParams lparam = constraintLayout.getLayoutParams();
+        Log.d("LayoutDenemeee","Width: " +Integer.toString(lparam.width));
+        Log.d("LayoutDenemeee", "Heigth: "+Integer.toString(lparam.height));
+
+        //Log.d("LayoutDenemeee","Width: "+constraintLayout.getLayoutParams().width+ " Heigth: "+ constraintLayout.getLayoutParams().height);
         toSpin = (Spinner) v.findViewById(R.id.toSpinner);
         fromSpin = (Spinner) v.findViewById(R.id.fromSpinner);
 
@@ -270,7 +275,7 @@ public class ReservationFragment extends Fragment {
         }
 
 
-        myRef.child("Routes").addValueEventListener(new ValueEventListener() { //BURASI DEGISICEK
+        myRef.child("Routes").addListenerForSingleValueEvent(new ValueEventListener() { //BURASI DEGISICEK
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //final List<String> fromList = new ArrayList<String>();
@@ -509,6 +514,7 @@ public class ReservationFragment extends Fragment {
 
     }
 
+    /*
     public TextView createNewTextView(String text) {
 
         final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(300, 100);
@@ -519,6 +525,20 @@ public class ReservationFragment extends Fragment {
         textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textView.setText(text);
         return textView;
+    } */
+
+
+    public TextView createNewTextView(String text) {
+
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        final TextView textView = new TextView(getActivity());
+
+        textView.setLayoutParams(lparams);
+        //textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        //textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
+
+        textView.setText(text);
+        return textView;
     }
 
     public Button createNewButton(final String fromTo,final String time,final String user, boolean visible,final String price,final String weekDay,final int availability) {
@@ -527,8 +547,10 @@ public class ReservationFragment extends Fragment {
         //Log.wtf("Dallama",user);
         //Log.wtf("Dallama",price);
 
-        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(300,100);
+        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final Button newButton = new Button(getActivity());
+        newButton.setText("Make Reservation");
+
         newButton.setLayoutParams(lparams);
         if(visible) {
             newButton.setVisibility(View.VISIBLE);
