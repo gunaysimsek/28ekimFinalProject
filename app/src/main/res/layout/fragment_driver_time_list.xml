@@ -15,19 +15,20 @@
             android:id="@+id/driverFromSpin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="11dp" />
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="26dp"
+            android:layout_toEndOf="@+id/textView10"
+            android:layout_toRightOf="@+id/textView10" />
 
         <Spinner
             android:id="@+id/driverToSpin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/textView8"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            />
+            android:layout_alignLeft="@+id/driverFromSpin"
+            android:layout_alignStart="@+id/driverFromSpin" />
 
         <Button
             android:id="@+id/driverTimeListButton"
@@ -36,8 +37,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/driverFromSpin"
-            android:layout_marginEnd="67dp"
-            android:layout_marginRight="67dp"
+            android:layout_marginEnd="29dp"
+            android:layout_marginRight="29dp"
             android:background="@color/colorPrimary"
             android:drawableLeft="@drawable/drivertimelisticon"
             android:text="LIST SCHEDULE   "
@@ -57,10 +58,32 @@
         <ListView
             android:id="@+id/driverTimeListView"
             android:layout_width="match_parent"
+            android:background="@drawable/button_bg4_transparent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView8"
             android:layout_marginTop="21dp" />
+
+        <TextView
+            android:id="@+id/textView10"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/driverFromSpin"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="From"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView8"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="To"
+            android:textSize="18sp" />
     </RelativeLayout>
 </FrameLayout>
