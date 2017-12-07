@@ -101,7 +101,7 @@ public class DriverFinderFragment extends Fragment {
         }
 
 
-        myRef.child("Routes").addValueEventListener(new ValueEventListener() { //BURASI DEGISICEK
+        myRef.child("Routes").addListenerForSingleValueEvent(new ValueEventListener() { //BURASI DEGISICEK
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //final List<String> fromList = new ArrayList<String>();
@@ -414,7 +414,8 @@ public class DriverFinderFragment extends Fragment {
                 }*/
 
                 find_driver_frame.removeAllViews();
-                LocationFragment newFragment = new LocationFragment();
+                Fragment newFragment = new LocationFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 LocationFragment.drivername = driverN;
                 LocationFragment.fromname = fromN;
                 LocationFragment.toname = toN;
@@ -422,10 +423,10 @@ public class DriverFinderFragment extends Fragment {
                 LocationFragment.timeintervalname = timeIntervalN;
 
                 // consider using Java coding conventions (upper first char class names!!!)
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 // Replace whatever is in the fragment_container view with this fragment,
                 // and add the transaction to the back stack
-                transaction.replace(R.id.driver_frame, newFragment);
+                transaction.replace(R.id.content_frame, newFragment);
                 transaction.addToBackStack(null);
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 // Commit the transaction

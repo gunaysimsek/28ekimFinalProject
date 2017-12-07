@@ -3,6 +3,7 @@ package com.example.gsimsek13.a28ekimfinalproject;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -93,7 +94,7 @@ public class DriverTimeListFragment extends Fragment {
         }
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
 
-        myRef.child("Drivers").child(parts[0]).child("routes").addValueEventListener(new ValueEventListener() {
+        myRef.child("Drivers").child(parts[0]).child("routes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //final List<String> fromList = new ArrayList<String>();
@@ -289,7 +290,8 @@ public class DriverTimeListFragment extends Fragment {
                 //Log.wtf("asdfasdfa",selectedFromList);
 
                 driverTimeListFrame.removeAllViews();
-                RouteControllerFragment newFragment = new RouteControllerFragment();
+                Fragment newFragment = new RouteControllerFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 RouteControllerFragment.drivetime = selectedTime;
                 RouteControllerFragment.drivefrom = from;
                 RouteControllerFragment.driveto = to;
@@ -301,10 +303,10 @@ public class DriverTimeListFragment extends Fragment {
 
 
                 // consider using Java coding conventions (upper first char class names!!!)
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 // Replace whatever is in the fragment_container view with this fragment,
                 // and add the transaction to the back stack
-                transaction.replace(R.id.driverTimeListFrame, newFragment);
+                transaction.replace(R.id.driver_content_frame, newFragment);
                 transaction.addToBackStack(null);
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 // Commit the transaction

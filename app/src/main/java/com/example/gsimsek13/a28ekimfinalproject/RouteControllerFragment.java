@@ -81,7 +81,7 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
 
 
     protected static final String TAG = "==================";
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
@@ -400,8 +400,8 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
     @Override
     public void onResume() {
         super.onResume();
-        if(getActivity()!=null)
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //if(getActivity()!=null)
+         //   getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         isPlayServicesAvailable(getContext());
 
 
@@ -451,7 +451,7 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i(TAG, "onLocationChanged");
+        Log.wtf("MERHABA BURADAYIM","SLM");
         //mCurrentLocation = location;
         //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
