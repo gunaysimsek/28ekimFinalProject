@@ -11,6 +11,7 @@
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
 
         >
 
@@ -182,12 +183,15 @@
             android:id="@+id/profileTopUpBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Top Up"
-            android:textColor="@color/colorPrimaryDark"
+            android:text="+"
+            android:textColor="@color/green"
             android:textSize="15sp"
             app:layout_column="2"
             app:layout_gravity="center"
             app:layout_row="5"
+            android:drawableRight="@drawable/addmoney"
+            android:background="@color/white"
+
 
             />
 
@@ -195,13 +199,13 @@
             android:id="@+id/profileUpdateBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/turkuaz"
             android:text="Update Profile"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             app:layout_column="0"
             app:layout_columnWeight="1"
-            app:layout_gravity="center|fill"
+            app:layout_gravity="fill"
             app:layout_row="6"
             app:layout_rowWeight="1"
 
@@ -211,7 +215,7 @@
             android:id="@+id/profileChangePasswordBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             android:text="Change Password"
             android:textColor="@color/white"
             android:textSize="15sp"
@@ -226,7 +230,7 @@
             android:id="@+id/profileMyReservations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/green"
             android:text="My Reservations"
             android:textColor="@color/white"
             android:textSize="15sp"
