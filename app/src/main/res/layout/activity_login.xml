@@ -44,7 +44,7 @@
 
 
             android:inputType="textEmailAddress"
-            android:text="gimsek13@ku.edu.tr"
+            android:text="gsimsek13@ku.edu.tr"
             app:layout_column="0"
             app:layout_columnSpan="2"
             app:layout_gravity="top"
@@ -104,7 +104,7 @@
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/white"
 
             android:onClick="signInClicked"
 

@@ -51,7 +51,7 @@ public class DriverFinderFragment extends Fragment {
     //List<String> fromArray =  new ArrayList<String>();
     //List<String> toArray =  new ArrayList<String>();
     //List<String> timeArray =  new ArrayList<String>();
-    GridLayout find_driver_gridlayout;
+    android.support.v7.widget.GridLayout find_driver_gridlayout;
     FrameLayout find_driver_frame;
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -86,7 +86,7 @@ public class DriverFinderFragment extends Fragment {
         toSpin = (Spinner) v.findViewById(R.id.toSpin);
         fromSpin = (Spinner) v.findViewById(R.id.fromSpin);
         timeSpin = (Spinner) v.findViewById(R.id.timeSpin);
-        find_driver_gridlayout = (GridLayout) v.findViewById(R.id.find_draver_gridlayout);
+        find_driver_gridlayout = (android.support.v7.widget.GridLayout) v.findViewById(R.id.find_draver_gridlayout);
         find_driver_frame = (FrameLayout) v.findViewById(R.id.driver_frame) ;
 
         calender = Calendar.getInstance();

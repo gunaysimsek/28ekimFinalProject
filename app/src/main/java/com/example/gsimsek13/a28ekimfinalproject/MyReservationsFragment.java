@@ -195,7 +195,9 @@ public class MyReservationsFragment extends Fragment {
 
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final Button newButton = new Button(getActivity());
+        newButton.setText("Rate Driver");
         newButton.setLayoutParams(lparams);
+        newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ratedriver,0,0,0);
         if (visible) {
             newButton.setVisibility(View.VISIBLE);
         } else {

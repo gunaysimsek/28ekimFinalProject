@@ -58,10 +58,11 @@
 
         <Button
             android:id="@+id/from_to_button"
-            android:layout_width="329dp"
-            android:layout_height="wrap_content"
+            android:layout_width="304dp"
+            android:layout_height="75dp"
             android:layout_marginStart="60dp"
             android:layout_marginTop="25dp"
+            android:drawableLeft="@drawable/makereservationicon"
             android:text="Select"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/toSpinner"
@@ -70,9 +71,9 @@
         <ScrollView
             android:id="@+id/make_reservation_scroll_View"
             android:layout_width="950dp"
-            android:layout_height="380dp"
+            android:layout_height="355dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="39dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7">
 
