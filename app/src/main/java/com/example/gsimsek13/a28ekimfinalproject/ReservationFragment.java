@@ -6,6 +6,7 @@ import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -241,6 +242,7 @@ public class ReservationFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_reservation,container,false );
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Make Reservation");
 
         make_reservation_scroll_view_linearLayout = (LinearLayout) v.findViewById(R.id.make_reservation_scroll_view_LinearLayout);
         from_to_button = (Button) v.findViewById(R.id.from_to_button);

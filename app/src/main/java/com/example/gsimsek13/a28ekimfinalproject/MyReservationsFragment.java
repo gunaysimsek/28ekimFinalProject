@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -60,6 +61,8 @@ public class MyReservationsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //getActivity().getActionBar().setTitle("My Reservations");
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("My Reservations");
 
         View v = inflater.inflate(R.layout.fragment_my_reservations, container, false);
         if (savedInstanceState != null) {
