@@ -21,25 +21,27 @@
         android:id="@+id/setDriverRangeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
-        android:background="?attr/actionModeSplitBackground"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorPrimary"
+        android:drawableLeft="@drawable/driverlocationicon"
         android:padding="8dp"
         android:text="DRIVER LOCATION"
-        android:textColor="#ffffff" />
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/setUserRangeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
-        android:background="?attr/actionModeSplitBackground"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorPrimary"
+        android:drawableLeft="@drawable/userlocationicon"
         android:padding="8dp"
         android:text="USER LOCATION"
-        android:textColor="#ffffff" />
+        android:textColor="@color/white" />
 
 
 

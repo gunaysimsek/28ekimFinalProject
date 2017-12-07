@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/textView8"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            />
 
         <Button
             android:id="@+id/driverTimeListButton"
@@ -37,7 +38,10 @@
             android:layout_below="@+id/driverFromSpin"
             android:layout_marginEnd="67dp"
             android:layout_marginRight="67dp"
-            android:text="LIST SCHEDULE" />
+            android:background="@color/colorPrimary"
+            android:drawableLeft="@drawable/drivertimelisticon"
+            android:text="LIST SCHEDULE   "
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/textView8"
