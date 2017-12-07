@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class QRFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_qr, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Show QR");
 
         myDb =  new DatabaseHelper(getContext());
         qrIW = v.findViewById(R.id.qrIW);

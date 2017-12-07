@@ -4,6 +4,7 @@ package com.example.gsimsek13.a28ekimfinalproject;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,8 @@ public class ChangePasswordFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_change_password, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Change Password");
 
         changePasswordBtn = v.findViewById(R.id.changePasswordBtn);
         changePasswordPW = v.findViewById(R.id.changePasswordPW);

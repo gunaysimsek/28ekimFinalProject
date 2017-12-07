@@ -4,6 +4,7 @@ package com.example.gsimsek13.a28ekimfinalproject;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +81,8 @@ public class OfflineTakePaymentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Password Payment");
         takeDatabase = FirebaseDatabase.getInstance();
         takeRef = takeDatabase.getReference();
 

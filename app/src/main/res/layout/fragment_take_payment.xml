@@ -99,6 +99,9 @@
             app:layout_row="3"
             app:layout_rowWeight="10"
             app:layout_columnSpan="2"
+
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
             />
 
     </android.support.v7.widget.GridLayout>

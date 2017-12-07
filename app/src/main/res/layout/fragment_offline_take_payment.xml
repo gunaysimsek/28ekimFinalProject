@@ -125,6 +125,8 @@
             app:layout_row="6"
             app:layout_rowWeight="10"
             app:layout_columnSpan="2"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
             />
 
 
