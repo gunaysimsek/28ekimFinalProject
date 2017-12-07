@@ -51,7 +51,7 @@ public class TopUpFragment extends Fragment {
         topUpSendBtn = v.findViewById(R.id.topUpSendBtn);
         parts = FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@");
 
-        myRef.child("Customers").child(parts[0]).child("balance").addValueEventListener(new ValueEventListener() {
+        myRef.child("Customers").child(parts[0]).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
