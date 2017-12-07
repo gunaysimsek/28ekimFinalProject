@@ -67,7 +67,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Goo
     private Marker mDriverLocationMarker;
 
     protected static final String TAG = "==================";
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
