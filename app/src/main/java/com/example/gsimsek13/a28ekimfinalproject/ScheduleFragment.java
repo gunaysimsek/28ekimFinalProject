@@ -3,6 +3,7 @@ package com.example.gsimsek13.a28ekimfinalproject;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -70,6 +71,9 @@ public class ScheduleFragment extends Fragment{
         // Inflate the layout for this fragment
 
         //Log.d("deneme","hopkiri");
+
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Schedule");
 
         Thread myThread = null;
 
