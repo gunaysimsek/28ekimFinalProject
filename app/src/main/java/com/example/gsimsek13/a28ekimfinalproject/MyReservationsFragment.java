@@ -59,6 +59,7 @@ public class MyReservationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //getActivity().getActionBar().setTitle("My Reservations");
 
         View v = inflater.inflate(R.layout.fragment_my_reservations, container, false);
         if (savedInstanceState != null) {
@@ -183,7 +184,7 @@ public class MyReservationsFragment extends Fragment {
         textView.setLayoutParams(lparams);
         //textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         //textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
-
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
         textView.setText(text);
         return textView;
     }
