@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -387,6 +388,8 @@ public class ScheduleFragment extends Fragment{
         final TextView textView = new TextView(getActivity());
         textView.setLayoutParams(lparams);
         textView.setText(translateToWantedString(fromText,20) + translateToWantedString(toText,15) + translateToWantedString(timeText,10) + translateToWantedString(priceText,10));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
+
         return textView;
     }
 

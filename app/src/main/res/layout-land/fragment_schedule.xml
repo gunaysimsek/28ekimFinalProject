@@ -13,8 +13,8 @@
         <TextView
             android:id="@+id/Schedule_Text_View"
             android:layout_width="130dp"
-            android:layout_height="116dp"
-            android:layout_marginStart="220dp"
+            android:layout_height="83dp"
+            android:layout_marginStart="452dp"
             android:layout_marginTop="16dp"
             android:text="Time"
             android:textAlignment="textStart"
@@ -29,7 +29,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:text="From:"
-            android:textSize="16sp"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,45 +40,46 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:text="To:"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View_From" />
 
         <Spinner
             android:id="@+id/Schedule_From_Spinner"
-            android:layout_width="100dp"
+            android:layout_width="131dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintStart_toEndOf="@+id/Schedule_Text_View_From"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
             android:id="@+id/Schedule_To_Spinner"
-            android:layout_width="100dp"
+            android:layout_width="131dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintStart_toEndOf="@+id/Schedule_Text_View_To"
             app:layout_constraintTop_toBottomOf="@+id/Schedule_From_Spinner" />
 
         <Button
             android:id="@+id/Schedule_Go_Button"
             android:layout_width="158dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="12dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="272dp"
+            android:layout_marginTop="25dp"
             android:text="Go"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Schedule_To_Spinner" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:id="@+id/Schedule_Scroll_View"
-            android:layout_width="343dp"
-            android:layout_height="357dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="574dp"
+            android:layout_height="174dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Schedule_Go_Button">
+            app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View">
 
             <LinearLayout
                 android:id="@+id/Schedule_Scroll_View_Linear_Layout"

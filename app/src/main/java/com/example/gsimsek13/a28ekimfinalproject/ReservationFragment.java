@@ -538,6 +538,8 @@ public class ReservationFragment extends Fragment {
         //textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
 
         textView.setText(text);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
+
         return textView;
     }
 
@@ -549,8 +551,13 @@ public class ReservationFragment extends Fragment {
 
         final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final Button newButton = new Button(getActivity());
+
         newButton.setText("Make Reservation");
 
+        //final float inPixels = getResources().getDimension(R.dimen.buttonWidth);
+        //int pixels = (int) (dps * )
+        //newButton.setWidth(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.buttonHeigth));
+        //lparams.width = TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize);
         newButton.setLayoutParams(lparams);
         if(visible) {
             newButton.setVisibility(View.VISIBLE);
