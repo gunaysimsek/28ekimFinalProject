@@ -1,6 +1,7 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -553,12 +554,16 @@ public class ReservationFragment extends Fragment {
         final Button newButton = new Button(getActivity());
 
         newButton.setText("Make Reservation");
+        newButton.setTextColor(Color.WHITE);
 
         //final float inPixels = getResources().getDimension(R.dimen.buttonWidth);
         //int pixels = (int) (dps * )
         //newButton.setWidth(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.buttonHeigth));
         //lparams.width = TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize);
         newButton.setLayoutParams(lparams);
+        newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.makereservationicon,0,0,0);
+        newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
         if(visible) {
             newButton.setVisibility(View.VISIBLE);
         }

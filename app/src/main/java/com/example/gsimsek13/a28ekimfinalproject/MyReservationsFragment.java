@@ -2,6 +2,7 @@ package com.example.gsimsek13.a28ekimfinalproject;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -196,8 +197,11 @@ public class MyReservationsFragment extends Fragment {
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final Button newButton = new Button(getActivity());
         newButton.setText("Rate Driver");
+        newButton.setTextColor(Color.WHITE);
         newButton.setLayoutParams(lparams);
+
         newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ratedriver,0,0,0);
+        newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         if (visible) {
             newButton.setVisibility(View.VISIBLE);
         } else {

@@ -70,16 +70,19 @@
             android:layout_marginTop="25dp"
             android:text="Go"
             app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:drawableLeft="@drawable/go"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:id="@+id/Schedule_Scroll_View"
-            android:layout_width="583dp"
-            android:layout_height="659dp"
-            android:layout_marginStart="9dp"
+            android:layout_width="match_parent"
+            android:layout_height="682dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View">
+            android:background="@drawable/button_bg4_transparent"
+            app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View"
+            tools:layout_editor_absoluteX="9dp">
 
             <LinearLayout
                 android:id="@+id/Schedule_Scroll_View_Linear_Layout"
