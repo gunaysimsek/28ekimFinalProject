@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -66,6 +67,16 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    /**
+     * Hides the soft keyboard
+     */
+    public void hideSoftKeyboard() {
+        if(getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     public void signInClicked(View view) {
@@ -169,6 +180,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+       hideSoftKeyboard();
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF303F9F")) );
         getSupportActionBar().setTitle("ShutApp");
         getSupportActionBar().hide();
@@ -187,5 +200,28 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyboard();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        hideSoftKeyboard();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hideSoftKeyboard();
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        hideSoftKeyboard();
+    }
+
 
 }
