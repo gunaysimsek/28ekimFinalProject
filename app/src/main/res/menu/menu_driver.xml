@@ -4,16 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.gsimsek13.a28ekimfinalproject.DriverMainActivity">
 
-    <item
-        android:id="@+id/action_go_back"
-        android:icon="@android:drawable/ic_menu_revert"
-        app:showAsAction="always"
-        android:title="Go Back" />
 
-    <item android:id="@+id/logout"
-        android:title="Logout"
-
-
-        />
 
 </menu>

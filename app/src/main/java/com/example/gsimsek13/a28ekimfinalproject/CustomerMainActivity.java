@@ -33,6 +33,7 @@ public class CustomerMainActivity extends AppCompatActivity   {
     private String[] titles;
     private ListView drawerList;
 
+    ArrayList<Item> drawerCustomerItems=new ArrayList<>();
     ArrayList<String> bufferStringArrayList;
     String[] myStringArray;
     Bundle mySavedInstanceState;
@@ -58,9 +59,20 @@ public class CustomerMainActivity extends AppCompatActivity   {
         drawerList = (ListView) findViewById(R.id.drawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Geolocation","Announcement","Logout"};
-        drawerList.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_activated_1, myStringArray));
+            myStringArray = new String[]{"Profile", "Show QR","Reservation", "Schedule","Geolocation","Announcement","Logout"};
+
+        drawerCustomerItems.add(new Item("Profile",R.drawable.profilenavigationicon));
+        drawerCustomerItems.add(new Item("Show QR",R.drawable.qrpaymentnavigationicon));//
+        drawerCustomerItems.add(new Item("Reservation",R.drawable.reservationnavigationicon));
+        drawerCustomerItems.add(new Item("Schedule",R.drawable.timelistnavigationicon));
+        drawerCustomerItems.add(new Item("Geolocation",R.drawable.geolocationnavigationicon));
+        drawerCustomerItems.add(new Item("Announcement",R.drawable.announcementnavigationicon));
+        drawerCustomerItems.add(new Item("Logout",R.drawable.logoutnavigationicon));//
+
+        MyAdapter myAdapter=new MyAdapter(this,R.layout.list_view_items, drawerCustomerItems);
+        drawerList.setAdapter(myAdapter);
+        //drawerList.setAdapter(new ArrayAdapter<String>(this,
+         //       android.R.layout.simple_list_item_activated_1, myStringArray));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         if (mySavedInstanceState != null) {
@@ -220,8 +232,9 @@ public class CustomerMainActivity extends AppCompatActivity   {
                         .commit();
             }
         else{
-            FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-            contentFrameLayout.removeAllViews();
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
         }
 
         //Set the action bar title
@@ -313,11 +326,11 @@ public class CustomerMainActivity extends AppCompatActivity   {
                         .commit();
 
                 return true;
-            case R.id.logout:
+            /*case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
-                return true;
+                return true;*/
           //  default:
             //    return super.onOptionsItemSelected(item);
         }

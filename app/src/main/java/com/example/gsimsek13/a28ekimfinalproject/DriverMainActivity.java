@@ -63,7 +63,7 @@ public class DriverMainActivity extends AppCompatActivity {
     private int currentPosition = 1;
 
     private ListView drawerList;
-
+    ArrayList<Item> drawerItems=new ArrayList<>();
     //private String mLastUpdateTime;
 
 
@@ -97,11 +97,18 @@ public class DriverMainActivity extends AppCompatActivity {
         drawerList = (ListView) findViewById(R.id.driver_drawer);
         driver_drawerLayout = (DrawerLayout) findViewById(R.id.driver_drawer_layout);
 
-        driverStringArray = new String[]{ "My TimeList","QR Payment", "Offline Payment"};
+        driverStringArray = new String[]{ "My TimeList","QR Payment", "Password Payment","Logout"};
 
+        drawerItems.add(new Item("My TimeList",R.drawable.drivertimenavigationicon));
+        drawerItems.add(new Item("QR Payment",R.drawable.qrpaymentnavigationicon));
+        drawerItems.add(new Item("Password Payment",R.drawable.offlinepaymentnavigationicon));
+        drawerItems.add(new Item("Logout",R.drawable.logoutnavigationicon));
 
-        drawerList.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_activated_1, driverStringArray));
+        MyAdapter myAdapter=new MyAdapter(this,R.layout.list_view_items,drawerItems);
+        drawerList.setAdapter(myAdapter);
+
+        /*drawerList.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_activated_1, drawerItems));*/
         drawerList.setOnItemClickListener(new DriverMainActivity.DriverDrawerItemClickListener());
 
         if (mySavedInstanceState != null) {
@@ -189,8 +196,9 @@ public class DriverMainActivity extends AppCompatActivity {
                     .commit();
         }
         else{
-            FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.driver_content_frame);
-            contentFrameLayout.removeAllViews();
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
 
         //Set the action bar title
@@ -249,7 +257,7 @@ public class DriverMainActivity extends AppCompatActivity {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        switch (item.getItemId()) {
+        //switch (item.getItemId()) {
 
           /*  case R.id.action_create_order:
                 //Code to run when the Create Order item is clicked
@@ -260,7 +268,7 @@ public class DriverMainActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(this, CheckActivity.class);
                 startActivity(intent2);
                 return true;*/
-            case R.id.action_go_back:
+           // case R.id.action_go_back:
                 //Code to run when the settings item is clicked
               //  Fragment fragment = new ChangePasswordFragment();
                /* FrameLayout contentFrameLayout =  findViewById(R.id.driver_content_frame);
@@ -276,16 +284,16 @@ public class DriverMainActivity extends AppCompatActivity {
 
 
 
-                return true;
-            case R.id.logout:
-                FirebaseAuth.getInstance().signOut();
+              //  return true;
+           // case R.id.logout:
+                /*FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
-                return true;
+                return true;*/
             //  default:
             //    return super.onOptionsItemSelected(item);
-        }
-        return true; // gecici
+       // }
+       return true; // gecici
     }
 
 
