@@ -2,5 +2,7 @@
 <resources>
     <dimen name="textSize">26.5px</dimen>
     <integer name="buttonWidth">100</integer>
-    <integer name="buttonHeigth">100</integer>
+    <integer name="buttonHeigth">10</integer>
+    <integer name="buttonMargin">60</integer>
+
 </resources>
