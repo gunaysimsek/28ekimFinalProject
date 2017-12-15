@@ -97,12 +97,12 @@ public class DriverMainActivity extends AppCompatActivity {
         drawerList = (ListView) findViewById(R.id.driver_drawer);
         driver_drawerLayout = (DrawerLayout) findViewById(R.id.driver_drawer_layout);
 
-        driverStringArray = new String[]{ "My TimeList","QR Payment", "Password Payment","Logout"};
+        driverStringArray = new String[]{ "  My TimeList","  QR Payment", "  Password Payment","  Logout"};
 
-        drawerItems.add(new Item("My TimeList",R.drawable.drivertimenavigationicon));
-        drawerItems.add(new Item("QR Payment",R.drawable.qrpaymentnavigationicon));
-        drawerItems.add(new Item("Password Payment",R.drawable.offlinepaymentnavigationicon));
-        drawerItems.add(new Item("Logout",R.drawable.logoutnavigationicon));
+        drawerItems.add(new Item("  My TimeList",R.drawable.drivertimenavigationicon));
+        drawerItems.add(new Item("  QR Payment",R.drawable.qrpaymentnavigationicon));
+        drawerItems.add(new Item("  Password Payment",R.drawable.offlinepaymentnavigationicon));
+        drawerItems.add(new Item("  Logout",R.drawable.logoutnavigationicon));
 
         MyAdapter myAdapter=new MyAdapter(this,R.layout.list_view_items,drawerItems);
         drawerList.setAdapter(myAdapter);
