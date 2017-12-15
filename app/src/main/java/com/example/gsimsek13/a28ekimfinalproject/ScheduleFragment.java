@@ -1,7 +1,6 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -24,8 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -398,9 +394,11 @@ public class ScheduleFragment extends Fragment{
         textView.setText(translateToWantedString(fromText,20) + translateToWantedString(toText,15) + translateToWantedString(timeText,10) + translateToWantedString(priceText,10));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
 
+
+        textView.setBackgroundResource(R.drawable.border_color_primary);
         textView.setTextColor(Color.WHITE);
 
-        textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        //textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         return textView;
     }

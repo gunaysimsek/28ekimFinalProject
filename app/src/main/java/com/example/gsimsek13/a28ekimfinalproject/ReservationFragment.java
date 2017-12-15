@@ -544,19 +544,22 @@ public class ReservationFragment extends Fragment {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
 
         if(availableSeatss == 0){
-            textView.setBackgroundColor(Color.RED);
+            textView.setBackgroundResource(R.drawable.border_color_red);
+            //textView.setBackgroundColor(Color.RED);
 
         }
         else if(availableSeatss == 1 || availableSeatss == 2 || availableSeatss == 3 || availableSeatss == 4 || availableSeatss == 5 || availableSeatss == 6 || availableSeatss == 7) {
-            textView.setBackgroundColor(Color.parseColor("#FFA500"));
+            textView.setBackgroundResource(R.drawable.border_color_orange);
+            //textView.setBackgroundColor(Color.parseColor("#FFA500"));
         }
         else {
-            textView.setBackgroundColor(Color.parseColor("#008000"));
+            textView.setBackgroundResource(R.drawable.border_color_green);
+            //textView.setBackgroundColor(Color.parseColor("#008000"));
 
         }
         //textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
-        //textView.setBackgroundResource(R.drawable.textview_border);
+        //textView.setBackgroundResource(R.drawable.border_color_primary);
 
         return textView;
     }
@@ -588,11 +591,13 @@ public class ReservationFragment extends Fragment {
             newButton.setVisibility(View.VISIBLE);
 
             if(availability == 1 || availability == 2 || availability == 3 || availability == 4 || availability == 5 || availability == 6 || availability == 7) {
-                newButton.setBackgroundColor(Color.parseColor("#FFA500"));
+                newButton.setBackgroundResource(R.drawable.border_color_orange);
+                //newButton.setBackgroundColor(Color.parseColor("#FFA500"));
 
             }
             else {
-                newButton.setBackgroundColor(Color.parseColor("#008000"));
+                newButton.setBackgroundResource(R.drawable.border_color_green);
+                //newButton.setBackgroundColor(Color.parseColor("#008000"));
             }
         }
         else{

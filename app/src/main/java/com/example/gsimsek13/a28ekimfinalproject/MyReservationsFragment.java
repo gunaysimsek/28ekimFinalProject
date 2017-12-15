@@ -190,9 +190,10 @@ public class MyReservationsFragment extends Fragment {
         //textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
         textView.setText(text);
-        textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        //textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         textView.setTextColor(Color.WHITE);
 
+        textView.setBackgroundResource(R.drawable.border_color_primary);
         //textView.setBackgroundColor(Color.RED);
         return textView;
     }
@@ -214,7 +215,10 @@ public class MyReservationsFragment extends Fragment {
 
         newButton.setHeight(getResources().getInteger(R.integer.buttonHeigth));
         //newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.makereservationicon,0,0,0);
-        newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        //newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        newButton.setBackgroundResource(R.drawable.border_color_green);
+
 
         //newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         if (visible) {
