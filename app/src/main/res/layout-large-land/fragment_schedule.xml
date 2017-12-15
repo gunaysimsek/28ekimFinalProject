@@ -79,7 +79,6 @@
             android:id="@+id/Schedule_Scroll_View"
             android:layout_width="match_parent"
             android:layout_height="346dp"
-            android:background="@drawable/button_bg4_transparent"
             app:layout_constraintTop_toBottomOf="@+id/Schedule_Text_View"
             tools:layout_editor_absoluteX="9dp">
 
