@@ -1,6 +1,7 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -225,7 +226,7 @@ public class DriverTimeListFragment extends Fragment {
 
 
 
-
+/*
         driverToSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -235,7 +236,7 @@ public class DriverTimeListFragment extends Fragment {
                 //Log.wtf("TEXT DEGISTIII",fromToTable.get(text).toString());
                 //Log.wtf("TEXT DEGISTIII========="+fromToTable.get(text).size(),"hohoho");
                 //Log.wtf("asdfasdf",fromToTable.get(text).toString());
-                myRef.child("Drivers").child(parts[0]).child("routes").child(text1+"-"+text2).addValueEventListener(new ValueEventListener() {
+                myRef.child("Drivers").child(parts[0]).child("routes").child(text1+"-"+text2).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         driverRoutes = dataSnapshot.getValue(DriverRoutes.class);
@@ -266,16 +267,70 @@ public class DriverTimeListFragment extends Fragment {
 
             }
         });
+        */
 
         driverTimeListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                        getContext(),
-                        android.R.layout.simple_list_item_1,
-                        driverTimes );
+                //String selectedTime = driverTime.toString();
+                String from = driverFromSpin.getSelectedItem().toString();
+                String to = driverToSpin.getSelectedItem().toString();
 
-                driverTimeListView.setAdapter(arrayAdapter);
+                myRef.child("Drivers").child(parts[0]).child("routes").child(from+"-"+to).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        driverRoutes = dataSnapshot.getValue(DriverRoutes.class);
+                        ArrayList<String> timeList = new ArrayList<>();
+
+                        if(isWeekday){
+                            timeList.removeAll(timeList);
+                            timeList.addAll(driverRoutes.getWeekdayTimeList().keySet());
+                            Collections.sort(timeList);
+                            //Log.wtf("adfasdaf",timeList.toString());
+                        }else{
+                            timeList.removeAll(timeList);
+                            timeList.addAll(driverRoutes.getWeekendTimeList().keySet());
+                            Collections.sort(timeList);
+                        }
+                        //driverTimes.addAll(timeList);
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                getContext(),
+                                android.R.layout.simple_list_item_1,
+                                timeList ){
+                            @Override
+                            public View getView(int position, View convertView, ViewGroup parent){
+                                // Get the Item from ListView
+                                View view = super.getView(position, convertView, parent);
+
+                                // Initialize a TextView for ListView each Item
+                                TextView tv = (TextView) view.findViewById(android.R.id.text1);
+
+                                // Set the text color of TextView (ListView Item)
+                                //tv.setTextColor(Color.YELLOW);
+                                tv.setTextColor(Color.WHITE);
+                                if(position % 3 == 0){
+                                    tv.setBackgroundColor(Color.parseColor("#0F7E1C"));
+                                }else if(position % 3 == 1){
+                                    tv.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                }else{
+                                    tv.setBackgroundColor(Color.parseColor("#00CED1"));
+                                }
+
+
+                                // Generate ListView Item using TextView
+                                return view;
+                            }
+                        };
+
+                        driverTimeListView.setAdapter(arrayAdapter);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
             }
         });

@@ -1,6 +1,7 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +68,7 @@ public class AnnouncementFragment extends Fragment {
             isWeekday = false;
         }
 
-        myRef.child("Drivers").addValueEventListener(new ValueEventListener() {
+        myRef.child("Drivers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot eachChild : dataSnapshot.getChildren()){
@@ -96,7 +98,31 @@ public class AnnouncementFragment extends Fragment {
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                         getContext(),
                         android.R.layout.simple_list_item_1,
-                        cancelledRoutes );
+                        cancelledRoutes ){
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent){
+                        // Get the Item from ListView
+                        View view = super.getView(position, convertView, parent);
+
+                        // Initialize a TextView for ListView each Item
+                        TextView tv = (TextView) view.findViewById(android.R.id.text1);
+
+                        // Set the text color of TextView (ListView Item)
+                        //tv.setTextColor(Color.YELLOW);
+                        tv.setTextColor(Color.WHITE);
+                        if(position % 3 == 0){
+                            tv.setBackgroundColor(Color.parseColor("#0F7E1C"));
+                        }else if(position % 3 == 1){
+                            tv.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        }else{
+                            tv.setBackgroundColor(Color.parseColor("#00CED1"));
+                        }
+
+
+                        // Generate ListView Item using TextView
+                        return view;
+                    }
+                };
 
                 announcementListView.setAdapter(arrayAdapter);
 
@@ -112,6 +138,8 @@ public class AnnouncementFragment extends Fragment {
 
         return v;
     }
+
+
 
 
 }
