@@ -168,7 +168,7 @@ public class ReservationFragment extends Fragment {
                     //Log.d("deneme",eachShuttle.get(2));
 
                     String layoutString = " Time: "+eachShuttle.get(0)+"     Price: "+eachShuttle.get(2)+ "     Available seats: " + eachShuttle.get(1);
-                    make_reservation_scroll_view_linearLayout.addView(createNewTextView(layoutString));
+                    make_reservation_scroll_view_linearLayout.addView(createNewTextView(layoutString,Integer.parseInt(eachShuttle.get(1))));
                     //leftLinearLayout.addView(createNewTextView(eachShuttle.get(1)));
                     if(eachShuttle.get(3).equalsIgnoreCase("Button")) {
                         make_reservation_scroll_view_linearLayout.addView(createNewButton(fromSpinnerValue+"-"+toSpinnerValue,eachShuttle.get(0),parts[0],true,eachShuttle.get(2),eachShuttle.get(4),Integer.parseInt(eachShuttle.get(1))));
@@ -531,7 +531,7 @@ public class ReservationFragment extends Fragment {
     } */
 
 
-    public TextView createNewTextView(String text) {
+    public TextView createNewTextView(String text,int availableSeatss) {
 
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         final TextView textView = new TextView(getActivity());
@@ -542,12 +542,16 @@ public class ReservationFragment extends Fragment {
         textView.setText(text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
-        
-        if(text.contains("Available seats: 0")){
+
+        if(availableSeatss == 0){
             textView.setBackgroundColor(Color.RED);
+
+        }
+        else if(availableSeatss == 1 || availableSeatss == 2 || availableSeatss == 3 || availableSeatss == 4 || availableSeatss == 5 || availableSeatss == 6 || availableSeatss == 7) {
+            textView.setBackgroundColor(Color.parseColor("#FFA500"));
         }
         else {
-            textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            textView.setBackgroundColor(Color.parseColor("#008000"));
 
         }
         //textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -582,6 +586,14 @@ public class ReservationFragment extends Fragment {
 
         if(visible) {
             newButton.setVisibility(View.VISIBLE);
+
+            if(availability == 1 || availability == 2 || availability == 3 || availability == 4 || availability == 5 || availability == 6 || availability == 7) {
+                newButton.setBackgroundColor(Color.parseColor("#FFA500"));
+
+            }
+            else {
+                newButton.setBackgroundColor(Color.parseColor("#008000"));
+            }
         }
         else{
             newButton.setVisibility(View.INVISIBLE);
