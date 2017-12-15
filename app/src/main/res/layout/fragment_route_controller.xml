@@ -3,7 +3,8 @@
     android:id="@+id/routeControllerFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.gsimsek13.a28ekimfinalproject.RouteControllerFragment">
+    tools:context="com.example.gsimsek13.a28ekimfinalproject.RouteControllerFragment"
+    android:background="@color/white">
 
 
     <RelativeLayout

@@ -4,7 +4,8 @@
     android:id="@+id/announcementFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.gsimsek13.a28ekimfinalproject.AnnouncementFragment">
+    tools:context="com.example.gsimsek13.a28ekimfinalproject.AnnouncementFragment"
+    android:background="@color/white">
 
 
     <RelativeLayout
