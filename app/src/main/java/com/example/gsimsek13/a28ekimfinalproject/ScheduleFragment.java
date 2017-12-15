@@ -1,5 +1,6 @@
 package com.example.gsimsek13.a28ekimfinalproject;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -388,11 +389,18 @@ public class ScheduleFragment extends Fragment{
 
     public TextView createNewTextView(String fromText, String toText, String timeText, String priceText) {
 
-        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final TextView textView = new TextView(getActivity());
+
+        lparams.setMargins(0,getResources().getInteger(R.integer.buttonMargin),0,0);
+
         textView.setLayoutParams(lparams);
         textView.setText(translateToWantedString(fromText,20) + translateToWantedString(toText,15) + translateToWantedString(timeText,10) + translateToWantedString(priceText,10));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
+
+        textView.setTextColor(Color.WHITE);
+
+        textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         return textView;
     }

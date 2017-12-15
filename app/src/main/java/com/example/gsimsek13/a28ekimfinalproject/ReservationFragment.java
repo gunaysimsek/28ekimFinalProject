@@ -97,7 +97,7 @@ public class ReservationFragment extends Fragment {
         final String toSpinnerValue = toSpin.getSelectedItem().toString();
         final String fromSpinnerValue = fromSpin.getSelectedItem().toString();
 
-        myRef.child("Routes").child(fromSpinnerValue+"-"+toSpinnerValue).addValueEventListener(new ValueEventListener() {
+        myRef.child("Routes").child(fromSpinnerValue+"-"+toSpinnerValue).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
 
 
@@ -535,13 +535,24 @@ public class ReservationFragment extends Fragment {
 
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         final TextView textView = new TextView(getActivity());
-
+        lparams.setMargins(0,getResources().getInteger(R.integer.buttonMargin),0,0);
         textView.setLayoutParams(lparams);
         //textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         //textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
-
         textView.setText(text);
+        textView.setTextColor(Color.WHITE);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
+        
+        if(text.contains("Available seats: 0")){
+            textView.setBackgroundColor(Color.RED);
+        }
+        else {
+            textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        }
+        //textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        //textView.setBackgroundResource(R.drawable.textview_border);
 
         return textView;
     }
@@ -552,17 +563,20 @@ public class ReservationFragment extends Fragment {
         //Log.wtf("Dallama",user);
         //Log.wtf("Dallama",price);
 
-        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        //lparams.setMargins(0,0,0,10);
+
         final Button newButton = new Button(getActivity());
 
         newButton.setText("Make Reservation");
+        //newButton.setTextColor(Color.WHITE);
         newButton.setTextColor(Color.WHITE);
-
         //final float inPixels = getResources().getDimension(R.dimen.buttonWidth);
         //int pixels = (int) (dps * )
         //newButton.setWidth(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.buttonHeigth));
         //lparams.width = TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize);
         newButton.setLayoutParams(lparams);
+        newButton.setHeight(getResources().getInteger(R.integer.buttonHeigth));
         newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.makereservationicon,0,0,0);
         newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
@@ -571,6 +585,7 @@ public class ReservationFragment extends Fragment {
         }
         else{
             newButton.setVisibility(View.INVISIBLE);
+            newButton.setBackgroundColor(Color.RED);
             newButton.setClickable(false);
         }
         newButton.setOnClickListener(new View.OnClickListener() {

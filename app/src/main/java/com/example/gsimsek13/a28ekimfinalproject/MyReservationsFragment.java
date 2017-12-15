@@ -183,12 +183,17 @@ public class MyReservationsFragment extends Fragment {
 
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         final TextView textView = new TextView(getActivity());
+        lparams.setMargins(0,getResources().getInteger(R.integer.buttonMargin),0,0);
 
         textView.setLayoutParams(lparams);
         //textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         //textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
         textView.setText(text);
+        textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        textView.setTextColor(Color.WHITE);
+
+        //textView.setBackgroundColor(Color.RED);
         return textView;
     }
 
@@ -198,14 +203,20 @@ public class MyReservationsFragment extends Fragment {
         //Log.wtf("Dallama",user);
         //Log.wtf("Dallama",price);
 
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final Button newButton = new Button(getActivity());
         newButton.setText("Rate Driver");
         newButton.setTextColor(Color.WHITE);
         newButton.setLayoutParams(lparams);
 
+
         newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ratedriver,0,0,0);
+
+        newButton.setHeight(getResources().getInteger(R.integer.buttonHeigth));
+        //newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.makereservationicon,0,0,0);
         newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        //newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         if (visible) {
             newButton.setVisibility(View.VISIBLE);
         } else {
