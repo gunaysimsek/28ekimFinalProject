@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 
 public class AnnouncementFragment extends Fragment {
@@ -95,6 +96,7 @@ public class AnnouncementFragment extends Fragment {
                         }
                    }
                 }
+                Collections.sort(cancelledRoutes);
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                         getContext(),
                         android.R.layout.simple_list_item_1,
