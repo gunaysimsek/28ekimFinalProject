@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,8 +35,13 @@ import java.util.List;
 
 public class MyReservationsFragment extends Fragment {
 
+
     String userName;
+    int currentTimeHour;
+    int currentTimeMinute;
+    int currentTimeTotal;
     Boolean isWeekday;
+    String weekDayOrWeekend;
     Calendar calender;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -75,8 +81,10 @@ public class MyReservationsFragment extends Fragment {
         // 7 saturday 1 sunday.
         if ((day != 7 && day != 1)) {
             isWeekday = true;
+            weekDayOrWeekend = "weekdayTimes";
         } else {
             isWeekday = false;
+            weekDayOrWeekend = "weekendTimes";
         }
 
 
@@ -122,6 +130,7 @@ public class MyReservationsFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Times shuttleTimeClass = dataSnapshot.getValue(Times.class);
                                 //Log.d("Timesdeneme",shuttleTimeClass.toString());
+                                final double price = shuttleTimeClass.getPrice();
                                 final String driverName = shuttleTimeClass.driver;
                                 Log.d("Timesdeneme", driverName + "  " + time);
                                 //ScrollViewLayout.addView(createNewTextView("From: " +from + " To: " + to + " Time: " + time));
@@ -138,7 +147,11 @@ public class MyReservationsFragment extends Fragment {
 
                                         if (value.equalsIgnoreCase("Ended") && keyToValue.equalsIgnoreCase("unrated")) {
                                             ScrollViewLayout.addView(createNewButton(driverName, true,from+"-"+to,time));
-                                        } else {
+                                        }
+                                        else if((value.equalsIgnoreCase("Active") || value.equalsIgnoreCase("Standby")) && keyToValue.equalsIgnoreCase("unrated")){
+                                            ScrollViewLayout.addView(createCancellationButton(driverName,from+"-"+to,time,price));
+                                        }
+                                        else {
                                             ScrollViewLayout.addView(createNewButton(driverName, false,from+"-"+to,time));
                                         }
 
@@ -191,13 +204,94 @@ public class MyReservationsFragment extends Fragment {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimension(R.dimen.textSize));
         textView.setText(text);
         //textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        textView.setTextColor(Color.WHITE);
+        textView.setTextColor(Color.BLACK);
 
-        textView.setBackgroundResource(R.drawable.border_color_primary);
+        //textView.setBackgroundResource(R.drawable.border_color_light_blue);
+        //textView.setTextColor(Color.BLACK);
+
         //textView.setBackgroundColor(Color.RED);
         return textView;
     }
 
+    public Button createCancellationButton(final String driver, final String fromto, final String time,final double price) {
+
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final Button newButton = new Button(getActivity());
+        newButton.setText("Cancel Reservation");
+        newButton.setTextColor(Color.WHITE);
+        newButton.setLayoutParams(lparams);
+
+        Date dt = new Date();
+        int hours = dt.getHours();
+        currentTimeHour = hours;
+        //Log.d("deneme", "hey " + hours);
+        //Log.d("deneme", "hey " + currentTimeHour);
+        int minutes = dt.getMinutes();
+        currentTimeMinute = minutes;
+
+        currentTimeTotal = currentTimeHour*60 + currentTimeMinute;
+
+
+        String[] eachReservationHourAndMinute = time.split(":");
+        int eachReservationHour = Integer.parseInt(eachReservationHourAndMinute[0]);
+        int eachReservationMinute = Integer.parseInt(eachReservationHourAndMinute[1]);
+        int eachReservationTotal = eachReservationHour*60 + eachReservationMinute;
+
+        if(currentTimeTotal >= eachReservationTotal){
+            newButton.setVisibility(View.INVISIBLE);
+            newButton.setClickable(false);
+        }
+        else {
+            newButton.setVisibility(View.VISIBLE);
+        }
+
+        newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.cancelreservationicon,0,0,0);
+
+        newButton.setHeight(getResources().getInteger(R.integer.buttonHeigth));
+        //newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.makereservationicon,0,0,0);
+        //newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        newButton.setBackgroundResource(R.drawable.border_color_dark_red);
+
+        newButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myRef.child("Customers").child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        double currentBalance = dataSnapshot.child("balance").getValue(double.class);
+                        myRef.child("Customers").child(userName).child("balance").setValue(currentBalance + price);
+                        myRef.child("Customers").child(userName).child("reservations").child(fromto).child("times").child(time).removeValue();
+                        myRef.child("Routes").child(fromto).child(weekDayOrWeekend).child(time).child("users").child(userName).removeValue();
+
+
+                        myRef.child("Routes").child(fromto).child(weekDayOrWeekend).child(time).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Times timesClass = dataSnapshot.getValue(Times.class);
+                                int availability = timesClass.getAvailability();
+
+                                myRef.child("Routes").child(fromto).child(weekDayOrWeekend).child(time).child("availability").setValue(availability + 1);
+                                newButton.setVisibility(View.INVISIBLE);
+                                newButton.setClickable(false);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+        return newButton;
+    }
     public Button createNewButton(final String driver, final boolean visible,final String fromTo,final String time) {
         //Log.wtf("Dallama",fromTo);
         //Log.wtf("Dallama",time);
@@ -217,7 +311,7 @@ public class MyReservationsFragment extends Fragment {
         //newButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.makereservationicon,0,0,0);
         //newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
-        newButton.setBackgroundResource(R.drawable.border_color_green);
+        newButton.setBackgroundResource(R.drawable.border_color_light_blue);
 
 
         //newButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -279,6 +373,7 @@ public class MyReservationsFragment extends Fragment {
 
                                                              dialog.hide();
                                                              newButton.setVisibility(View.INVISIBLE);
+                                                             newButton.setClickable(false);
 
                                                          }
 
