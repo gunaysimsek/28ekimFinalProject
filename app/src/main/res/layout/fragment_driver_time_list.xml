@@ -38,8 +38,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/driverFromSpin"
-            android:layout_marginEnd="29dp"
-            android:layout_marginRight="29dp"
             android:background="@color/colorPrimary"
             android:drawableLeft="@drawable/drivertimelisticon"
             android:text="LIST SCHEDULE   "
