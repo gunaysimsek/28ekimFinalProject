@@ -79,6 +79,9 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
     Calendar calender;
     boolean isWeekday = true;
 
+    Times userTimes;
+    Customer customerUpdated;
+
 
     protected static final String TAG = "==================";
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
@@ -136,19 +139,39 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         driverRoutes = dataSnapshot.getValue(DriverRoutes.class);
                         if(isWeekday){
-                           driverRoutes.setWeekdayTimeListValue(drivetime,"active");
+                            if(!driverRoutes.getWeekdayTimeListValue(drivetime).equalsIgnoreCase("cancelled")){
+                                driverRoutes.setWeekdayTimeListValue(drivetime,"active");
+                                myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom+"-"+driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        Toast.makeText(getContext(), "Route is now active.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                startLocationUpdates();
+                            }else{
+                                Toast.makeText(getContext(), "Route is already cancelled.", Toast.LENGTH_SHORT).show();
+                            }
+
                             //Log.wtf("adfasdaf",timeList.toString());
                         }else{
-                            driverRoutes.setWeekendTimeListValue(drivetime,"active");
+                            if(!driverRoutes.getWeekendTimeListValue(drivetime).equalsIgnoreCase("cancelled")){
+                                driverRoutes.setWeekendTimeListValue(drivetime,"active");
+                                myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom+"-"+driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        Toast.makeText(getContext(), "Route is now active.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                startLocationUpdates();
+                            }else{
+                                Toast.makeText(getContext(), "Route is already cancelled.", Toast.LENGTH_SHORT).show();
+                            }
+
                         }
 
-                        myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom+"-"+driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                Toast.makeText(getContext(), "Route is now active.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        startLocationUpdates();
+
+
+
                     }
 
                     @Override
@@ -166,18 +189,167 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         driverRoutes = dataSnapshot.getValue(DriverRoutes.class);
-                        if(isWeekday){
-                            driverRoutes.setWeekdayTimeListValue(drivetime,"cancelled");
+
+
+                        if(isWeekday) {
+                            if (!driverRoutes.getWeekdayTimeListValue(drivetime).equalsIgnoreCase("cancelled")) {
+
+
+                            driverRoutes.setWeekdayTimeListValue(drivetime, "cancelled");
+
+                            myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekdayTimes").child(drivetime).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    userTimes = dataSnapshot.getValue(Times.class);
+                                    Log.wtf("Price ===>", userTimes.toString());
+                                    final double priceRetrieved = userTimes.getPrice();
+                                    if (userTimes.getUsers() != null) {
+
+
+                                        for (String user : userTimes.getUsers().keySet()) {
+                                            final String currentUser = user;
+                                            myRef.child("Customers").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    customerUpdated = dataSnapshot.getValue(Customer.class);
+                                                    double updatedBalance = customerUpdated.getBalance() + priceRetrieved;
+                                                    dataSnapshot.getRef().child("balance").setValue(updatedBalance);
+                                                    myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekdayTimes").child(drivetime).child("users").child(currentUser).removeValue();
+                                                    myRef.child("Customers").child(currentUser).child("reservations").child(drivefrom+"-"+driveto).child("times").child(drivetime).removeValue();
+                                                    myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekdayTimes").child(drivetime).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            if (dataSnapshot.getChildrenCount() == 0) {
+                                                                myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekdayTimes").child(drivetime).removeValue();
+                                                            }
+                                                            myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom + "-" + driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
+                                                                @Override
+                                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                    Toast.makeText(getContext(), "Route is now cancelled.", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                            //Log.wtf("ASDDFASDFASDF===>",dataSnapshot.getChildrenCount());
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+
+                                                    // if(){
+                                                    //   myRef.child("Routes").child(drivefrom+"-"+driveto).child("weekdayTimes").child(drivetime).removeValue();
+                                                    //}
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+                                        }
+                                    } else {
+                                        if (!driverRoutes.getWeekdayTimeListValue(drivetime).equalsIgnoreCase("cancelled")) {
+                                            myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekdayTimes").child(drivetime).removeValue();
+                                            Toast.makeText(getContext(), "Route is now cancelled.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                             //Log.wtf("adfasdaf",timeList.toString());
                         }else{
-                            driverRoutes.setWeekendTimeListValue(drivetime,"cancelled");
+                                Toast.makeText(getContext(), "Route is already cancelled.", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            if (!driverRoutes.getWeekendTimeListValue(drivetime).equalsIgnoreCase("cancelled")) {
+
+                            driverRoutes.setWeekendTimeListValue(drivetime, "cancelled");
+
+                            myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekendTimes").child(drivetime).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    userTimes = dataSnapshot.getValue(Times.class);
+                                    Log.wtf("Price ===>", userTimes.toString());
+                                    final double priceRetrieved = userTimes.getPrice();
+                                    if (userTimes.getUsers() != null) {
+
+
+                                        for (String user : userTimes.getUsers().keySet()) {
+                                            final String currentUser = user;
+                                            myRef.child("Customers").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    customerUpdated = dataSnapshot.getValue(Customer.class);
+                                                    double updatedBalance = customerUpdated.getBalance() + priceRetrieved;
+                                                    dataSnapshot.getRef().child("balance").setValue(updatedBalance);
+                                                    myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekendTimes").child(drivetime).child("users").child(currentUser).removeValue();
+
+                                                    myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekendTimes").child(drivetime).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            if (dataSnapshot.getChildrenCount() == 0) {
+                                                                myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekendTimes").child(drivetime).removeValue();
+                                                            }
+                                                            myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom + "-" + driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
+                                                                @Override
+                                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                    Toast.makeText(getContext(), "Route is now cancelled.", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                            //Log.wtf("ASDDFASDFASDF===>",dataSnapshot.getChildrenCount());
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+
+                                                    // if(){
+                                                    //   myRef.child("Routes").child(drivefrom+"-"+driveto).child("weekdayTimes").child(drivetime).removeValue();
+                                                    //}
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+                                        }
+                                    } else {
+                                        if (!driverRoutes.getWeekendTimeListValue(drivetime).equalsIgnoreCase("cancelled")) {
+                                        myRef.child("Routes").child(drivefrom + "-" + driveto).child("weekdayTimes").child(drivetime).removeValue();
+                                        Toast.makeText(getContext(), "Route is now cancelled.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }else{
+                                Toast.makeText(getContext(), "Route is already cancelled.", Toast.LENGTH_SHORT).show();
+                            }
                         }
+                        /*
                         myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom+"-"+driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                 Toast.makeText(getContext(), "Route is now cancelled.", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        */
                     }
 
                     @Override
@@ -196,18 +368,39 @@ public class RouteControllerFragment extends Fragment implements GoogleApiClient
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         driverRoutes = dataSnapshot.getValue(DriverRoutes.class);
                         if(isWeekday){
-                            driverRoutes.setWeekdayTimeListValue(drivetime,"ended");
+                            if(!driverRoutes.getWeekdayTimeListValue(drivetime).equalsIgnoreCase("cancelled")){
+                                driverRoutes.setWeekdayTimeListValue(drivetime,"ended");
+                                myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom+"-"+driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        Toast.makeText(getContext(), "Route is now ended.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                stopLocationUpdates();
+                            }else{
+                                Toast.makeText(getContext(), "Route is already cancelled.", Toast.LENGTH_SHORT).show();
+                            }
+                            //driverRoutes.setWeekdayTimeListValue(drivetime,"ended");
                             //Log.wtf("adfasdaf",timeList.toString());
                         }else{
-                            driverRoutes.setWeekendTimeListValue(drivetime,"ended");
-                        }
-                        myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom+"-"+driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                Toast.makeText(getContext(), "Route is now ended.", Toast.LENGTH_SHORT).show();
+                            if(!driverRoutes.getWeekendTimeListValue(drivetime).equalsIgnoreCase("cancelled")){
+                                driverRoutes.setWeekendTimeListValue(drivetime,"ended");
+                                myRef.child("Drivers").child(parts[0]).child("routes").child(drivefrom+"-"+driveto).setValue(driverRoutes, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        Toast.makeText(getContext(), "Route is now ended.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                stopLocationUpdates();
+                            }else{
+                                Toast.makeText(getContext(), "Route is already cancelled.", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                        stopLocationUpdates();
+                            //driverRoutes.setWeekendTimeListValue(drivetime,"ended");
+                        }
+
+
                     }
 
                     @Override

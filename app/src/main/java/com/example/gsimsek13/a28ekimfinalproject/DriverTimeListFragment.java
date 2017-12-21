@@ -284,12 +284,22 @@ public class DriverTimeListFragment extends Fragment {
 
                         if(isWeekday){
                             timeList.removeAll(timeList);
-                            timeList.addAll(driverRoutes.getWeekdayTimeList().keySet());
+                            for(String timeValue : driverRoutes.getWeekdayTimeList().keySet()){
+                                if(!driverRoutes.getWeekdayTimeListValue(timeValue).equalsIgnoreCase("cancelled")||!driverRoutes.getWeekdayTimeListValue(timeValue).equalsIgnoreCase("ended")){
+                                    timeList.add(timeValue);
+                                }
+                            }
+                            //timeList.addAll(driverRoutes.getWeekdayTimeList().keySet());
                             Collections.sort(timeList);
                             //Log.wtf("adfasdaf",timeList.toString());
                         }else{
                             timeList.removeAll(timeList);
-                            timeList.addAll(driverRoutes.getWeekendTimeList().keySet());
+                            for(String timeValue : driverRoutes.getWeekendTimeList().keySet()){
+                                if(!driverRoutes.getWeekendTimeListValue(timeValue).equalsIgnoreCase("cancelled")||!driverRoutes.getWeekendTimeListValue(timeValue).equalsIgnoreCase("ended")){
+                                    timeList.add(timeValue);
+                                }
+                            }
+                            //timeList.addAll(driverRoutes.getWeekendTimeList().keySet());
                             Collections.sort(timeList);
                         }
                         //driverTimes.addAll(timeList);
